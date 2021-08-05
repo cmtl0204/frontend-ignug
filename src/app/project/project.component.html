@@ -1,0 +1,90 @@
+<div class="grid">
+  <div *ngFor="let theme of themes" class="col-3">
+    <a style="cursor: pointer" (click)="changeTheme(theme.name)"
+       [ngStyle]="{'background-color': theme.color}">{{theme.name}}
+    </a>
+  </div>
+</div>
+<div *ngFor="let theme of themes">
+
+</div>
+
+<p-card>
+  <ng-template pTemplate="header">
+    <h1>Project</h1>
+  </ng-template>
+  <div class="p-fluid">
+    <form [formGroup]="formProject" (ngSubmit)="onSubmit()">
+      <div class="formgrid grid">
+        <div class="field xl:col-6 lg:col-6 md:col-4 sm:col-12">
+          <label for="id">ID:</label>
+          <input pInputText type="text" id="id" formControlName="id">
+        </div>
+        <div class="field xl:col-6 lg:col-6 md:col-4 sm:col-12">
+          <label for="id">CODE:</label>
+          <input pInputText type="text" id="code" formControlName="code">
+          <div
+            *ngIf="codeField.invalid && (codeField.touched || codeField.dirty)">
+            <small *ngIf="codeField.errors?.required" class="p-error">
+              EL campo es requerido
+            </small>
+            <small *ngIf="codeField.errors?.maxlength" class="p-error">
+              Maximo de caracteres es 5
+            </small>
+            <small *ngIf="codeField.errors?.minlength" class="p-error">
+              Minimo de caracteres es 3
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label for="id">DATE:</label>
+        <input pInputText type="text" id="date" formControlName="date">
+      </div>
+      <div class="field">
+        <label for="id">DESCRIPCTION:</label>
+        <input pInputText type="text" id="description" formControlName="description">
+      </div>
+      <div class="field">
+        <label for="id">APPROVED:</label>
+        <input pInputText type="text" id="approved" formControlName="approved">
+      </div>
+      <div class="field">
+        <label for="id">TITLE:</label>
+        <input pInputText type="text" id="title" formControlName="title">
+      </div>
+      <div class="field">
+        <button pButton type="submit" label="Guardar" icon="pi pi-save"></button>
+      </div>
+    </form>
+  </div>
+</p-card>
+
+
+<br>
+<h1>Projects</h1>
+<table>
+  <tr>
+    <th>
+      id
+    </th>
+    <th>
+      title
+    </th>
+  </tr>
+  <tr *ngFor="let project of projects">
+    <td>
+      {{project.id}}
+    </td>
+    <td>
+      {{project.title}}
+    </td>
+    <td>
+      <button pButton type="button" label="Mostrar" (click)="selectProject(project)"></button>
+      <button pButton type="button" label="Modificar" class="p-button-warning"
+              (click)="updateProject(project)"></button>
+      <button pButton type="button" label="Eliminar" class="p-button-danger" (click)="deleteProject(project)"></button>
+    </td>
+  </tr>
+</table>
+
