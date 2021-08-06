@@ -1,12 +1,12 @@
-const API_URL_PRIVATE = 'http://siga_backend.test/api/v1/private/';
-const API_URL_PUBLIC = 'http://siga_backend.test/api/v1/public/';
-const URL = 'http://siga_backend.test/';
+const WEB = 'http://backend-lopez-tamayo.test/';
+const API = 'http://backend-lopez-tamayo.test/api/v1/';
+
 
 export const environment = {
   production: true,
-  URL,
-  STORAGE_URL: URL + 'storage/',
-  API_URL_AUTHENTICATION: 'http://siga_backend.test/api/v1/authentication/',
-  API_URL_PRIVATE_APP: API_URL_PRIVATE + 'app/',
-  API_URL_PUBLIC_APP: API_URL_PUBLIC + 'app/',
+  WEB,
+  STORAGE_URL: WEB + 'storage/',
+  API_URL_AUTHENTICATION: API + 'authentication/',
+  API_URL_PRIVATE: API + 'private/',
+  API_URL_PUBLIC: API + 'public/',
 };

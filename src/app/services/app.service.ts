@@ -10,10 +10,6 @@ export class AppService {
   constructor() {
   }
 
-  getJsonContent() {
-    return (themes as any);
-  }
-
   changeTheme(theme: string) {
     const themePath = themes.find(element => element.name == theme)?.path;
     console.log(themePath);

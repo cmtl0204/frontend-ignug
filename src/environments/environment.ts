@@ -1,16 +1,16 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-const WEB = 'http://backend-lopez-tamayo.test/';
-const API = 'http://backend-lopez-tamayo.test/api/v1/';
+const WEB = 'http://backend-lopez-tamayo.test';
+const API = 'http://backend-lopez-tamayo.test/api/v1';
 
 export const environment = {
   production: false,
   WEB,
-  STORAGE_URL: WEB + 'storage/',
-  API_URL_AUTHENTICATION: API + 'authentication/',
-  API_URL_PRIVATE: API + 'private/',
-  API_URL_PUBLIC: API + 'public/',
+  STORAGE_URL: WEB + '/storage',
+  API_URL_AUTHENTICATION: API + '/authentication',
+  API_URL_PRIVATE: API + '/private',
+  API_URL_PUBLIC: API + '/public',
 };
 
 /*

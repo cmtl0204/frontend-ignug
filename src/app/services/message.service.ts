@@ -53,8 +53,8 @@ export class MessageService {
 
   success(serverResponse: ServerResponse | undefined) {
     return Swal.fire({
-      title: serverResponse?.message?.summary,
-      text: serverResponse?.message?.detail,
+      title: serverResponse?.msg?.summary,
+      text: serverResponse?.msg?.detail,
       icon: 'info'
     });
   }

@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ProjectModel} from '../models';
 import {ProjectHttpService} from '../services/project-http.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MessageService} from '../services/message.service';
 import {AppService} from '../services/app.service';
 import themes from '../../assets/themes/themes.json';
 
@@ -16,8 +17,12 @@ export class ProjectComponent implements OnInit {
   projects: ProjectModel[] = [];
   formProject: FormGroup;
   themes: any;
+  selectedTheme: any;
 
-  constructor(private projectHttpService: ProjectHttpService, private formBuilder: FormBuilder, private appService: AppService) {
+  constructor(private projectHttpService: ProjectHttpService,
+              private formBuilder: FormBuilder,
+              private appService: AppService,
+              public messageService: MessageService) {
     this.themes = themes;
     this.formProject = this.newFormGroupProject();
   }
@@ -32,8 +37,8 @@ export class ProjectComponent implements OnInit {
       {
         id: [null],
         code: [null, [Validators.required, Validators.maxLength(5), Validators.minLength(3)]],
-        date: [null],
-        description: [null],
+        date: [null, [Validators.required]],
+        description: [null, [Validators.required]],
         approved: [null],
         title: [null, [Validators.required]],
       }
@@ -43,11 +48,10 @@ export class ProjectComponent implements OnInit {
   getProjects(): void {
     this.projectHttpService.getAll().subscribe(
       response => {
-        console.log(response);
         this.projects = response.data;
       },
       error => {
-        console.log(error);
+        this.messageService.error(error);
       }
     );
   }
@@ -55,22 +59,22 @@ export class ProjectComponent implements OnInit {
   getProject(): void {
     this.projectHttpService.getOne(1).subscribe(
       response => {
-        console.log(response);
-        // this.selectedProject = response['data'];
+        this.selectedProject = response.data;
       },
       error => {
-        console.log(error);
+        this.messageService.error(error);
       }
     );
   }
 
-  createProject(): void {
-    this.projectHttpService.create(this.selectedProject).subscribe(
+  storeProject(project: ProjectModel): void {
+    this.projectHttpService.store(project).subscribe(
       response => {
-        console.log(response);
+        this.saveProject(response.data);
+        this.messageService.success(response);
       },
       error => {
-        console.log(error);
+        this.messageService.error(error);
       }
     );
   }
@@ -78,10 +82,11 @@ export class ProjectComponent implements OnInit {
   updateProject(project: ProjectModel): void {
     this.projectHttpService.update(project.id, project).subscribe(
       response => {
-        console.log(response);
+        this.saveProject(project);
+        this.messageService.success(response);
       },
       error => {
-        console.log(error);
+        this.messageService.error(error);
       }
     );
   }
@@ -89,13 +94,22 @@ export class ProjectComponent implements OnInit {
   deleteProject(project: ProjectModel): void {
     this.projectHttpService.delete(project.id).subscribe(
       response => {
-        console.log(response);
         this.removeProject(project);
+        this.messageService.success(response);
       },
       error => {
-        console.log(error);
+        this.messageService.error(error);
       }
     );
+  }
+
+  saveProject(project: ProjectModel) {
+    const index = this.projects.findIndex(element => element.id === project.id);
+    if (index === -1) {
+      this.projects.push(project);
+    } else {
+      this.projects[index] = project;
+    }
   }
 
   removeProject(project: ProjectModel) {
@@ -106,8 +120,17 @@ export class ProjectComponent implements OnInit {
     this.formProject.patchValue(project);
   }
 
-  onSubmit() {
-    console.log('onSubmit');
+  onSubmit(project: ProjectModel) {
+    if (this.formProject.valid) {
+      if (project.id) {
+        this.updateProject(project);
+      } else {
+        this.storeProject(project);
+      }
+      this.formProject.reset();
+    } else {
+      this.formProject.markAllAsTouched();
+    }
   }
 
   get idField() {
@@ -116,6 +139,22 @@ export class ProjectComponent implements OnInit {
 
   get codeField() {
     return this.formProject.controls['code'];
+  }
+
+  get descriptionField() {
+    return this.formProject.controls['description'];
+  }
+
+  get dateField() {
+    return this.formProject.controls['date'];
+  }
+
+  get approvedField() {
+    return this.formProject.controls['approved'];
+  }
+
+  get titleField() {
+    return this.formProject.controls['title'];
   }
 
   changeTheme(theme: string) {
