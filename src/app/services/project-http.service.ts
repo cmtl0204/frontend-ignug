@@ -12,15 +12,14 @@ import {ProjectModel} from '../models';
 })
 
 export class ProjectHttpService {
-  API_URL_PRIVATE: string = environment.API_URL_PRIVATE;
-  API_URL_PUBLIC: string = environment.API_URL_PUBLIC;
+  API_URL: string = environment.API_URL;
 
   constructor(private httpClient: HttpClient) {
 
   }
 
   getAll(): Observable<ServerResponse> {
-    const url = this.API_URL_PRIVATE + '/projects';
+    const url = this.API_URL + '/projects';
     return this.httpClient.get<ServerResponse>(url)
       .pipe(
         map(response => response),
@@ -29,7 +28,7 @@ export class ProjectHttpService {
   }
 
   getOne(id: number): Observable<ServerResponse> {
-    const url = this.API_URL_PRIVATE + '/projects/' + id;
+    const url = this.API_URL + '/projects/' + id;
 
     return this.httpClient.get<ServerResponse>(url)
       .pipe(
@@ -39,7 +38,7 @@ export class ProjectHttpService {
   }
 
   store(project: ProjectModel): Observable<ServerResponse> {
-    const url = this.API_URL_PRIVATE + '/projects';
+    const url = this.API_URL + '/projects';
     return this.httpClient.post<ServerResponse>(url, project)
       .pipe(
         map(response => response),
@@ -48,7 +47,7 @@ export class ProjectHttpService {
   }
 
   update(id: number | undefined, project: ProjectModel): Observable<ServerResponse> {
-    const url = this.API_URL_PRIVATE + '/projects/' + id;
+    const url = this.API_URL + '/projects/' + id;
     return this.httpClient.put<ServerResponse>(url, project)
       .pipe(
         map(response => response),
@@ -57,7 +56,7 @@ export class ProjectHttpService {
   }
 
   delete(id: number | undefined): Observable<ServerResponse> {
-    const url = this.API_URL_PRIVATE + '/projects/' + id;
+    const url = this.API_URL + '/projects/' + id;
     return this.httpClient.delete<ServerResponse>(url)
       .pipe(
         map(response => response),
@@ -66,7 +65,7 @@ export class ProjectHttpService {
   }
 
   changeState(id: number, project: ProjectModel): Observable<ServerResponse> {
-    const url = this.API_URL_PRIVATE + '/project/' + id + '/state';
+    const url = this.API_URL + '/project/' + id + '/state';
     return this.httpClient.patch<ServerResponse>(url, project)
       .pipe(
         map(response => response),

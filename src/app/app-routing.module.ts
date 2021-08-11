@@ -4,6 +4,7 @@ import {ProjectComponent} from './project/project.component';
 import {AuthorComponent} from './author/author.component';
 import {NotFoundComponent} from './not-found/not-found.component';
 import {MainComponent} from './main/main.component';
+import {LoginComponent} from './login/login.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'not-found',
     component: NotFoundComponent
+  },
+  {
+    path: 'login',
+    component: LoginComponent
   },
   {
     path: '**',

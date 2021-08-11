@@ -1,6 +1,7 @@
 export interface ServerResponse {
   data: any;
   msg?: Message;
+  token?: string;
   current_page?: number;
   last_page?: number;
   total?: number;

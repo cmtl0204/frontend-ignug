@@ -23,6 +23,7 @@ import {NotFoundComponent} from './not-found/not-found.component';
 import {MainComponent} from './main/main.component';
 import {AccessDeniedComponent} from './access-denied/access-denied.component';
 import {UnderMaintenanceComponent} from './under-maintenance/under-maintenance.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import {UnderMaintenanceComponent} from './under-maintenance/under-maintenance.c
     NotFoundComponent,
     MainComponent,
     AccessDeniedComponent,
-    UnderMaintenanceComponent
+    UnderMaintenanceComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

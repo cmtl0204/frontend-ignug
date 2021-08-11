@@ -1,0 +1,8 @@
+<form [formGroup]="formLogin" (ngSubmit)="onSubmit()">
+  <label for="username">Usuario:</label>
+  <input pInputText id="username" formControlName="username">
+  <label for="password">Contraseña:</label>
+  <input pInputText id="password" formControlName="password">
+  <button pButton type="submit" id="btnSubmit" label="Ingresar" icon="pi pi-sign-in"></button>
+</form>
+
