@@ -19,8 +19,9 @@ export class AuthHttpService {
   }
 
   login(credentials: LoginModel): Observable<ServerResponse> {
+    console.log(credentials);
     const url = this.API_URL + '/auth/login';
-    return this.httpClient.post<ServerResponse>(url, credentials)
+    return this.httpClient.post<ServerResponse>(url,credentials)
       .pipe(
         map(response => response),
         catchError(Handler.render)

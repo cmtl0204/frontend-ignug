@@ -1,6 +1,6 @@
 export interface ServerResponse {
   data: any;
-  msg?: Message;
+  msg?: Msg;
   token?: string;
   current_page?: number;
   last_page?: number;
@@ -9,7 +9,7 @@ export interface ServerResponse {
   from?: number;
 }
 
-interface Message {
+interface Msg {
   summary: string;
   detail: string;
   code: string;

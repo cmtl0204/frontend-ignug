@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
     return this.formBuilder.group({
       username: [null, [Validators.required]],
       password: [null, [Validators.required]],
-      deviceName: ['MI PC', [Validators.required]],
+      deviceName: ['MiPC', [Validators.required]],
     });
   }
 
@@ -36,7 +36,12 @@ export class LoginComponent implements OnInit {
     return this.formLogin.controls['password'];
   }
 
+  get deviceNameField() {
+    return this.formLogin.controls['deviceName'];
+  }
+
   onSubmit() {
+    console.log(this.formLogin);
     if (this.formLogin.valid) {
       this.login();
     } else {
@@ -47,7 +52,7 @@ export class LoginComponent implements OnInit {
   login() {
     this.authHttpService.login(this.formLogin.value).subscribe(
       response => {
-        localStorage.setItem('token', JSON.stringify(response.token));
+        localStorage.setItem('token', JSON.stringify(response.msg?.summary));
         this.messageService.success(response);
       }, error => {
         this.messageService.error(error);
