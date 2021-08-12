@@ -3,11 +3,14 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "frontend-lopez-tamayo": {
+    "frontend-ignug": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
           "strict": true
+        },
+        "@schematics/angular:component": {
+          "styleext": "scss"
         }
       },
       "root": "",
@@ -17,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/frontend-lopez-tamayo",
+            "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -27,7 +30,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
           },
@@ -68,10 +71,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "frontend-lopez-tamayo:build:production"
+              "browserTarget": "frontend-ignug:build:production"
             },
             "development": {
-              "browserTarget": "frontend-lopez-tamayo:build:development"
+              "browserTarget": "frontend-ignug:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -79,7 +82,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "frontend-lopez-tamayo:build"
+            "browserTarget": "frontend-ignug:build"
           }
         },
         "test": {
@@ -94,7 +97,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
           }
@@ -102,5 +105,5 @@
       }
     }
   },
-  "defaultProject": "frontend-lopez-tamayo"
+  "defaultProject": "frontend-ignug"
 }

@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import Swal from 'sweetalert2';
-import {ServerResponse} from '../models/server-response';
+import {PaginatorModel, ServerResponse} from '../models';
 import {HttpErrorResponse} from '@angular/common/http';
+import {AbstractControl, Validators} from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -57,5 +58,57 @@ export class MessageService {
       text: serverResponse?.msg?.detail,
       icon: 'info'
     });
+  }
+
+  questionDelete({title = '¿Está seguro de eliminar?', text = 'No podrá recuperar esta información!'}) {
+    return Swal.fire({
+      title,
+      text,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: '<i class="pi pi-trash"> Si, eliminar</i>'
+    });
+  }
+
+  get fieldRequired(): string {
+    return 'El campo es obligatorio.';
+  }
+
+  get fieldEmail(): string {
+    return 'Correo electrónico no válido.';
+  }
+
+  get fieldWeb(): string {
+    return 'Página web no válida.';
+  }
+
+  get fieldNumber(): string {
+    return 'El campo solo debe contener numeros.';
+  }
+
+  fieldMinLength(field: AbstractControl) {
+    return `Debe contener como mínimo de caracteres es ${field.errors?.minlength.requiredLength}.`;
+  }
+
+  fieldMaxLength(field: AbstractControl): string {
+    return `Debe contener como máximo de caracteres es ${field.errors?.maxlength.requiredLength}.`;
+  }
+
+  fieldMin(field: AbstractControl) {
+    return `Numero mínimo permitido es ${field.errors?.min.requiredMin}.`;
+  }
+
+  fieldMax(field: AbstractControl): string {
+    return `Numero maximo permitido es ${field.errors?.max.requiredMax}.`;
+  }
+
+  get fieldNoPasswordMatch(): string {
+    return 'Las contraseñas no coinciden.';
+  }
+
+  paginatorTotalRegisters(paginator: PaginatorModel): string {
+    return 'En total hay ' + (paginator?.total ? paginator.total : 0) + ' registros.';
   }
 }

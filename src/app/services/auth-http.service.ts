@@ -5,7 +5,7 @@ import {catchError, map} from 'rxjs/operators';
 import {ServerResponse} from '../models/server-response';
 import {Handler} from '../exceptions/handler';
 import {environment} from '../../environments/environment';
-import {LoginModel, ProjectModel} from '../models';
+import {LoginModel} from '../models';
 
 @Injectable({
   providedIn: 'root'

@@ -1,35 +1,32 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {ProjectComponent} from './project/project.component';
-import {AuthorComponent} from './author/author.component';
-import {NotFoundComponent} from './not-found/not-found.component';
-import {MainComponent} from './main/main.component';
-import {LoginComponent} from './login/login.component';
+import {MainComponent} from './layout/main/main.component';
+import {BlankComponent} from './layout/blank/blank.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: MainComponent
+    component: MainComponent,
+    children: [
+      {
+        path: 'user-administration',
+        loadChildren: () => import('./pages/user-administration/user-administration.module').then(m => m.UserAdministrationModule)
+      }
+    ]
   },
   {
-    path: 'projects',
-    component: ProjectComponent
+    path: 'authentication',
+    component: BlankComponent,
+    loadChildren: () => import('./pages/authentication/authentication.module').then(m => m.AuthenticationModule)
   },
   {
-    path: 'authors',
-    component: AuthorComponent
-  },
-  {
-    path: 'not-found',
-    component: NotFoundComponent
-  },
-  {
-    path: 'login',
-    component: LoginComponent
+    path: 'common',
+    component: BlankComponent,
+    loadChildren: () => import('./pages/common/common.module').then(m => m.CommonModule)
   },
   {
     path: '**',
-    redirectTo: '/not-found'
+    redirectTo: 'common/not-found'
   },
 ];
 
