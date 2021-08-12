@@ -13,6 +13,7 @@ import {MenuItem} from 'primeng/api';
 export class UserAdministrationFormComponent implements OnInit {
   @Input() user: UserModel = {};
   @Output() userNewOrUpdate = new EventEmitter<UserModel>();
+
   formUser: FormGroup;
   automaticPassword: FormControl;
   progressBar: boolean = false;
@@ -38,6 +39,10 @@ export class UserAdministrationFormComponent implements OnInit {
     return this.formBuilder.group({
       id: [null],
       identificationType: [null, [Validators.required]],
+      // identificationType: this.formBuilder.group({
+      //   name: [null, [Validators.required]],
+      //   description: [null]
+      // }),
       username: [null, [Validators.required]],
       name: [null, [Validators.required]],
       lastname: [null, [Validators.required]],
@@ -160,6 +165,7 @@ export class UserAdministrationFormComponent implements OnInit {
   get passwordChangeField() {
     return this.formUser.controls['passwordChange'];
   }
+
   get phonesField() {
     return this.formUser.controls['phones'] as FormArray;
   }

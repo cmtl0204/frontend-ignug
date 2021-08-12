@@ -13,7 +13,7 @@
               class="p-button-success p-button-rounded" icon="pi pi-user-plus"
               (click)="showForm()"></button>
       <button pButton pRipple type="button" label="Refrescar" class="p-button-rounded ml-2" icon="pi pi-refresh"
-              (click)="loadUsers.emit('load')"></button>
+              (click)="loadUsers.emit('loadUsers')"></button>
       <button *ngIf="selectedUsers?.length" pButton pRipple type="button" label="Eliminar seleccionados"
               class="p-button-danger p-button-rounded ml-2" icon="pi pi-trash"
               (click)="deleteUsers()"></button>
@@ -52,6 +52,7 @@
 
 <p-dialog header="Usuario" [(visible)]="dialogForm" [maximizable]="true">
   <app-user-administration-form *ngIf="dialogForm" [user]="selectedUser"
-                                (userNewOrUpdate)="saveUser($event)"></app-user-administration-form>
+                                (userNewOrUpdate)="saveUser($event)"
+  ></app-user-administration-form>
 </p-dialog>
 

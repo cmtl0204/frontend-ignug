@@ -22,13 +22,13 @@ export class AuthenticationInterceptor implements HttpInterceptor {
       // Cuando la aplicación o una ruta está en mantenimiento
       if (error.status === 503) {
         this.authService.removeLogin();
-        this.router.navigate(['/authentication/under-maintenance']);
+        this.router.navigate(['/common/under-maintenance']);
       }
 
       // Cuando el usuario no tiene permisos para acceder a la ruta solicitada y se encuentra logueado
       if ((error.status === 401 || error.status === 403 || error.status === 423) && this.authService.token) {
         this.authService.removeLogin();
-        this.router.navigate(['/authentication/access-denied']);
+        this.router.navigate(['/common/access-denied']);
       }
 
       // Cuando el usuario no tiene permisos para acceder a la ruta solicitada y no está logueado
@@ -39,6 +39,5 @@ export class AuthenticationInterceptor implements HttpInterceptor {
 
       return throwError(error);
     }));
-    ;
   }
 }

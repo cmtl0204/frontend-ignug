@@ -10,10 +10,10 @@ import {MessageService} from '../../../services/message.service';
   styleUrls: ['./user-administration-list.component.scss']
 })
 export class UserAdministrationListComponent implements OnInit {
-
   @Input() users: UserModel[] = [];
   @Input() loading: boolean = false;
   @Output() loadUsers = new EventEmitter<string>();
+
   selectedUsers: UserModel[] = [];
   selectedUser: UserModel = {};
   cols: any[];

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import {ServerResponse} from '../models/server-response';
@@ -29,7 +29,6 @@ export class UserAdministrationHttpService {
 
   getUser(id: number): Observable<ServerResponse> {
     const url = this.API_URL + '/users/' + id;
-
     return this.httpClient.get<ServerResponse>(url)
       .pipe(
         map(response => response),

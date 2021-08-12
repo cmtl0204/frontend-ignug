@@ -18,6 +18,7 @@ export class TokenInterceptor implements HttpInterceptor {
     console.log('interceptor token');
     const headers = new HttpHeaders()
       .append('Accept', 'application/json')
+      .append('Content-Type', 'application/json')
       .append('Authorization', 'Bearer ' + this.authService.token);
 
     return next.handle(request.clone({headers}));
