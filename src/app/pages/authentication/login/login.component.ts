@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthHttpService} from '../../../services/auth-http.service';
 import {MessageService} from '../../../services/message.service';
 import {AuthService} from '../../../services/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,8 @@ export class LoginComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
               private authHttpService: AuthHttpService,
               public messageService: MessageService,
-              private authService: AuthService) {
+              private authService: AuthService,
+              private router:Router) {
     this.formLogin = this.newFormLogin();
   }
 
@@ -54,10 +56,19 @@ export class LoginComponent implements OnInit {
   login() {
     this.authHttpService.login(this.formLogin.value).subscribe(
       response => {
-        this.authService.token = response.token;
         this.messageService.success(response);
+        this.authService.token = response.token;
+        this.authService.user = response.data.user;
+        this.authService.roles = response.data.roles;
+        this.authService.permissions = response.data.permissions;
+        this.redirect();
       }, error => {
+        this.authService.removeLogin();
         this.messageService.error(error);
       });
+  }
+
+  redirect(){
+    this.router.navigate(['/user-administration']);
   }
 }

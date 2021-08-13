@@ -81,4 +81,15 @@ export class UserAdministrationHttpService {
         catchError(Handler.render)
       );
   }
+
+  getLocations(type: string | undefined): Observable<ServerResponse> {
+    const params = new HttpParams().append('type', String(type));
+    const url = this.API_URL + '/locations';
+    return this.httpClient.get<ServerResponse>(url, {params})
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
 }
+

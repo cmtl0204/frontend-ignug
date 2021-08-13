@@ -16,6 +16,7 @@ import {DropdownModule} from 'primeng/dropdown';
 import {PasswordModule} from 'primeng/password';
 import {DividerModule} from 'primeng/divider';
 import {InputSwitchModule} from 'primeng/inputswitch';
+import {KeyFilterModule} from 'primeng/keyfilter';
 
 @NgModule({
   declarations: [
@@ -23,22 +24,23 @@ import {InputSwitchModule} from 'primeng/inputswitch';
     UserAdministrationListComponent,
     UserAdministrationFormComponent,
   ],
-  imports: [
-    CommonModule,
-    UserAdministrationRoutingModule,
-    TableModule,
-    SpeedDialModule,
-    RippleModule,
-    DialogModule,
-    DropdownModule,
-    ReactiveFormsModule,
-    InputTextModule,
-    InputSwitchModule,
-    ProgressBarModule,
-    SplitButtonModule,
-    PasswordModule,
-    DividerModule,
-  ]
+    imports: [
+        CommonModule,
+        UserAdministrationRoutingModule,
+        TableModule,
+        SpeedDialModule,
+        RippleModule,
+        DialogModule,
+        DropdownModule,
+        ReactiveFormsModule,
+        InputTextModule,
+        InputSwitchModule,
+        ProgressBarModule,
+        SplitButtonModule,
+        PasswordModule,
+        DividerModule,
+        KeyFilterModule,
+    ]
 })
 export class UserAdministrationModule {
 }

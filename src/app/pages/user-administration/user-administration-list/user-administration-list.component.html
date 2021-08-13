@@ -50,7 +50,7 @@
   </ng-template>
 </p-table>
 
-<p-dialog header="Usuario" [(visible)]="dialogForm" [maximizable]="true">
+<p-dialog header="Usuario" [(visible)]="dialogForm" [maximizable]="true" [modal]="true">
   <app-user-administration-form *ngIf="dialogForm" [user]="selectedUser"
                                 (userNewOrUpdate)="saveUser($event)"
   ></app-user-administration-form>

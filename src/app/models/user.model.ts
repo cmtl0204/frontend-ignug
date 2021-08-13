@@ -8,6 +8,7 @@ export interface UserModel {
   ethnicOrigin?: CatalogueModel;
   bloodType?: CatalogueModel;
   civilStatus?: CatalogueModel;
+  phones?: CatalogueModel[];
   avatar?: string;
   username?: string;
   lastname?: string;

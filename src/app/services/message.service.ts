@@ -3,6 +3,7 @@ import Swal from 'sweetalert2';
 import {PaginatorModel, ServerResponse} from '../models';
 import {HttpErrorResponse} from '@angular/common/http';
 import {AbstractControl, Validators} from '@angular/forms';
+import {LoginResponse} from '../models/login-response';
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +53,7 @@ export class MessageService {
     });
   }
 
-  success(serverResponse: ServerResponse | undefined) {
+  success(serverResponse: ServerResponse | LoginResponse | undefined) {
     return Swal.fire({
       title: serverResponse?.msg?.summary,
       text: serverResponse?.msg?.detail,

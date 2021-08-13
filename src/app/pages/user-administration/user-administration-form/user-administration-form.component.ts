@@ -4,6 +4,7 @@ import {CatalogueModel, UserModel} from '../../../models';
 import {UserAdministrationHttpService} from '../../../services/user-administration-http.service';
 import {MessageService} from '../../../services/message.service';
 import {MenuItem} from 'primeng/api';
+import {PhoneModel} from '../../../models/phone.model';
 
 @Component({
   selector: 'app-user-administration-form',
@@ -18,7 +19,9 @@ export class UserAdministrationFormComponent implements OnInit {
   automaticPassword: FormControl;
   progressBar: boolean = false;
   identificationTypes: CatalogueModel[] = [];
-  telephoneOperators: CatalogueModel[] = [];
+  phoneOperators: CatalogueModel[] = [];
+  phoneTypes: CatalogueModel[] = [];
+  phoneLocations: CatalogueModel[] = [];
 
   constructor(private formBuilder: FormBuilder,
               private userAdministrationHttpService: UserAdministrationHttpService,
@@ -29,10 +32,20 @@ export class UserAdministrationFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.formUser.patchValue(this.user);
+    if (this.user.phones?.length) {
+      this.phonesField.clear();
+    }
+    this.user?.phones?.forEach(phone => {
+      this.addPhone(phone);
+    });
+
     if (this.idField.value) {
-      this.passwordField.setValidators([]);
+      this.passwordField.clearValidators();
     }
     this.getIdentificationTypes();
+    this.getPhoneOperators();
+    this.getPhoneTypes();
+    this.getPhoneLocations();
   }
 
   newFormUser() {
@@ -49,15 +62,18 @@ export class UserAdministrationFormComponent implements OnInit {
       email: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required, Validators.minLength(8)]],
       passwordChange: [false],
-      phones: this.formBuilder.array([
-        this.formBuilder.group({
-          operator: [null, [Validators.required]],
-          type: [null, [Validators.required]],
-          location: [null, [Validators.required]],
-          number: [null, [Validators.required]],
-          main: [false],
-        })
-      ]),
+      phones: this.formBuilder.array([this.newFormPhone()]),
+    });
+  }
+
+  newFormPhone() {
+    return this.formBuilder.group({
+      id: [null],
+      operator: [null, [Validators.required]],
+      type: [null],
+      location: [null],
+      number: [null, [Validators.required]],
+      main: [false],
     });
   }
 
@@ -71,10 +87,30 @@ export class UserAdministrationFormComponent implements OnInit {
     );
   }
 
-  getTelephoneOperators() {
-    this.userAdministrationHttpService.getCatalogues('TELEPHONE_OPERATOR').subscribe(
+  getPhoneOperators() {
+    this.userAdministrationHttpService.getCatalogues('PHONE_OPERATOR').subscribe(
       response => {
-        this.telephoneOperators = response.data;
+        this.phoneOperators = response.data;
+      }, error => {
+        this.messageService.error(error);
+      }
+    );
+  }
+
+  getPhoneTypes() {
+    this.userAdministrationHttpService.getCatalogues('PHONE_TYPE').subscribe(
+      response => {
+        this.phoneTypes = response.data;
+      }, error => {
+        this.messageService.error(error);
+      }
+    );
+  }
+
+  getPhoneLocations() {
+    this.userAdministrationHttpService.getLocations('COUNTRY').subscribe(
+      response => {
+        this.phoneLocations = response.data;
       }, error => {
         this.messageService.error(error);
       }
@@ -132,6 +168,16 @@ export class UserAdministrationFormComponent implements OnInit {
     if (event.checked) {
       this.passwordField.setValue(Math.random().toString(36).slice(-8));
     }
+  }
+
+  addPhone(data: PhoneModel = {}) {
+    const formPhone = this.newFormPhone();
+    formPhone.patchValue(data);
+    this.phonesField.push(formPhone);
+  }
+
+  removePhone(index: number = -1) {
+    this.phonesField.removeAt(index);
   }
 
   get idField() {
