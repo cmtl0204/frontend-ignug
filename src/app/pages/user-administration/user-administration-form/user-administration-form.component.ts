@@ -114,7 +114,6 @@ export class UserAdministrationFormComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.formUser);
     if (this.formUser.valid) {
       if (this.idField.value) {
         this.updateUser(this.formUser.value);
@@ -127,7 +126,6 @@ export class UserAdministrationFormComponent implements OnInit {
   }
 
   storeUser(user: UserModel): void {
-
     this.progressBar = true;
     this.userAdministrationHttpService.storeUser(user).subscribe(
       response => {

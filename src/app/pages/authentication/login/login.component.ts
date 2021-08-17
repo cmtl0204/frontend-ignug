@@ -60,13 +60,8 @@ export class LoginComponent implements OnInit {
     this.authHttpService.login(this.formLogin.value).subscribe(
       response => {
         this.messageService.success(response);
-        this.authService.token = response.token;
-        this.authService.user = response.data.user;
-        this.authService.roles = response.data.roles;
-        this.authService.permissions = response.data.permissions;
         this.redirect();
       }, error => {
-        this.authService.removeLogin();
         this.messageService.error(error);
       });
   }
