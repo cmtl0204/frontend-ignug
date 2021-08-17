@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {MainComponent} from './layout/main/main.component';
 import {BlankComponent} from './layout/blank/blank.component';
+import {RoleGuard} from './shared/guards/role.guard';
 
 const routes: Routes = [
   {
@@ -10,7 +11,11 @@ const routes: Routes = [
     children: [
       {
         path: 'user-administration',
-        loadChildren: () => import('./pages/user-administration/user-administration.module').then(m => m.UserAdministrationModule)
+        loadChildren: () => import('./pages/user-administration/user-administration.module').then(m => m.UserAdministrationModule),
+        data: {
+          roles: 'client|admin|guest'
+        },
+        canActivate: [RoleGuard]
       }
     ]
   },

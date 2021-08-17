@@ -4,7 +4,6 @@ import {NotFoundComponent} from './not-found/not-found.component';
 import {UnderMaintenanceComponent} from './under-maintenance/under-maintenance.component';
 import {AccessDeniedComponent} from './access-denied/access-denied.component';
 
-
 const routes: Routes = [
   {
     path: 'access-denied', component: AccessDeniedComponent

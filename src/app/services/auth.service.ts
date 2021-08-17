@@ -36,7 +36,7 @@ export class AuthService {
     localStorage.setItem('auth', JSON.stringify(user));
   }
 
-  get permissions(): PermissionModel[] | null {
+  get permissions(): PermissionModel[] {
     return JSON.parse(String(localStorage.getItem('permissions')));
   }
 
@@ -52,7 +52,7 @@ export class AuthService {
     localStorage.setItem('role', JSON.stringify(role));
   }
 
-  get roles(): RoleModel[] | null {
+  get roles(): RoleModel[] {
     return JSON.parse(String(localStorage.getItem('roles')));
   }
 

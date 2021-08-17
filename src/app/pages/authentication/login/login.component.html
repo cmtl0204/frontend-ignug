@@ -12,5 +12,5 @@
   <div *ngIf="deviceNameField.invalid && (deviceNameField.touched || deviceNameField.dirty)">
     falta el campo
   </div>
-  <button pButton type="submit" id="btnSubmit" label="Ingresar" icon="pi pi-sign-in"></button>
+  <button pButton type="submit" id="btnSubmit" label="Ingresar" [icon]="primeIcons.ARROW_CIRCLE_RIGHT"></button>
 </form>

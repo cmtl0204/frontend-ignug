@@ -17,12 +17,15 @@
             </div>
           </ng-template>
         </p-dropdown>
-        <div
-          *ngIf="identificationTypeField.invalid && (identificationTypeField.touched || identificationTypeField.dirty)">
-          <small *ngIf="identificationTypeField.errors?.required" id="identification-type-help-1" class="p-error">
-            {{messageService.fieldRequired}}
-          </small>
-        </div>
+        <!--        <div-->
+        <!--          *ngIf="identificationTypeField.invalid && (identificationTypeField.touched || identificationTypeField.dirty)">-->
+        <!--          <small *ngIf="identificationTypeField.errors?.required" id="identification-type-help-1" class="p-error">-->
+        <!--            {{messageService.fieldRequired}}-->
+        <!--          </small>-->
+        <!--        </div>-->
+
+<!--        <span *appErrorMessage="identificationTypeField"></span>-->
+        <span *appErrorMessage="identificationTypeField">asd</span>
       </div>
       <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
         <label for="username">Número de documento:</label>
@@ -110,7 +113,6 @@
             <p-dropdown [id]="'phoneOperators'+i" [options]="phoneOperators"
                         dataKey="id"
                         formControlName="operator"
-
                         [filter]="true" filterBy="name" placeholder="Operadora">
               <ng-template pTemplate="selectedItem">
                 <div class="country-item country-item-value"
@@ -128,6 +130,12 @@
                 </div>
               </ng-template>
             </p-dropdown>
+            <div *ngIf="phonesField.invalid && (phonesField.touched || phonesField.dirty)">
+              <small *ngIf="phonesField.controls[i].get('operator')?.errors?.required" id="operator-help-1"
+                     class="p-error">
+                {{messageService.fieldRequired}}
+              </small>
+            </div>
           </div>
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
             <p-dropdown [id]="'phoneTypes'+i" [options]="phoneTypes"
@@ -150,6 +158,11 @@
                 </div>
               </ng-template>
             </p-dropdown>
+            <div *ngIf="phonesField.invalid && (phonesField.touched || phonesField.dirty)">
+              <small *ngIf="phonesField.controls[i].get('type')?.errors?.required" id="type-help-1" class="p-error">
+                {{messageService.fieldRequired}}
+              </small>
+            </div>
           </div>
         </div>
         <div class="formgrid grid">
@@ -176,18 +189,24 @@
                 </div>
               </ng-template>
             </p-dropdown>
+            <div *ngIf="phonesField.invalid && (phonesField.touched || phonesField.dirty)">
+              <small *ngIf="phonesField.controls[i].get('location')?.errors?.required" id="location-help-1"
+                     class="p-error">
+                {{messageService.fieldRequired}}
+              </small>
+            </div>
           </div>
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-            <input pInputText [id]="'number'+i" formControlName="number" pKeyFilter="int"  placeholder="Ej. 987654321">
+            <input pInputText [id]="'number'+i" formControlName="number" pKeyFilter="int" placeholder="Ej. 987654321">
+            <div *ngIf="phonesField.invalid && (phonesField.touched || phonesField.dirty)">
+              <small *ngIf="phonesField.controls[i].get('number')?.errors?.required" id="number-help-1" class="p-error">
+                {{messageService.fieldRequired}}
+              </small>
+            </div>
           </div>
           <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
             <button pButton pRipple type="button" (click)="removePhone(i)" iconPos="right" icon="pi pi-trash"
                     class="p-button-danger p-button-rounded"></button>
-          </div>
-          <div *ngIf="phonesField.errors && (phonesField.touched || phonesField.dirty)">
-            <small *ngIf="phonesField.controls[i].errors?.required" id="phone-help-1" class="p-error">
-              {{messageService.fieldRequired}}
-            </small>
           </div>
         </div>
         <p-divider *ngIf="i<phonesField.length-1"></p-divider>

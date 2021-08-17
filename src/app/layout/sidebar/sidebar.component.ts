@@ -1,4 +1,7 @@
 import {Component, OnInit} from '@angular/core';
+import {PanelMenuModule} from 'primeng/panelmenu';
+import {MenuItem} from 'primeng/api';
+import {MenuHttpService} from '../../services/menu-http.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -7,11 +10,23 @@ import {Component, OnInit} from '@angular/core';
 })
 export class SidebarComponent implements OnInit {
   display = false;
+  items: MenuItem[] = [];
 
-  constructor() {
+  constructor(private menuHttpService: MenuHttpService) {
   }
 
   ngOnInit(): void {
+    this.getMenus();
+  }
+
+  getMenus() {
+    this.menuHttpService.getMenus().subscribe(
+      response => {
+        this.items = response.data;
+      }, error => {
+        console.log(error);
+      }
+    )
   }
 
 }

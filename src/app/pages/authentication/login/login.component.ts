@@ -4,6 +4,7 @@ import {AuthHttpService} from '../../../services/auth-http.service';
 import {MessageService} from '../../../services/message.service';
 import {AuthService} from '../../../services/auth.service';
 import {Router} from '@angular/router';
+import {PrimeIcons} from 'primeng/api';
 
 @Component({
   selector: 'app-login',
@@ -12,16 +13,18 @@ import {Router} from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   formLogin: FormGroup;
+  primeIcons = PrimeIcons;
 
   constructor(private formBuilder: FormBuilder,
               private authHttpService: AuthHttpService,
               public messageService: MessageService,
               private authService: AuthService,
-              private router:Router) {
+              private router: Router) {
     this.formLogin = this.newFormLogin();
   }
 
   ngOnInit(): void {
+
   }
 
   newFormLogin(): FormGroup {
@@ -68,7 +71,7 @@ export class LoginComponent implements OnInit {
       });
   }
 
-  redirect(){
+  redirect() {
     this.router.navigate(['/user-administration']);
   }
 }

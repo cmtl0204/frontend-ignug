@@ -17,7 +17,6 @@ export class AuthenticationInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    console.log('intercetpor auth');
     return next.handle(request).pipe(catchError(error => {
       // Cuando la aplicación o una ruta está en mantenimiento
       if (error.status === 503) {

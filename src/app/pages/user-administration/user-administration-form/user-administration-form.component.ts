@@ -52,16 +52,12 @@ export class UserAdministrationFormComponent implements OnInit {
     return this.formBuilder.group({
       id: [null],
       identificationType: [null, [Validators.required]],
-      // identificationType: this.formBuilder.group({
-      //   name: [null, [Validators.required]],
-      //   description: [null]
-      // }),
       username: [null, [Validators.required]],
       name: [null, [Validators.required]],
       lastname: [null, [Validators.required]],
       email: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required, Validators.minLength(8)]],
-      passwordChange: [false],
+      passwordChange: [true],
       phones: this.formBuilder.array([this.newFormPhone()]),
     });
   }
@@ -70,8 +66,8 @@ export class UserAdministrationFormComponent implements OnInit {
     return this.formBuilder.group({
       id: [null],
       operator: [null, [Validators.required]],
-      type: [null],
-      location: [null],
+      type: [null, [Validators.required]],
+      location: [null, [Validators.required]],
       number: [null, [Validators.required]],
       main: [false],
     });

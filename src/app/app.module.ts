@@ -27,40 +27,42 @@ import {BlankComponent} from './layout/blank/blank.component';
 import {SidebarComponent} from './layout/sidebar/sidebar.component';
 import {TopbarComponent} from './layout/topbar/topbar.component';
 import {FooterComponent} from './layout/footer/footer.component';
+import {PanelMenuModule} from 'primeng/panelmenu';
+import {RoleGuard} from './shared/guards/role.guard';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    BlankComponent,
-    MainComponent,
-    SidebarComponent,
-    TopbarComponent,
-    FooterComponent,
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    AppRoutingModule,
-    HttpClientModule,
-    AvatarModule,
-    ButtonModule,
-    CalendarModule,
-    CardModule,
-    DropdownModule,
-    InputSwitchModule,
-    InputTextModule,
-    TableModule,
-    SidebarModule,
-    RippleModule,
-    MenubarModule,
-
-  ],
-  providers: [
-    httpInterceptorProviders
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        BlankComponent,
+        MainComponent,
+        SidebarComponent,
+        TopbarComponent,
+        FooterComponent,
+    ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AppRoutingModule,
+        HttpClientModule,
+        AvatarModule,
+        ButtonModule,
+        CalendarModule,
+        CardModule,
+        DropdownModule,
+        InputSwitchModule,
+        InputTextModule,
+        TableModule,
+        SidebarModule,
+        RippleModule,
+        MenubarModule,
+        PanelMenuModule,
+    ],
+    providers: [
+        httpInterceptorProviders,RoleGuard
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }

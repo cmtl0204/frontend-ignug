@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {MenuItem} from 'primeng/api';
+import {MenuHttpService} from '../../services/menu-http.service';
 
 @Component({
   selector: 'app-topbar',
@@ -10,14 +11,20 @@ export class TopbarComponent implements OnInit {
   display = false;
   items: MenuItem[] = [];
 
-  constructor() {
-    this.items = [
-
-    ];
+  constructor(private menuHttpService: MenuHttpService) {
   }
 
-    ngOnInit()
-  :
-    void {}
-
+  ngOnInit():void {
+    this.getMenus();
   }
+
+  getMenus() {
+    this.menuHttpService.getMenus().subscribe(
+      response => {
+        this.items = response.data;
+      }, error => {
+        console.log(error);
+      }
+    )
+  }
+}

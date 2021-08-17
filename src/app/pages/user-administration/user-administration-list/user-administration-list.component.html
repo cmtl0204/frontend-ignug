@@ -1,12 +1,12 @@
-<p-table
-  [value]="users"
-  [columns]="cols"
-  styleClass="p-datatable-striped"
-  [lazy]="true"
-  [loading]="loading"
-  [(selection)]="selectedUsers"
-  dataKey="id"
-  [responsive]="true">
+<p-table *appRolesPermissions="['role:guest|client|admin','permission:a|s|view-users']"
+         [value]="users"
+         [columns]="cols"
+         styleClass="p-datatable-striped"
+         [lazy]="true"
+         [loading]="loading"
+         [(selection)]="selectedUsers"
+         dataKey="id"
+         [responsive]="true">
   <ng-template pTemplate="caption">
     <div class="p-d-flex p-ai-center p-jc-between">
       <button pButton pRipple type="button" label="Crear"
