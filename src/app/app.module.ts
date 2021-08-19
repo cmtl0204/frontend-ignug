@@ -22,14 +22,10 @@ import {TableModule} from 'primeng/table';
 
 // Components
 import {AppComponent} from './app.component';
-import {MainComponent} from './layout/main/main.component';
-import {BlankComponent} from './layout/blank/blank.component';
-import {SidebarComponent} from './layout/sidebar/sidebar.component';
-import {TopbarComponent} from './layout/topbar/topbar.component';
-import {FooterComponent} from './layout/footer/footer.component';
+import {FooterComponent,TopbarComponent,SidebarComponent,BlankComponent,MainComponent} from '@layout/index';
 import {PanelMenuModule} from 'primeng/panelmenu';
-import {RoleGuard} from './shared/guards/role.guard';
 import {LocationStrategy, PathLocationStrategy} from '@angular/common';
+import {SharedModule} from '@shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -59,6 +55,7 @@ import {LocationStrategy, PathLocationStrategy} from '@angular/common';
     RippleModule,
     MenubarModule,
     PanelMenuModule,
+    SharedModule,
   ],
   providers: [
     {

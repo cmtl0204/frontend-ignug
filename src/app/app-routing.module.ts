@@ -1,9 +1,9 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {MainComponent} from './layout/main/main.component';
-import {BlankComponent} from './layout/blank/blank.component';
-import {RoleGuard} from './shared/guards/role.guard';
-import {RolesEnum} from './shared/enums/roles.enum';
+import {MainComponent, BlankComponent} from '@layout/index';
+import {RoleGuard} from '@shared/guards/role.guard';
+import {RolesEnum} from '@shared/enums/roles.enum';
+import {TokenGuard} from '@shared/guards/token.guard';
 
 const routes: Routes = [
   {
@@ -11,12 +11,16 @@ const routes: Routes = [
     component: MainComponent,
     children: [
       {
+        path: 'web',
+        component:BlankComponent
+      },
+      {
         path: 'user-administration',
         loadChildren: () => import('./pages/user-administration/user-administration.module').then(m => m.UserAdministrationModule),
         data: {
           roles: [RolesEnum.ADMIN, RolesEnum.GUEST]
         },
-        canActivate: [RoleGuard]
+        canActivate: [TokenGuard, RoleGuard]
       }
     ]
   },

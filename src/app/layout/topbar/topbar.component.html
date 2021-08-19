@@ -1,39 +1,59 @@
-<nav *ngIf="showNav" class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">
-      <img src="assets/images/logo.png" alt="" width="50" height="50" class="d-inline-block align-text-top">
-      Ignug
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+<div class="container-fluid">
+  <nav class="navbar navbar-expand-md navbar-light border-bottom-3 border-primary" style="background-color: #e3f2fd;">
+    <div class="container-fluid">
+      <a href="#" class="navbar-brand">
+        <img src="assets/images/topbar/logo-2.png" alt="" width="60" height="60">
+        IGNUG
+      </a>
+      <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#topbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+    <div id="topbar" class="collapse navbar-collapse">
+      <ul class="navbar-nav ms-3">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown
+          <a class="nav-link" href="#">
+            <i class="bi bi-people-fill" style="font-size: 2rem; color: cornflowerblue;"></i>
+            Profesionales
           </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
         </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+        <li class="nav-item ml-8">
+          <a class="nav-link" href="#">
+            <i class="bi bi-briefcase-fill" style="font-size: 2rem; color: cornflowerblue;"></i>
+            Ofertas
+          </a>
+        </li>
+        <li class="nav-item ml-8">
+          <a class="nav-link" href="#"><i class="bi bi-building" style="font-size: 2rem; color: cornflowerblue;"></i>
+            Registro Empresas
+          </a>
+        </li>
+        <li class="nav-item ml-8">
+          <a class="nav-link" href="#">
+            <i class="bi bi-person-plus-fill" style="font-size: 2rem; color: cornflowerblue;"></i>
+            Registro Profesionales
+          </a>
+        </li>
+<!--        <li class="nav-item dropdown">-->
+<!--          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Opciones</a>-->
+<!--          <ul class="dropdown-menu">-->
+<!--            <li>-->
+<!--              <a class="dropdown-item" href="#">Prueba</a>-->
+<!--            </li>-->
+<!--          </ul>-->
+<!--        </li>-->
+      </ul>
+      <ul class="navbar-nav ms-3">
+        <li *appToken="'unauthenticated'" class="nav-item">
+          <a class="nav-link text-nowrap" href="">
+            <i class="bi bi-box-arrow-in-right" style="font-size: 2rem; color: cornflowerblue;"></i>
+            Iniciar Sesión
+          </a>
         </li>
       </ul>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
+      <form *appToken="'authenticated'" class="d-flex">
+        <p-avatar image="assets/images/anonymous.png" styleClass="p-mr-2" size="xlarge" shape="circle"></p-avatar>
       </form>
     </div>
-  </div>
-</nav>
+  </nav>
+</div>

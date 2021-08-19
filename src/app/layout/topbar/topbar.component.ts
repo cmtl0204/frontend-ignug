@@ -16,7 +16,7 @@ export class TopbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getMenus();
+    // this.getMenus();
   }
 
   getMenus() {
