@@ -31,7 +31,7 @@ export class UserAdministrationFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.formUser.patchValue(this.user);
+    this.formUser.reset(this.user);
     if (this.user.phones?.length) {
       this.phonesField.clear();
     }
@@ -58,7 +58,7 @@ export class UserAdministrationFormComponent implements OnInit {
       email: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required, Validators.minLength(8)]],
       passwordChange: [true],
-      phones: this.formBuilder.array([this.newFormPhone()]),
+      phones: this.formBuilder.array([this.newFormPhone()], Validators.required),
     });
   }
 
@@ -170,8 +170,21 @@ export class UserAdministrationFormComponent implements OnInit {
     this.phonesField.push(formPhone);
   }
 
-  removePhone(index: number = -1) {
-    this.phonesField.removeAt(index);
+  removePhone(index: number) {
+    if (this.phonesField.length > 1)
+      this.phonesField.removeAt(index);
+    else
+      this.phonesField.markAllAsTouched();
+  }
+
+  invalidFieldFormUser(field: string): boolean | undefined {
+    return this.formUser.get(field)?.invalid &&
+      (this.formUser.get(field)?.touched || this.formUser.get(field)?.dirty);
+  }
+
+  invalidFieldFormPhones(index: number, field: string): boolean | undefined {
+    return this.phonesField.controls[index].get(field)?.invalid &&
+      (this.phonesField.controls[index].get(field)?.touched || this.phonesField.controls[index].get(field)?.dirty);
   }
 
   get idField() {

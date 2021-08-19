@@ -3,6 +3,7 @@ import {UserModel} from '../../../models';
 import {MenuItem} from 'primeng/api';
 import {UserAdministrationHttpService} from '../../../services/user-administration-http.service';
 import {MessageService} from '../../../services/message.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-user-administration-list',
@@ -21,7 +22,8 @@ export class UserAdministrationListComponent implements OnInit {
   dialogForm: boolean = false;
 
   constructor(private userAdministrationHttpService: UserAdministrationHttpService,
-              public messageService: MessageService) {
+              public messageService: MessageService,
+              private router:Router) {
     this.cols = [
       {field: 'username', header: 'Número de documento'},
       {field: 'name', header: 'Nombres'},
@@ -45,7 +47,7 @@ export class UserAdministrationListComponent implements OnInit {
         }
       },
       {
-        label: 'Cambiar Roles', icon: 'pi pi-id-card', command: () => {
+        label: 'Cambiar RolesEnum', icon: 'pi pi-id-card', command: () => {
           this.changePassword();
         }
       },
@@ -128,5 +130,9 @@ export class UserAdministrationListComponent implements OnInit {
 
   changePassword(){
 
+  }
+
+  redirectNotFound(){
+    this.router.navigate(['/common/not-found']);
   }
 }

@@ -9,32 +9,27 @@ export class ErrorMessageDirective {
 
   @Input()
   set appErrorMessage(val: AbstractControl | null) {
-    this.updateView(val);
+    this.updateView();
   }
 
   constructor(private templateRef: TemplateRef<HTMLElement>,
               private viewContainerRef: ViewContainerRef,
-              private rendered2: Renderer2) {
+              private elementRef: ElementRef) {
     console.log(templateRef);
+    console.log(elementRef);
   }
 
-  private updateView(val: AbstractControl | null) {
-    this.viewContainerRef.clear();
-
-    // if (val?.invalid && this.valid()) {
-    this.viewContainerRef.createEmbeddedView(this.templateRef);
+  private updateView() {
     this.setRequired();
-    // }
+    this.viewContainerRef.clear();
+    this.viewContainerRef.createEmbeddedView(this.templateRef);
   }
 
-  private valid() {
-    return true;
-  }
 
   private setRequired() {
     const element = this.templateRef.elementRef.nativeElement;
-    this.rendered2.setStyle(element,'color','red');
-    // element.style.color = 'red';
-    // element.innerText = 'red';
+    console.log(element);
+    element.style.color = 'red';
+    element.innerText = 'red';
   }
 }

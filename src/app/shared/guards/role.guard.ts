@@ -34,16 +34,14 @@ export class RoleGuard implements CanActivate, CanActivateChild {
   }
 
   private checkRole(route: ActivatedRouteSnapshot): boolean {
-    const splitRoles = route.data.roles.split('|');
-
-    for (const splitRole of splitRoles) {
-      if (this.roles.find(role => role.name?.toLowerCase() === splitRole.toLowerCase())) {
+    console.log(route.data.roles);
+    for (const role of route.data.roles) {
+      if (this.roles.find(r => r.name?.toLowerCase() === role?.toLowerCase())) {
         return true;
       }
     }
 
-    // this.router.navigate(['/common/access-denied']);
-    console.log('sin rol');
+    this.router.navigate(['/common/access-denied']);
     return false;
   }
 

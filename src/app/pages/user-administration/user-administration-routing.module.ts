@@ -4,7 +4,12 @@ import {UserAdministrationComponent} from './user-administration.component';
 
 const routes: Routes = [
   {
-    path: '', component: UserAdministrationComponent
+    path: '',
+    component: UserAdministrationComponent,
+    children:[
+
+    ]
+
   }
 ];
 

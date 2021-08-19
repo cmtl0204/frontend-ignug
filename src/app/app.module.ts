@@ -29,40 +29,45 @@ import {TopbarComponent} from './layout/topbar/topbar.component';
 import {FooterComponent} from './layout/footer/footer.component';
 import {PanelMenuModule} from 'primeng/panelmenu';
 import {RoleGuard} from './shared/guards/role.guard';
+import {LocationStrategy, PathLocationStrategy} from '@angular/common';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        BlankComponent,
-        MainComponent,
-        SidebarComponent,
-        TopbarComponent,
-        FooterComponent,
-    ],
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        FormsModule,
-        ReactiveFormsModule,
-        AppRoutingModule,
-        HttpClientModule,
-        AvatarModule,
-        ButtonModule,
-        CalendarModule,
-        CardModule,
-        DropdownModule,
-        InputSwitchModule,
-        InputTextModule,
-        TableModule,
-        SidebarModule,
-        RippleModule,
-        MenubarModule,
-        PanelMenuModule,
-    ],
-    providers: [
-        httpInterceptorProviders,RoleGuard
-    ],
-    bootstrap: [AppComponent]
+  declarations: [
+    AppComponent,
+    BlankComponent,
+    MainComponent,
+    SidebarComponent,
+    TopbarComponent,
+    FooterComponent,
+  ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    AppRoutingModule,
+    HttpClientModule,
+    AvatarModule,
+    ButtonModule,
+    CalendarModule,
+    CardModule,
+    DropdownModule,
+    InputSwitchModule,
+    InputTextModule,
+    TableModule,
+    SidebarModule,
+    RippleModule,
+    MenubarModule,
+    PanelMenuModule,
+  ],
+  providers: [
+    {
+      provide: LocationStrategy,
+      useClass: PathLocationStrategy
+    },
+    httpInterceptorProviders
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule {
 }

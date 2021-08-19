@@ -3,6 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {MainComponent} from './layout/main/main.component';
 import {BlankComponent} from './layout/blank/blank.component';
 import {RoleGuard} from './shared/guards/role.guard';
+import {RolesEnum} from './shared/enums/roles.enum';
 
 const routes: Routes = [
   {
@@ -13,7 +14,7 @@ const routes: Routes = [
         path: 'user-administration',
         loadChildren: () => import('./pages/user-administration/user-administration.module').then(m => m.UserAdministrationModule),
         data: {
-          roles: 'client|admin|guest'
+          roles: [RolesEnum.ADMIN, RolesEnum.GUEST]
         },
         canActivate: [RoleGuard]
       }
@@ -36,7 +37,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {useHash: true})],
   exports: [RouterModule]
 })
 export class AppRoutingModule {

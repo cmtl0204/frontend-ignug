@@ -2,7 +2,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -20,6 +20,13 @@
       "es2018",
       "dom"
     ],
+    "paths": {
+      "@services/*": ["app/services/*"],
+      "@env/*": ["environments/*"],
+      "@layout/*": ["app/layout/*"],
+      "@shared/*": ["app/shared/*"],
+      "@models/*": ["app/models/*"],
+    },
     "resolveJsonModule": true,
     "esModuleInterop": true
   },

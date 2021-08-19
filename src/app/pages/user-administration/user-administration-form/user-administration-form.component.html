@@ -17,20 +17,20 @@
             </div>
           </ng-template>
         </p-dropdown>
-        <!--        <div-->
-        <!--          *ngIf="identificationTypeField.invalid && (identificationTypeField.touched || identificationTypeField.dirty)">-->
-        <!--          <small *ngIf="identificationTypeField.errors?.required" id="identification-type-help-1" class="p-error">-->
-        <!--            {{messageService.fieldRequired}}-->
-        <!--          </small>-->
-        <!--        </div>-->
+        <div
+          *ngIf="invalidFieldFormUser('identificationType')">
+          <small *ngIf="identificationTypeField.errors?.required" id="identification-type-help-1" class="p-error">
+            {{messageService.fieldRequired}}
+          </small>
+        </div>
 
-<!--        <span *appErrorMessage="identificationTypeField"></span>-->
-        <span *appErrorMessage="identificationTypeField">asd</span>
+        <span *appErrorMessage="identificationTypeField"></span>
+        <!--        <span *appErrorMessage="identificationTypeField">asd</span>-->
       </div>
       <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
         <label for="username">Número de documento:</label>
         <input pInputText id="username" formControlName="username">
-        <div *ngIf="usernameField.invalid && (usernameField.touched || usernameField.dirty)">
+        <div *ngIf="invalidFieldFormUser('username')">
           <small *ngIf="usernameField.errors?.required" id="username-help-1" class="p-error">
             {{messageService.fieldRequired}}
           </small>
@@ -41,7 +41,7 @@
       <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
         <label for="name">Nombres:</label>
         <input pInputText id="name" formControlName="name">
-        <div *ngIf="nameField.invalid && (nameField.touched || nameField.dirty)">
+        <div *ngIf="invalidFieldFormUser('name')">
           <small *ngIf="nameField.errors?.required" id="name-help-1" class="p-error">
             {{messageService.fieldRequired}}
           </small>
@@ -50,7 +50,7 @@
       <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
         <label for="lastname">Apellidos:</label>
         <input pInputText id="lastname" formControlName="lastname">
-        <div *ngIf="lastnameField.invalid && (lastnameField.touched || lastnameField.dirty)">
+        <div *ngIf="invalidFieldFormUser('lastname')">
           <small *ngIf="lastnameField.errors?.required" id="lastname-help-1" class="p-error">
             {{messageService.fieldRequired}}
           </small>
@@ -60,7 +60,7 @@
     <div class="field">
       <label for="email">Correo electrónico institucional:</label>
       <input pInputText id="email" formControlName="email">
-      <div *ngIf="emailField.invalid && (emailField.touched || emailField.dirty)">
+      <div *ngIf="invalidFieldFormUser('email')">
         <small *ngIf="emailField.errors?.required" id="email-help-1" class="p-error">
           {{messageService.fieldRequired}}
         </small>
@@ -84,7 +84,7 @@
                     mediumLabel="Nivel medio"
                     strongLabel="Fuerte" [toggleMask]="true">
         </p-password>
-        <div *ngIf="passwordField.invalid && (passwordField.touched || passwordField.dirty)">
+        <div *ngIf="invalidFieldFormUser('password')">
           <small *ngIf="passwordField.errors?.required" id="password-help-1" class="p-error">
             {{messageService.fieldRequired}}
           </small>
@@ -105,9 +105,19 @@
     <button pButton pRipple type="button" label="Añadir Teléfono" class="p-button-secondary p-button-rounded"
             icon="pi pi-plus"
             (click)="addPhone()"></button>
+    <div *ngIf="invalidFieldFormUser('phones')">
+      <small *ngIf="phonesField?.errors?.required" id="phones-help-1" class="p-error">
+        {{messageService.fieldRequired}}
+      </small>
+    </div>
     <div formArrayName="phones">
       <div *ngFor="let phone of phonesField.controls; let i = index;" [formGroupName]="i">
         <h3>Teléfono {{i + 1}}:</h3>
+        <div class="field">
+          <p-inputSwitch id="main" formControlName="main" class="mr-2"
+                         (onChange)="phonesField.controls[i].get('main')?.patchValue($event.checked)"></p-inputSwitch>
+          <small> ¿Es principal?</small>
+        </div>
         <div class="formgrid grid">
           <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
             <p-dropdown [id]="'phoneOperators'+i" [options]="phoneOperators"
@@ -130,7 +140,7 @@
                 </div>
               </ng-template>
             </p-dropdown>
-            <div *ngIf="phonesField.invalid && (phonesField.touched || phonesField.dirty)">
+            <div *ngIf="invalidFieldFormPhones(i,'operator')">
               <small *ngIf="phonesField.controls[i].get('operator')?.errors?.required" id="operator-help-1"
                      class="p-error">
                 {{messageService.fieldRequired}}
@@ -158,7 +168,7 @@
                 </div>
               </ng-template>
             </p-dropdown>
-            <div *ngIf="phonesField.invalid && (phonesField.touched || phonesField.dirty)">
+            <div *ngIf="invalidFieldFormPhones(i,'type')">
               <small *ngIf="phonesField.controls[i].get('type')?.errors?.required" id="type-help-1" class="p-error">
                 {{messageService.fieldRequired}}
               </small>
@@ -189,7 +199,7 @@
                 </div>
               </ng-template>
             </p-dropdown>
-            <div *ngIf="phonesField.invalid && (phonesField.touched || phonesField.dirty)">
+            <div *ngIf="invalidFieldFormPhones(i,'location')">
               <small *ngIf="phonesField.controls[i].get('location')?.errors?.required" id="location-help-1"
                      class="p-error">
                 {{messageService.fieldRequired}}
@@ -198,7 +208,7 @@
           </div>
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
             <input pInputText [id]="'number'+i" formControlName="number" pKeyFilter="int" placeholder="Ej. 987654321">
-            <div *ngIf="phonesField.invalid && (phonesField.touched || phonesField.dirty)">
+            <div *ngIf="invalidFieldFormPhones(i,'number')">
               <small *ngIf="phonesField.controls[i].get('number')?.errors?.required" id="number-help-1" class="p-error">
                 {{messageService.fieldRequired}}
               </small>

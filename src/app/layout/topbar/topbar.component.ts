@@ -10,11 +10,12 @@ import {MenuHttpService} from '../../services/menu-http.service';
 export class TopbarComponent implements OnInit {
   display = false;
   items: MenuItem[] = [];
+  showNav: boolean = true;
 
   constructor(private menuHttpService: MenuHttpService) {
   }
 
-  ngOnInit():void {
+  ngOnInit(): void {
     this.getMenus();
   }
 
