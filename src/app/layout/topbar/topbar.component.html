@@ -34,25 +34,26 @@
             Registro Profesionales
           </a>
         </li>
-<!--        <li class="nav-item dropdown">-->
-<!--          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Opciones</a>-->
-<!--          <ul class="dropdown-menu">-->
-<!--            <li>-->
-<!--              <a class="dropdown-item" href="#">Prueba</a>-->
-<!--            </li>-->
-<!--          </ul>-->
-<!--        </li>-->
+        <!--        <li class="nav-item dropdown">-->
+        <!--          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Opciones</a>-->
+        <!--          <ul class="dropdown-menu">-->
+        <!--            <li>-->
+        <!--              <a class="dropdown-item" href="#">Prueba</a>-->
+        <!--            </li>-->
+        <!--          </ul>-->
+        <!--        </li>-->
       </ul>
       <ul class="navbar-nav ms-3">
         <li *appToken="'unauthenticated'" class="nav-item">
-          <a class="nav-link text-nowrap" href="">
+          <a class="nav-link text-nowrap" [routerLink]="['/job-board/professional']">
             <i class="bi bi-box-arrow-in-right" style="font-size: 2rem; color: cornflowerblue;"></i>
             Iniciar Sesión
           </a>
         </li>
       </ul>
       <form *appToken="'authenticated'" class="d-flex">
-        <p-avatar image="assets/images/anonymous.png" styleClass="p-mr-2" size="xlarge" shape="circle"></p-avatar>
+        <p-avatar image="assets/images/anonymous.png" styleClass="p-mr-2" size="xlarge" shape="circle"
+                  [routerLink]="['/job-board/professional']"></p-avatar>
       </form>
     </div>
   </nav>

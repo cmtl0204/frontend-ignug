@@ -22,10 +22,18 @@ import {TableModule} from 'primeng/table';
 
 // Components
 import {AppComponent} from './app.component';
-import {FooterComponent,TopbarComponent,SidebarComponent,BlankComponent,MainComponent} from '@layout/index';
+import {
+  FooterComponent,
+  TopbarComponent,
+  SidebarComponent,
+  BlankComponent,
+  MainComponent,
+  BreadcrumbComponent
+} from '@layout/index';
 import {PanelMenuModule} from 'primeng/panelmenu';
 import {LocationStrategy, PathLocationStrategy} from '@angular/common';
 import {SharedModule} from '@shared/shared.module';
+import {BreadcrumbModule} from 'primeng/breadcrumb';
 
 @NgModule({
   declarations: [
@@ -35,6 +43,7 @@ import {SharedModule} from '@shared/shared.module';
     SidebarComponent,
     TopbarComponent,
     FooterComponent,
+    BreadcrumbComponent,
   ],
   imports: [
     BrowserModule,
@@ -56,6 +65,7 @@ import {SharedModule} from '@shared/shared.module';
     MenubarModule,
     PanelMenuModule,
     SharedModule,
+    BreadcrumbModule,
   ],
   providers: [
     {

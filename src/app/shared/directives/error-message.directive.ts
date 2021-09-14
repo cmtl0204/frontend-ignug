@@ -1,35 +1,67 @@
-import {Directive, ElementRef, Input, OnInit, Renderer2, TemplateRef, ViewContainerRef} from '@angular/core';
-import {AuthService} from '../../services/auth.service';
-import {AbstractControl, ValidationErrors} from '@angular/forms';
+import {Directive, ElementRef, Input, Renderer2} from '@angular/core';
+import {ValidationErrors} from '@angular/forms';
+import {MessageService} from '@services/core';
 
 @Directive({
   selector: '[appErrorMessage]'
 })
 export class ErrorMessageDirective {
+  @Input() set touched(value: boolean) {
+    this._touched = value;
+    this.setMessage();
+  };
 
-  @Input()
-  set appErrorMessage(val: AbstractControl | null) {
-    this.updateView();
+  @Input() set dirty(value: boolean) {
+    this._dirty = value;
+    this.setMessage();
+  };
+
+  @Input() set errors(value: ValidationErrors | null) {
+    this._errors = value;
+    this.setMessage();
   }
 
-  constructor(private templateRef: TemplateRef<HTMLElement>,
-              private viewContainerRef: ViewContainerRef,
-              private elementRef: ElementRef) {
-    console.log(templateRef);
-    console.log(elementRef);
+  private _errors: ValidationErrors | null = null;
+  private _dirty: boolean = false;
+  private _touched: boolean = false;
+  nativeElement: any;
+
+  constructor(private elementRef: ElementRef, private renderer: Renderer2, private messageService: MessageService) {
+    this.nativeElement = elementRef.nativeElement;
   }
 
-  private updateView() {
-    this.setRequired();
-    this.viewContainerRef.clear();
-    this.viewContainerRef.createEmbeddedView(this.templateRef);
-  }
-
-
-  private setRequired() {
-    const element = this.templateRef.elementRef.nativeElement;
-    console.log(element);
-    element.style.color = 'red';
-    element.innerText = 'red';
+  setMessage() {
+    if (this._touched || this._dirty) {
+      if (this._errors) {
+        if (this._errors?.required) {
+          this.nativeElement.innerText = this.messageService.fieldRequired;
+        }
+        if (this._errors?.requiredTrue) {
+          this.nativeElement.innerText = this.messageService.fieldRequired;
+        }
+        if (this._errors?.email) {
+          this.nativeElement.innerText = this.messageService.fieldEmail;
+        }
+        if (this._errors?.minlength) {
+          this.nativeElement.innerText = this.messageService.fieldMinLength(this._errors);
+        }
+        if (this._errors?.maxlength) {
+          this.nativeElement.innerText = this.messageService.fieldMaxLength(this._errors);
+        }
+        if (this._errors?.min) {
+          this.nativeElement.innerText = this.messageService.fieldMin(this._errors);
+        }
+        if (this._errors?.max) {
+          this.nativeElement.innerText = this.messageService.fieldMax(this._errors);
+        }
+        if (this._errors?.pattern) {
+          this.nativeElement.innerText = this.messageService.fieldPattern();
+        }
+        this.renderer.addClass(this.nativeElement, 'p-error');
+        this.renderer.removeClass(this.nativeElement, 'hidden');
+      } else {
+        this.renderer.addClass(this.nativeElement, 'hidden');
+      }
+    }
   }
 }

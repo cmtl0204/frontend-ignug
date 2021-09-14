@@ -10,29 +10,41 @@ const routes: Routes = [
     path: '',
     component: MainComponent,
     children: [
+      {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
       {
-        path: 'web',
-        component:BlankComponent
-      },
-      {
-        path: 'user-administration',
-        loadChildren: () => import('./pages/user-administration/user-administration.module').then(m => m.UserAdministrationModule),
+        path: 'dashboard',
+        loadChildren: () => import('./pages/core/dashboard/dashboard.module').then(m => m.DashboardModule),
         data: {
           roles: [RolesEnum.ADMIN, RolesEnum.GUEST]
         },
         canActivate: [TokenGuard, RoleGuard]
+      },
+      {
+        path: 'user-administration',
+        loadChildren: () => import('./pages/core/user-administration/user-administration.module').then(m => m.UserAdministrationModule),
+        data: {
+          roles: [RolesEnum.ADMIN, RolesEnum.GUEST]
+        },
+        canActivate: [TokenGuard, RoleGuard]
+      },
+      {
+        path: 'job-board',
+        loadChildren: () => import('./pages/job-board/job-board.module').then(m => m.JobBoardModule),
+        data: {
+          roles: [RolesEnum.ADMIN, RolesEnum.GUEST]
+        },
       }
     ]
   },
   {
     path: 'authentication',
     component: BlankComponent,
-    loadChildren: () => import('./pages/authentication/authentication.module').then(m => m.AuthenticationModule)
+    loadChildren: () => import('./pages/core/authentication/authentication.module').then(m => m.AuthenticationModule)
   },
   {
     path: 'common',
     component: BlankComponent,
-    loadChildren: () => import('./pages/common/common.module').then(m => m.CommonModule)
+    loadChildren: () => import('./pages/core/common/common.module').then(m => m.CommonModule)
   },
   {
     path: '**',

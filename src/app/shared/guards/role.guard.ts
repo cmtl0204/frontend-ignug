@@ -8,8 +8,8 @@ import {
   UrlTree
 } from '@angular/router';
 import {Observable} from 'rxjs';
-import {AuthService} from '../../services/auth.service';
-import {PermissionModel, RoleModel} from '../../models';
+import {AuthService} from '@services/core/auth.service';
+import {PermissionModel, RoleModel} from '@models/core';
 
 @Injectable({
   providedIn: 'root'
@@ -24,13 +24,15 @@ export class RoleGuard implements CanActivate, CanActivateChild {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    console.log('Parent', route.data);
     return this.checkRole(route);
   }
 
   canActivateChild(
     childRoute: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.canActivate(childRoute, state);
+    console.log('Child', childRoute.data);
+    return this.canActivate(childRoute,state);
   }
 
   private checkRole(route: ActivatedRouteSnapshot): boolean {

@@ -1,6 +1,6 @@
 import {Directive, Input, OnInit, TemplateRef, ViewContainerRef} from '@angular/core';
-import {PermissionModel, RoleModel, UserModel} from '../../models';
-import {AuthService} from '../../services/auth.service';
+import {PermissionModel, RoleModel, UserModel} from '@models/core';
+import {AuthService} from '@services/core/auth.service';
 
 @Directive({
   selector: '[appToken]'
