@@ -12,11 +12,11 @@ import {Subscription} from 'rxjs';
 import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
 
 @Component({
-  selector: 'app-course-form',
-  templateUrl: './course-form.component.html',
-  styleUrls: ['./course-form.component.scss']
+  selector: 'app-skill-form',
+  templateUrl: './skill-form.component.html',
+  styleUrls: ['./skill-form.component.scss']
 })
-export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
+export class SkillFormComponent implements OnInit , OnDestroy, OnExitInterface {
   @Input() user: UserModel = {};
   @Output() userNewOrUpdate = new EventEmitter<UserModel>();
 
@@ -94,16 +94,9 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
 
   newForm(): FormGroup {
     return this.formBuilder.group({
-      id: [null],
-      type: [null, [Validators.required]],
-      certificationType: [null, [Validators.required]],
-      area: [null, [Validators.required]],
-      name: [null, [Validators.required]],
-      description: [null, [Validators.required]],
-      startDate: [null, [Validators.required]],
-      endDate: [null, [Validators.required]],
-      hours: [null, [Validators.required]],
-      institution: [null, [Validators.required]],
+      professional_id: [null],
+      type_id: [null, [Validators.required]],
+      description: [null, [Validators.minLength(10)]]
     });
   }
 

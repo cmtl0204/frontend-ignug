@@ -24,6 +24,12 @@ import {CalendarModule} from 'primeng/calendar';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {SharedModule} from '@shared/shared.module';
 import {ToolbarModule} from 'primeng/toolbar';
+import { SkillComponent } from './skill/skill.component';
+import { SkillFormComponent } from './skill/skill-form/skill-form.component';
+import { SkillListComponent } from './skill/skill-list/skill-list.component';
+import { ReferenceComponent } from './reference/reference.component';
+import { ReferenceFormComponent } from './reference/reference-form/reference-form.component';
+import { ReferenceListComponent } from './reference/reference-list/reference-list.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +37,13 @@ import {ToolbarModule} from 'primeng/toolbar';
     ProfileComponent,
     CourseComponent,
     CourseListComponent,
-    CourseFormComponent
+    CourseFormComponent,
+    SkillComponent,
+    SkillFormComponent,
+    SkillListComponent,
+    ReferenceComponent,
+    ReferenceFormComponent,
+    ReferenceListComponent
   ],
     imports: [
         CommonModule,

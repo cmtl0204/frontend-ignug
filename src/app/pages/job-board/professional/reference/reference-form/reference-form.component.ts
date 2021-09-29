@@ -12,11 +12,11 @@ import {Subscription} from 'rxjs';
 import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
 
 @Component({
-  selector: 'app-course-form',
-  templateUrl: './course-form.component.html',
-  styleUrls: ['./course-form.component.scss']
+  selector: 'app-reference-form',
+  templateUrl: './reference-form.component.html',
+  styleUrls: ['./reference-form.component.scss']
 })
-export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
+export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterface {
   @Input() user: UserModel = {};
   @Output() userNewOrUpdate = new EventEmitter<UserModel>();
 
@@ -94,15 +94,11 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
 
   newForm(): FormGroup {
     return this.formBuilder.group({
-      id: [null],
-      type: [null, [Validators.required]],
-      certificationType: [null, [Validators.required]],
-      area: [null, [Validators.required]],
-      name: [null, [Validators.required]],
-      description: [null, [Validators.required]],
-      startDate: [null, [Validators.required]],
-      endDate: [null, [Validators.required]],
-      hours: [null, [Validators.required]],
+      professional_id: [null],
+      position: [null, [Validators.required]],
+      contact_name: [null, [Validators.required]],
+      contact_phone: [null, [Validators.required]],
+      contact_email: [null, [Validators.required]],
       institution: [null, [Validators.required]],
     });
   }
