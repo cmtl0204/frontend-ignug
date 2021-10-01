@@ -111,7 +111,7 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
 
   // ForeignKeys
   getAreas() {
-    this.userAdministrationHttpService.getCatalogues('COURSE_AREA')
+    this.coreHttpService.getCatalogues('COURSE_AREA')
       .subscribe(
       response => {
         this.areas = response.data;
@@ -122,7 +122,7 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
   }
 
   getCertificationTypes() {
-    this.userAdministrationHttpService.getCatalogues('COURSE_CERTIFICATION_TYPE').subscribe(
+    this.coreHttpService.getCatalogues('COURSE_CERTIFICATION_TYPE').subscribe(
       response => {
         this.certificationTypes = response.data;
       }, error => {
@@ -132,7 +132,7 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
   }
 
   getTypes() {
-    this.userAdministrationHttpService.getCatalogues('COURSE_EVENT_TYPE').subscribe(
+    this.coreHttpService.getCatalogues('COURSE_EVENT_TYPE').subscribe(
       response => {
         this.types = response.data;
       }, error => {
