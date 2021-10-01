@@ -2,14 +2,14 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {CatalogueModel, UserModel} from '@models/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {UserAdministrationHttpService} from '@services/core/user-administration-http.service';
 import {MessageService} from '@services/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {JobBoardHttpService, JobBoardService} from '@services/job-board';
 import {CourseModel} from '@models/job-board';
-import {AppService} from '@services/core/app.service';
+import {CoreService} from '@services/core/core.service';
 import {Subscription} from 'rxjs';
 import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
+import {CoreHttpService} from '@services/core/core-http.service';
 
 @Component({
   selector: 'app-course-form',
@@ -34,10 +34,10 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
     private router: Router,
     private breadcrumbService: BreadcrumbService,
     private formBuilder: FormBuilder,
-    private userAdministrationHttpService: UserAdministrationHttpService,
+    private coreHttpService: CoreHttpService,
     private jobBardHttpService: JobBoardHttpService,
     private jobBardService: JobBoardService,
-    private appService: AppService,
+    private appService: CoreService,
     public messageService: MessageService,
     private activatedRoute: ActivatedRoute) {
     this.breadcrumbService.setItems([
@@ -56,7 +56,7 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
       this.getCourse();
       this.form.markAllAsTouched();
     }
-    this.getCertificationType();
+    this.getCertificationTypes();
     this.getTypes();
     this.getAreas();
   }
@@ -76,7 +76,9 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
 
   getCourse() {
     this.skeletonLoading = true;
-    this.subscriptions.push(this.jobBardHttpService.getCourse(this.jobBardService.professional.id!, this.activatedRoute.snapshot.params.id).subscribe(
+    this.subscriptions.push(
+      this.jobBardHttpService.getCourse(this.jobBardService.professional.id!, this.activatedRoute.snapshot.params.id)
+        .subscribe(
       response => {
         response.data.startDate = new Date('2021-08-22');
         response.data.startDate.setDate(response.data.startDate.getDate() + 1);
@@ -107,8 +109,10 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
     });
   }
 
+  // ForeignKeys
   getAreas() {
-    this.userAdministrationHttpService.getCatalogues('COURSE_AREA').subscribe(
+    this.coreHttpService.getCatalogues('COURSE_AREA')
+      .subscribe(
       response => {
         this.areas = response.data;
       }, error => {
@@ -117,8 +121,8 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
     );
   }
 
-  getCertificationType() {
-    this.userAdministrationHttpService.getCatalogues('COURSE_CERTIFICATION_TYPE').subscribe(
+  getCertificationTypes() {
+    this.coreHttpService.getCatalogues('COURSE_CERTIFICATION_TYPE').subscribe(
       response => {
         this.certificationTypes = response.data;
       }, error => {
@@ -128,7 +132,7 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
   }
 
   getTypes() {
-    this.userAdministrationHttpService.getCatalogues('COURSE_EVENT_TYPE').subscribe(
+    this.coreHttpService.getCatalogues('COURSE_EVENT_TYPE').subscribe(
       response => {
         this.types = response.data;
       }, error => {

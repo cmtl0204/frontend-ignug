@@ -1,22 +1,22 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {CatalogueModel, UserModel} from '@models/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {UserAdministrationHttpService} from '@services/core/user-administration-http.service';
-import {MessageService} from '@services/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {JobBoardHttpService, JobBoardService} from '@services/job-board';
-import {CourseModel} from '@models/job-board';
-import {AppService} from '@services/core/app.service';
 import {Subscription} from 'rxjs';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {BreadcrumbService} from '@services/core/breadcrumb.service';
+import {UserAdministrationHttpService} from '@services/core/user-administration-http.service';
+import {JobBoardHttpService, JobBoardService} from '@services/job-board';
+import {CoreService} from '@services/core/core.service';
+import {MessageService} from '@services/core';
+import {CourseModel} from '@models/job-board';
 import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
 
 @Component({
-  selector: 'app-experience-form',
-  templateUrl: './experience-form.component.html',
-  styleUrls: ['./experience-form.component.scss']
+  selector: 'app-academic-formation-form',
+  templateUrl: './academic-formation-form.component.html',
+  styleUrls: ['./academic-formation-form.component.scss']
 })
-export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterface {
+export class AcademicFormationFormComponent implements OnInit,OnDestroy, OnExitInterface {
   @Input() user: UserModel = {};
   @Output() userNewOrUpdate = new EventEmitter<UserModel>();
 
@@ -29,6 +29,7 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
   skeletonLoading: boolean = false;
   title: string = 'Crear evento';
   buttonTitle: string = 'Crear evento';
+
   constructor(
     private router: Router,
     private breadcrumbService: BreadcrumbService,
@@ -36,7 +37,7 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
     private userAdministrationHttpService: UserAdministrationHttpService,
     private jobBardHttpService: JobBoardHttpService,
     private jobBardService: JobBoardService,
-    private appService: AppService,
+    private appService: CoreService,
     public messageService: MessageService,
     private activatedRoute: ActivatedRoute) {
     this.breadcrumbService.setItems([
@@ -73,9 +74,9 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
     return true;
   }
 
-  getExperience() {
+  getCourse() {
     this.skeletonLoading = true;
-    this.subscriptions.push(this.jobBardHttpService.getExperience(this.jobBardService.professional.id!, this.activatedRoute.snapshot.params.id).subscribe(
+    this.subscriptions.push(this.jobBardHttpService.getCourse(this.jobBardService.professional.id!, this.activatedRoute.snapshot.params.id).subscribe(
       response => {
         response.data.startDate = new Date('2021-08-22');
         response.data.startDate.setDate(response.data.startDate.getDate() + 1);
@@ -94,20 +95,20 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
   newForm(): FormGroup {
     return this.formBuilder.group({
       id: [null],
+      type: [null, [Validators.required]],
+      certificationType: [null, [Validators.required]],
       area: [null, [Validators.required]],
-      professional: [null, [Validators.required]],
-      activities: [this.formBuilder.array([]), [Validators.required]],
-      employer: [null, [Validators.required]],
-      endAt: [null, [Validators.required]],
-      position: [null, [Validators.required]],
-      reasonLeave: [null, [Validators.required]],
-      startAt: [null, [Validators.required]],
-      worked: [false, [Validators.required]],
+      name: [null, [Validators.required]],
+      description: [null, [Validators.minLength(10)]],
+      startDate: [null, [Validators.required]],
+      endDate: [null, [Validators.required]],
+      hours: [null, [Validators.required]],
+      institution: [null, [Validators.required]],
     });
   }
-//ForeignKeys
+
   getAreas() {
-    this.coreHttpService.getCatalogues('COURSE_AREA').subscribe(
+    this.userAdministrationHttpService.getCatalogues('COURSE_AREA').subscribe(
       response => {
         this.areas = response.data;
       }, error => {
@@ -116,10 +117,20 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
     );
   }
 
-  getProfessional() {
-    this.job_boardHttpService.getProfessional('PROFESSIONAL').subscribe(
+  getCertificationType() {
+    this.userAdministrationHttpService.getCatalogues('COURSE_CERTIFICATION_TYPE').subscribe(
       response => {
         this.certificationTypes = response.data;
+      }, error => {
+        this.messageService.error(error);
+      }
+    );
+  }
+
+  getTypes() {
+    this.userAdministrationHttpService.getCatalogues('COURSE_EVENT_TYPE').subscribe(
+      response => {
+        this.types = response.data;
       }, error => {
         this.messageService.error(error);
       }

@@ -30,6 +30,9 @@ import { ExperienceListComponent } from './Experience/experience-list/experience
 import { LanguageComponent } from './language/language.component';
 import { LanguageFormComponent } from './Language/language-form/language-form.component';
 import { LanguageListComponent } from './Language/language-list/language-list.component';
+import { AcademicFormationComponent } from './academic-formation/academic-formation.component';
+import { AcademicFormationFormComponent } from './academic-formation/academic-formation-form/academic-formation-form.component';
+import { AcademicFormationListComponent } from './academic-formation/academic-formation-list/academic-formation-list.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +46,10 @@ import { LanguageListComponent } from './Language/language-list/language-list.co
     ExperienceListComponent,
     LanguageComponent,
     LanguageFormComponent,
-    LanguageListComponent
+    LanguageListComponent,
+    AcademicFormationComponent,
+    AcademicFormationFormComponent,
+    AcademicFormationListComponent
   ],
     imports: [
         CommonModule,

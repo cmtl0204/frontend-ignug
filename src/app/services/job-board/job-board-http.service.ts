@@ -1,8 +1,6 @@
 import {Injectable} from '@angular/core';
 import {environment} from '@env/environment';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {MessageService} from '@services/core';
-import {Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {PaginatorModel, ServerResponse} from '@models/core';
 import {CourseModel} from '@models/job-board';
@@ -12,12 +10,11 @@ import {Handler} from '../../exceptions/handler';
 @Injectable({
   providedIn: 'root'
 })
+
 export class JobBoardHttpService {
   API_URL: string = environment.API_URL;
 
-  constructor(private httpClient: HttpClient,
-              private router: Router,
-              private messageService: MessageService) {
+  constructor(private httpClient: HttpClient) {
   }
 
   getCourses(professionalId: number, paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
@@ -25,9 +22,9 @@ export class JobBoardHttpService {
     const params = new HttpParams()
       .set('page', paginator.current_page)
       .set('per_page', paginator.per_page);
-    console.log(filter);
+    // El filtro depende de los campos propios que sean cadenas de texto
     if (filter !== '') {
-      filter = '?name=' + filter + '&description=' + filter;
+      filter = `?name=${filter}&description=${filter}`;
     }
     return this.httpClient.get<ServerResponse>(url + filter, {params})
       .pipe(

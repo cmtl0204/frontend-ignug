@@ -6,7 +6,7 @@ import {MenuItem} from 'primeng/api';
   providedIn: 'root'
 })
 
-export class AppService {
+export class CoreService {
   constructor() {
   }
 
