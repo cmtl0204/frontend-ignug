@@ -22,7 +22,17 @@ const routes: Routes = [
     path: 'course/:id',
     component: CourseFormComponent,
     canDeactivate: [ExitGuard]
+  },
+  {
+    path: 'academic-formation',
+    component: CourseComponent,
+  },
+  {
+    path: 'academic-formation/:id',
+    component: CourseFormComponent,
+    canDeactivate: [ExitGuard]
   }
+
 ];
 
 @NgModule({

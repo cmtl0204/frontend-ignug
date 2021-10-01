@@ -24,6 +24,9 @@ import {CalendarModule} from 'primeng/calendar';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {SharedModule} from '@shared/shared.module';
 import {ToolbarModule} from 'primeng/toolbar';
+import { AcademicFormationComponent } from './academic-formation/academic-formation.component';
+import { AcademicFormationFormComponent } from './academic-formation/academic-formation-form/academic-formation-form.component';
+import { AcademicFormationListComponent } from './academic-formation/academic-formation-list/academic-formation-list.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +34,10 @@ import {ToolbarModule} from 'primeng/toolbar';
     ProfileComponent,
     CourseComponent,
     CourseListComponent,
-    CourseFormComponent
+    CourseFormComponent,
+    AcademicFormationComponent,
+    AcademicFormationFormComponent,
+    AcademicFormationListComponent
   ],
     imports: [
         CommonModule,

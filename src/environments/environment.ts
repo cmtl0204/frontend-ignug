@@ -1,13 +1,13 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-const WEB = 'http://backend-ignug.test';
+const HOST = 'http://backend-ignug.test';
 
 export const environment = {
   production: false,
-  WEB,
-  STORAGE_URL: WEB + '/storage',
-  API_URL:  'http://backend-ignug.test/api/v1'
+  HOST,
+  STORAGE_URL: HOST + '/storage',
+  API_URL:  HOST+'/api/v1'
 };
 
 /*

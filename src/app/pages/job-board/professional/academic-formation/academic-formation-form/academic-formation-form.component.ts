@@ -1,22 +1,22 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {CatalogueModel, UserModel} from '@models/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MessageService} from '@services/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {JobBoardHttpService, JobBoardService} from '@services/job-board';
-import {CourseModel} from '@models/job-board';
-import {CoreService} from '@services/core/core.service';
 import {Subscription} from 'rxjs';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {BreadcrumbService} from '@services/core/breadcrumb.service';
+import {UserAdministrationHttpService} from '@services/core/user-administration-http.service';
+import {JobBoardHttpService, JobBoardService} from '@services/job-board';
+import {CoreService} from '@services/core/core.service';
+import {MessageService} from '@services/core';
+import {CourseModel} from '@models/job-board';
 import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
-import {CoreHttpService} from '@services/core/core-http.service';
 
 @Component({
-  selector: 'app-course-form',
-  templateUrl: './course-form.component.html',
-  styleUrls: ['./course-form.component.scss']
+  selector: 'app-academic-formation-form',
+  templateUrl: './academic-formation-form.component.html',
+  styleUrls: ['./academic-formation-form.component.scss']
 })
-export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
+export class AcademicFormationFormComponent implements OnInit,OnDestroy, OnExitInterface {
   @Input() user: UserModel = {};
   @Output() userNewOrUpdate = new EventEmitter<UserModel>();
 
@@ -34,7 +34,7 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
     private router: Router,
     private breadcrumbService: BreadcrumbService,
     private formBuilder: FormBuilder,
-    private coreHttpService: CoreHttpService,
+    private userAdministrationHttpService: UserAdministrationHttpService,
     private jobBardHttpService: JobBoardHttpService,
     private jobBardService: JobBoardService,
     private appService: CoreService,
@@ -56,7 +56,7 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
       this.getCourse();
       this.form.markAllAsTouched();
     }
-    this.getCertificationTypes();
+    this.getCertificationType();
     this.getTypes();
     this.getAreas();
   }
@@ -76,9 +76,7 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
 
   getCourse() {
     this.skeletonLoading = true;
-    this.subscriptions.push(
-      this.jobBardHttpService.getCourse(this.jobBardService.professional.id!, this.activatedRoute.snapshot.params.id)
-        .subscribe(
+    this.subscriptions.push(this.jobBardHttpService.getCourse(this.jobBardService.professional.id!, this.activatedRoute.snapshot.params.id).subscribe(
       response => {
         response.data.startDate = new Date('2021-08-22');
         response.data.startDate.setDate(response.data.startDate.getDate() + 1);
@@ -109,10 +107,8 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
     });
   }
 
-  // ForeignKeys
   getAreas() {
-    this.userAdministrationHttpService.getCatalogues('COURSE_AREA')
-      .subscribe(
+    this.userAdministrationHttpService.getCatalogues('COURSE_AREA').subscribe(
       response => {
         this.areas = response.data;
       }, error => {
@@ -121,7 +117,7 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
     );
   }
 
-  getCertificationTypes() {
+  getCertificationType() {
     this.userAdministrationHttpService.getCatalogues('COURSE_CERTIFICATION_TYPE').subscribe(
       response => {
         this.certificationTypes = response.data;
@@ -227,3 +223,4 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
     return this.form.controls['institution'];
   }
 }
+

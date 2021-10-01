@@ -3,7 +3,7 @@ import {CatalogueModel} from '@models/core';
 
 export interface ExperienceModel {
   id?: number;
-   professional?: ProfessionalModel;
+  professional?: ProfessionalModel;
   area?: CatalogueModel;
   employer?: string;
   position?: string;
