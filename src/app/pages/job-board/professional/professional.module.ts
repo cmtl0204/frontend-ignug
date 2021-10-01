@@ -30,6 +30,9 @@ import { SkillListComponent } from './skill/skill-list/skill-list.component';
 import { ReferenceComponent } from './reference/reference.component';
 import { ReferenceFormComponent } from './reference/reference-form/reference-form.component';
 import { ReferenceListComponent } from './reference/reference-list/reference-list.component';
+import { AcademicFormationComponent } from './academic-formation/academic-formation.component';
+import { AcademicFormationFormComponent } from './academic-formation/academic-formation-form/academic-formation-form.component';
+import { AcademicFormationListComponent } from './academic-formation/academic-formation-list/academic-formation-list.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +46,10 @@ import { ReferenceListComponent } from './reference/reference-list/reference-lis
     SkillListComponent,
     ReferenceComponent,
     ReferenceFormComponent,
-    ReferenceListComponent
+    ReferenceListComponent,
+    AcademicFormationComponent,
+    AcademicFormationFormComponent,
+    AcademicFormationListComponent
   ],
     imports: [
         CommonModule,

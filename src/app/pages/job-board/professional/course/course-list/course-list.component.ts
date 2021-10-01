@@ -7,7 +7,7 @@ import {JobBoardHttpService, JobBoardService} from '@services/job-board';
 import {MessageService} from '@services/core';
 import {CourseModel} from '@models/job-board';
 import {ColModel, PaginatorModel} from '@models/core';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-course-list',
@@ -17,12 +17,12 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 export class CourseListComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   courses: CourseModel[] = [];
+  selectedCourse: CourseModel = {};
+  selectedCourses: CourseModel[] = [];
   cols: ColModel[] = [];
   items: MenuItem[] = [];
   loading: boolean = false;
   paginator: PaginatorModel = {current_page: 1, per_page: 5, total: 0};
-  selectedCourse: CourseModel = {};
-  selectedCourses: CourseModel[] = [];
   filter: FormControl;
 
   constructor(private breadcrumbService: BreadcrumbService,
