@@ -80,10 +80,10 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
       this.jobBardHttpService.getCourse(this.jobBardService.professional.id!, this.activatedRoute.snapshot.params.id)
         .subscribe(
       response => {
-        response.data.startDate = new Date('2021-08-22');
-        response.data.startDate.setDate(response.data.startDate.getDate() + 1);
-        response.data.endDate = new Date(response.data.endDate);
-        response.data.endDate.setDate(response.data.endDate.getDate() + 1);
+        response.data.startedAt = new Date('2021-08-22');
+        response.data.startedAt.setDate(response.data.startedAt.getDate() + 1);
+        response.data.EndedAt = new Date(response.data.EndedAt);
+        response.data.EndedAt.setDate(response.data.EndedAt.getDate() + 1);
 
         this.form.patchValue(response.data);
         this.skeletonLoading = false;
@@ -102,8 +102,8 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
       area: [null, [Validators.required]],
       name: [null, [Validators.required]],
       description: [null, [Validators.minLength(10)]],
-      startDate: [null, [Validators.required]],
-      endDate: [null, [Validators.required]],
+      startedAt: [null, [Validators.required]],
+      EndedAt: [null, [Validators.required]],
       hours: [null, [Validators.required]],
       institution: [null, [Validators.required]],
     });
@@ -212,11 +212,11 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
   }
 
   get startDateField() {
-    return this.form.controls['startDate'];
+    return this.form.controls['startedAt'];
   }
 
   get endDateField() {
-    return this.form.controls['endDate'];
+    return this.form.controls['EndedAt'];
   }
 
   get hoursField() {

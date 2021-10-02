@@ -139,8 +139,8 @@ export class CourseListComponent implements OnInit, OnDestroy {
       {field: 'name', header: 'Evento'},
       {field: 'institution', header: 'Institución'},
       {field: 'hours', header: 'Horas'},
-      {field: 'startDate', header: 'Inicio'},
-      {field: 'endDate', header: 'Fin'},
+      {field: 'startedAt', header: 'Inicio'},
+      {field: 'EndedAt', header: 'Fin'},
     ];
 
   }

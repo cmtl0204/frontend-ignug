@@ -1,1 +1,71 @@
-<p>academic-formation-list works!</p>
+<div class="container">
+
+    <p-toolbar>
+      <div class="p-toolbar-group-left">
+        <button pButton pRipple type="button" label="Crear evento"
+                class="p-button-success p-button-rounded" icon="pi pi-plus"
+                (click)="createCourse()"></button>
+        <button pButton pRipple type="button" label="Refrescar"
+                class="p-button-rounded ml-2" icon="pi pi-refresh"
+                (click)="getCourses()"></button>
+        <button *ngIf="selectedCourses?.length" pButton pRipple type="button" label="Eliminar eventos"
+                class="p-button-danger p-button-rounded ml-2" icon="pi pi-trash"
+                (click)="deleteCourses()"></button>
+      </div>
+      <div class="p-toolbar-group-right">
+        <div class="p-inputgroup">
+          <input pInputText id="search" [formControl]="filter" (keypress)="filterCourses($event)">
+          <button pButton pRipple type="button" icon="pi pi-search" (click)="filterCourses($event)"></button>
+        </div>
+      </div>
+    </p-toolbar>
+    <p-card>
+      <p-paginator [rows]="paginator.per_page"
+                   [totalRecords]="paginator.total"
+                   (onPageChange)="paginate($event)"></p-paginator>
+      <p-table
+        dataKey="id"
+        styleClass="p-datatable-striped"
+        paginatorPosition="both"
+        [value]="courses"
+        [columns]="cols"
+        [loading]="loading"
+        [(selection)]="selectedCourses"
+        [responsive]="true">
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th style="width: 3rem">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th style="width: 3rem">Nº</th>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{col.header}}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+            <th style="text-align: center">
+              <button pButton pRipple type="button" class="p-button-rounded p-button-secondary" icon="pi pi-cog"
+                      disabled></button>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+          <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex">
+            <td>
+              <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+            </td>
+            <td>
+              {{rowIndex + 1}}
+            </td>
+            <td *ngFor="let col of columns">
+              {{rowData[col.field]}}
+            </td>
+            <td style="text-align: center">
+              <p-splitButton label="Más" styleClass="p-button-secondary" (onDropdownClick)="selectCourse(rowData)"
+                             [model]="items"></p-splitButton>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  </div>
+  

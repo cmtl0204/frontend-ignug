@@ -9,8 +9,8 @@ export interface CourseModel {
   area?: CatalogueModel;
   name?: string;
   description?: string;
-  startDate?: Date;
-  endDate?: Date;
+  startedAt?: Date;
+  EndedAt?: Date;
   hours?: number;
   institution?: string;
 }

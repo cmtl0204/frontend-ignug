@@ -3,7 +3,7 @@ import {environment} from '@env/environment';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {PaginatorModel, ServerResponse} from '@models/core';
-import {CourseModel} from '@models/job-board';
+import {CourseModel, ExperienceModel, LanguageModel} from '@models/job-board';
 import {catchError, map} from 'rxjs/operators';
 import {Handler} from '../../exceptions/handler';
 
@@ -72,6 +72,321 @@ export class JobBoardHttpService {
   deleteCourses(ids: (number | undefined)[]): Observable<ServerResponse> {
     const url = `${this.API_URL}/course/destroys`;
     return this.httpClient.patch<ServerResponse>(url, {ids})
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  getAcademicFormations(professionalId: number, paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
+    const url = `${this.API_URL}/professionals/${professionalId}/academic-formations`;
+    const params = new HttpParams()
+      .set('page', paginator.current_page)
+      .set('per_page', paginator.per_page);
+    // El filtro depende de los campos propios que sean cadenas de texto
+    if (filter !== '') {
+      filter = `?senescytCode=${filter}`;
+    }
+    return this.httpClient.get<ServerResponse>(url + filter, {params})
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  getAcademicFormation(professionalId: number, id: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/professionals/${professionalId}/academic-formations/${id}`;
+    return this.httpClient.get<ServerResponse>(url)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  storeAcademicFormation(academicFormation: CourseModel, professionalId: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/professionals/${professionalId}/academic-formations`;
+    return this.httpClient.post<ServerResponse>(url, academicFormation)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  updateAcademicFormation(id: number, academicFormation: CourseModel, professionalId: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/professionals/${professionalId}/academic-formations/${id}`;
+    return this.httpClient.put<ServerResponse>(url, academicFormation)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  deleteAcademicFormation(id: number, professionalId: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/professionals/${professionalId}/academic-formations/${id}`;
+    return this.httpClient.delete<ServerResponse>(url)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  deleteAcademicFormations(ids: (number | undefined)[]): Observable<ServerResponse> {
+    const url = `${this.API_URL}/academic-formation/destroys`;
+    return this.httpClient.patch<ServerResponse>(url, {ids})
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  getExperiences(professionalId: number, paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
+    const url = `${this.API_URL}/professionals/${professionalId}/experiences`;
+    const params = new HttpParams()
+      .set('page', paginator.current_page)
+      .set('per_page', paginator.per_page);
+    // El filtro depende de los campos propios que sean cadenas de texto
+    if (filter !== '') {
+      filter = `?senescytCode=${filter}&employer=${filter}&position=${filter}&reason_leave=${filter}`;
+    }
+    return this.httpClient.get<ServerResponse>(url + filter, {params})
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  getExperience(professionalId: number, id: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/professionals/${professionalId}/experiences/${id}`;
+    return this.httpClient.get<ServerResponse>(url)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  storeExperience(experience: ExperienceModel, professionalId: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/professionals/${professionalId}/experiences`;
+    return this.httpClient.post<ServerResponse>(url, experience)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  updateExperience(id: number, experience: ExperienceModel, professionalId: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/professionals/${professionalId}/experiences/${id}`;
+    return this.httpClient.put<ServerResponse>(url, experience)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  deleteExperience(id: number, professionalId: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/professionals/${professionalId}/experiences/${id}`;
+    return this.httpClient.delete<ServerResponse>(url)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  deleteExperiences(ids: (number | undefined)[]): Observable<ServerResponse> {
+    const url = `${this.API_URL}/experience/destroys`;
+    return this.httpClient.patch<ServerResponse>(url, {ids})
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+  
+  getLanguages(professionalId: number, paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
+    const url = `${this.API_URL}/professionals/${professionalId}/languages`;
+    const params = new HttpParams()
+      .set('page', paginator.current_page)
+      .set('per_page', paginator.per_page);
+    // El filtro depende de los campos propios que sean cadenas de texto
+    if (filter !== '') {
+      filter = '';
+    }
+    return this.httpClient.get<ServerResponse>(url + filter, {params})
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  getLanguage(professionalId: number, id: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/professionals/${professionalId}/languages/${id}`;
+    return this.httpClient.get<ServerResponse>(url)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  storeLanguage(language: LanguageModel, professionalId: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/professionals/${professionalId}/languages`;
+    return this.httpClient.post<ServerResponse>(url, language)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  updateLanguage(id: number, language: LanguageModel, professionalId: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/professionals/${professionalId}/languages/${id}`;
+    return this.httpClient.put<ServerResponse>(url, language)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  deleteLanguage(id: number, professionalId: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/professionals/${professionalId}/languages/${id}`;
+    return this.httpClient.delete<ServerResponse>(url)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  deleteLanguages(ids: (number | undefined)[]): Observable<ServerResponse> {
+    const url = `${this.API_URL}/language/destroys`;
+    return this.httpClient.patch<ServerResponse>(url, {ids})
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  getReferences(professionalId: number, paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
+    const url = `${this.API_URL}/professionals/${professionalId}/references`;
+    const params = new HttpParams()
+      .set('page', paginator.current_page)
+      .set('per_page', paginator.per_page);
+    // El filtro depende de los campos propios que sean cadenas de texto
+    if (filter !== '') {
+      filter = `?position=${filter}&contact_name=${filter}&contact_phone=${filter}&contact_email=${filter}&institution=${filter}`;
+    }
+    return this.httpClient.get<ServerResponse>(url + filter, {params})
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  getReference(professionalId: number, id: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/professionals/${professionalId}/references/${id}`;
+    return this.httpClient.get<ServerResponse>(url)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  storeReference(reference: CourseModel, professionalId: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/professionals/${professionalId}/references`;
+    return this.httpClient.post<ServerResponse>(url, reference)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  updateReference(id: number, reference: CourseModel, professionalId: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/professionals/${professionalId}/references/${id}`;
+    return this.httpClient.put<ServerResponse>(url, reference)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  deleteReference(id: number, professionalId: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/professionals/${professionalId}/references/${id}`;
+    return this.httpClient.delete<ServerResponse>(url)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  deleteReferences(ids: (number | undefined)[]): Observable<ServerResponse> {
+    const url = `${this.API_URL}/reference/destroys`;
+    return this.httpClient.patch<ServerResponse>(url, {ids})
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  getSkills(professionalId: number, paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
+    const url = `${this.API_URL}/professionals/${professionalId}/skills`;
+    const params = new HttpParams()
+      .set('page', paginator.current_page)
+      .set('per_page', paginator.per_page);
+    // El filtro depende de los campos propios que sean cadenas de texto
+    if (filter !== '') {
+      filter = `?description=${filter}`;
+    }
+    return this.httpClient.get<ServerResponse>(url + filter, {params})
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  getSkill(professionalId: number, id: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/professionals/${professionalId}/skills/${id}`;
+    return this.httpClient.get<ServerResponse>(url)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  storeSkill(skill: CourseModel, professionalId: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/professionals/${professionalId}/skills`;
+    return this.httpClient.post<ServerResponse>(url, skill)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  updateSkill(id: number, skill: CourseModel, professionalId: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/professionals/${professionalId}/skills/${id}`;
+    return this.httpClient.put<ServerResponse>(url, skill)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  deleteSkill(id: number, professionalId: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/professionals/${professionalId}/skills/${id}`;
+    return this.httpClient.delete<ServerResponse>(url)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  deleteSkills(ids: (number | undefined)[]): Observable<ServerResponse> {
+    const url = `${this.API_URL}/skill/destroys`;
+    return this.httpClient.patch<ServerResponse>(url, {ids})
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  getCategories(type: string | undefined): Observable<ServerResponse> {
+    const params = new HttpParams().append('name', String(type));
+    const url = this.API_URL + '/categories';
+    return this.httpClient.get<ServerResponse>(url, {params})
       .pipe(
         map(response => response),
         catchError(Handler.render)
