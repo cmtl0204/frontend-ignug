@@ -43,14 +43,14 @@ export class AcademicFormationListComponent implements OnInit {
   ngOnInit(): void {
     this.setCols();
     this.setItems();
-    this.getAcademicFormations();
+    this.loadAcademicFormations();
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  getAcademicFormations() {
+  loadAcademicFormations() {
     this.loading = true;
     this.subscriptions.push(
       this.jobBoardHttpService.getAcademicFormations(this.jobBoardService.professional.id!, this.paginator, this.filter.value).subscribe(
@@ -67,7 +67,7 @@ export class AcademicFormationListComponent implements OnInit {
 
   filterAcademicFormations(event: any) {
     if (event.key === 'Enter' || event.type === 'click') {
-      this.getAcademicFormations();
+      this.loadAcademicFormations();
     }
   }
 
@@ -132,13 +132,13 @@ export class AcademicFormationListComponent implements OnInit {
 
   paginate(event: any) {
     this.paginator.current_page = event.page + 1;
-    this.getAcademicFormations();
+    this.loadAcademicFormations();
   }
 
   setCols() {
     this.cols = [
       {field: 'professionalDegree', header: 'Títulos profesionales'},
-      {field: 'registeredAt', header: 'Fecha de '},
+      {field: 'registeredAt', header: 'Fecha de resgistro '},
       {field: 'senescytCode', header: 'Código de Senescyt'},
       {field: 'certificated', header: 'Está certificado'},
     ];
