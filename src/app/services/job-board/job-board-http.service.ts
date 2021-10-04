@@ -394,4 +394,74 @@ export class JobBoardHttpService {
         catchError(Handler.render)
       );
   }
+
+  getAreas(): Observable<ServerResponse> {
+    const url = `${this.API_URL}/category/areas`;
+    return this.httpClient.get<ServerResponse>(url)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  getCategories(paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
+    const url = `${this.API_URL}/categories`;
+    const params = new HttpParams()
+      .set('page', paginator.current_page)
+      .set('per_page', paginator.per_page);
+    // El filtro depende de los campos propios que sean cadenas de texto
+    if (filter !== '') {
+      filter = `?code=${filter}&name=${filter}&icono=${filter}`;
+    }
+    return this.httpClient.get<ServerResponse>(url + filter, {params})
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  getCategory(id: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/categories/${id}`;
+    return this.httpClient.get<ServerResponse>(url)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  storeCategory(skill: CourseModel, professionalId: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/categories`;
+    return this.httpClient.post<ServerResponse>(url, skill)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  updateCategory(id: number, skill: CourseModel, professionalId: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/categories/${id}`;
+    return this.httpClient.put<ServerResponse>(url, skill)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  deleteCategory(id: number, professionalId: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/categories/${id}`;
+    return this.httpClient.delete<ServerResponse>(url)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  deleteCategories(ids: (number | undefined)[]): Observable<ServerResponse> {
+    const url = `${this.API_URL}/skill/destroys`;
+    return this.httpClient.patch<ServerResponse>(url, {ids})
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
 }
