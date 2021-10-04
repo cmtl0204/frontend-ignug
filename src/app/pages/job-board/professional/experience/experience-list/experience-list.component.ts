@@ -5,9 +5,9 @@ import {MenuItem} from 'primeng/api';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {JobBoardHttpService, JobBoardService} from '@services/job-board';
 import {MessageService} from '@services/core';
-import {CourseModel} from '@models/job-board';
+import {ExperienceModel} from '@models/job-board';
 import {ColModel, PaginatorModel} from '@models/core';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {FormControl, FormGroup} from '@angular/forms';
 
 
 @Component({
@@ -17,14 +17,15 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 })
 export class ExperienceListComponent implements OnInit {
   private subscriptions: Subscription[] = [];
-  courses: CourseModel[] = [];
   cols: ColModel[] = [];
   items: MenuItem[] = [];
   loading: boolean = false;
   paginator: PaginatorModel = {current_page: 1, per_page: 5, total: 0};
-  selectedCourse: CourseModel = {};
-  selectedCourses: CourseModel[] = [];
   filter: FormControl;
+
+  experiences: ExperienceModel[] = [];
+  selectedExperience: ExperienceModel = {};
+  selectedExperiences: ExperienceModel[] = [];
 
   constructor(private breadcrumbService: BreadcrumbService,
               private jobBoardHttpService: JobBoardHttpService,
@@ -34,7 +35,7 @@ export class ExperienceListComponent implements OnInit {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
-      {label: 'Cursos y Capacitaciones', disabled: true},
+      {label: 'Experiencia', disabled: true},
     ]);
 
     this.filter = new FormControl('');
@@ -43,20 +44,20 @@ export class ExperienceListComponent implements OnInit {
   ngOnInit(): void {
     this.setCols();
     this.setItems();
-    this.getCourses();
+    this.loadExperiences();
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  getCourses() {
+  loadExperiences() {
     this.loading = true;
     this.subscriptions.push(
-      this.jobBoardHttpService.getCourses(this.jobBoardService.professional.id!, this.paginator, this.filter.value).subscribe(
+      this.jobBoardHttpService.getExperiences(this.jobBoardService.professional.id!, this.paginator, this.filter.value).subscribe(
         response => {
           this.loading = false;
-          this.courses = response.data;
+          this.experiences = response.data;
           this.paginator = response.meta;
         }, error => {
           this.loading = false;
@@ -65,31 +66,31 @@ export class ExperienceListComponent implements OnInit {
       ));
   }
 
-  filterCourses(event: any) {
+  filterExperiences(event: any) {
     if (event.key === 'Enter' || event.type === 'click') {
-      this.getCourses();
+      this.loadExperiences();
     }
   }
 
-  editCourse(user: CourseModel) {
-    this.router.navigate(['/job-board/professional/course/', user.id]);
+  editExperience(user: ExperienceModel) {
+    this.router.navigate(['/job-board/professional/experience/', user.id]);
   }
 
-  createCourse() {
-    this.router.navigate(['/job-board/professional/course/', 'new']);
+  createExperience() {
+    this.router.navigate(['/job-board/professional/experience/', 'new']);
   }
 
-  selectCourse(course: CourseModel) {
-    this.selectedCourse = course;
+  selectExperience(experience: ExperienceModel) {
+    this.selectedExperience = experience;
   }
 
-  deleteCourse(course: CourseModel): void {
+  deleteExperience(experience: ExperienceModel): void {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
-          this.subscriptions.push(this.jobBoardHttpService.deleteCourse(this.jobBoardService.professional?.id!, course.id!).subscribe(
+          this.subscriptions.push(this.jobBoardHttpService.deleteCourse(this.jobBoardService.professional?.id!, experience.id!).subscribe(
             response => {
-              this.removeCourse(course);
+              this.removeExperience(experience);
               this.messageService.success(response);
             },
             error => {
@@ -100,14 +101,14 @@ export class ExperienceListComponent implements OnInit {
       });
   }
 
-  deleteCourses(): void {
+  deleteExperiences(): void {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
-          const ids = this.selectedCourses.map(element => element.id);
-          this.subscriptions.push(this.jobBoardHttpService.deleteCourses(ids).subscribe(
+          const ids = this.selectedExperiences.map(element => element.id);
+          this.subscriptions.push(this.jobBoardHttpService.deleteExperiences(ids).subscribe(
             response => {
-              this.removeCourses(ids!);
+              this.removeExperiences(ids!);
               this.messageService.success(response);
             },
             error => {
@@ -119,20 +120,20 @@ export class ExperienceListComponent implements OnInit {
 
   }
 
-  removeCourse(course: CourseModel) {
-    this.courses = this.courses.filter(element => element.id !== course.id);
+  removeExperience(experience: ExperienceModel) {
+    this.experiences = this.experiences.filter(element => element.id !== experience.id);
   }
 
-  removeCourses(ids: (number | undefined)[]) {
+  removeExperiences(ids: (number | undefined)[]) {
     for (const id of ids) {
-      this.courses = this.courses.filter(element => element.id !== id);
+      this.experiences = this.experiences.filter(element => element.id !== id);
     }
-    this.selectedCourses = [];
+    this.selectedExperiences = [];
   }
 
   paginate(event: any) {
     this.paginator.current_page = event.page + 1;
-    this.getCourses();
+    this.loadExperiences();
   }
 
   setCols() {
@@ -150,12 +151,12 @@ export class ExperienceListComponent implements OnInit {
     this.items = [
       {
         label: 'Modificar', icon: 'pi pi-pencil', command: () => {
-          this.editCourse(this.selectedCourse);
+          this.editExperience(this.selectedExperience);
         }
       },
       {
         label: 'Eliminar', icon: 'pi pi-trash', command: () => {
-          this.deleteCourse(this.selectedCourse);
+          this.deleteExperience(this.selectedExperience);
         }
       }
     ];
