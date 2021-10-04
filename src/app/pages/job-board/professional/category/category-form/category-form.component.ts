@@ -1,4 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {BreadcrumbService} from '@services/core/breadcrumb.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {MessageService} from '@services/core';
+import {JobBoardHttpService, JobBoardService} from '@services/job-board';
+import {CoreHttpService} from '@services/core/core-http.service';
+import {CategoryModel} from '@models/job-board';
 
 @Component({
   selector: 'app-category-form',
@@ -7,9 +15,153 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CategoryFormComponent implements OnInit {
 
-  constructor() { }
+  private subscriptions: Subscription[] = [];
+  form: FormGroup;
+  progressBar: boolean = false;
+  skeletonLoading: boolean = false;
+  title: string = 'Crear categoría';
+  buttonTitle: string = 'Crear categoría';
+  areas: CategoryModel[] = [];
 
-  ngOnInit(): void {
+  constructor(
+    private router: Router,
+    private breadcrumbService: BreadcrumbService,
+    private formBuilder: FormBuilder,
+    private coreHttpService: CoreHttpService,
+    private jobBoardHttpService: JobBoardHttpService,
+    private jobBoardService: JobBoardService,
+    public messageService: MessageService,
+    private activatedRoute: ActivatedRoute) {
+    this.breadcrumbService.setItems([
+      {label: 'Dashboard', routerLink: ['/dashboard']},
+      {label: 'Profesional', routerLink: ['/job-board/professional']},
+      {label: 'Categorías', routerLink: ['/job-board/professional/category']},
+      {label: 'Formulario', disabled: true},
+    ]);
+    this.form = this.newForm();
   }
 
+  ngOnInit(): void {
+    if (this.activatedRoute.snapshot.params.id != 'new') {
+      this.title = 'Actualizar categoría';
+      this.buttonTitle = 'Actualizar categoría';
+      this.loadCategory();
+      this.form.markAllAsTouched();
+    }
+    this.loadAreas();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  async onExit() {
+    if (this.form.touched || this.form.dirty) {
+      return await this.messageService.questionOnExit({}).then((result) => {
+        return result.isConfirmed;
+      });
+    }
+    return true;
+  }
+
+  loadCategory():void {
+    this.skeletonLoading = true;
+    this.subscriptions.push(
+      this.jobBoardHttpService.getCategory(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
+        .subscribe(
+      response => {
+        this.form.patchValue(response.data);
+        this.skeletonLoading = false;
+      }, error => {
+        this.skeletonLoading = false;
+        this.messageService.error(error);
+      }
+    ));
+  }
+
+  newForm(): FormGroup {
+    return this.formBuilder.group({
+      id: [null],
+      parent: [null],
+      code: [null, [Validators.required]],
+      name: [null, [Validators.required]],
+      icon: [null, [Validators.required]],
+    });
+  }
+
+  // ForeignKeys
+  loadAreas() {
+    this.jobBoardHttpService.getCategories()
+      .subscribe(
+      response => {
+        this.areas = response.data;
+      }, error => {
+        this.messageService.error(error);
+      }
+    );
+  }
+
+  onSubmit():void {
+    if (this.form.valid) {
+      if (this.idField.value) {
+        this.update(this.form.value);
+      } else {
+        this.store(this.form.value);
+      }
+    } else {
+      this.form.markAllAsTouched();
+    }
+  }
+
+  store(category: CategoryModel): void {
+    this.progressBar = true;
+    this.jobBoardHttpService.storeCategory(category, this.jobBoardService.professional.id!).subscribe(
+      response => {
+        this.messageService.success(response);
+        this.form.reset();
+        this.progressBar = false;
+        this.router.navigate(['/job-board/category']);
+      },
+      error => {
+        this.messageService.error(error);
+        this.progressBar = false;
+      }
+    );
+  }
+
+  update(category: CategoryModel): void {
+    this.progressBar = true;
+    this.jobBoardHttpService.updateCategory(category.id!, category, this.jobBoardService.professional.id!).subscribe(
+      response => {
+        this.messageService.success(response);
+        this.form.reset();
+        this.progressBar = false;
+        this.router.navigate(['/job-board/category']);
+      },
+      error => {
+        this.messageService.error(error);
+        this.progressBar = false;
+      }
+    );
+  }
+
+  get idField() {
+    return this.form.controls['id'];
+  }
+
+  get parentField() {
+    return this.form.controls['parent'];
+  }
+
+  get codeField() {
+    return this.form.controls['code'];
+  }
+
+  get nameField() {
+    return this.form.controls['name'];
+  }
+
+  get iconField() {
+    return this.form.controls['icon'];
+  }
 }
