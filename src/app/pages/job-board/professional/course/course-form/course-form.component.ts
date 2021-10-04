@@ -17,9 +17,6 @@ import {CoreHttpService} from '@services/core/core-http.service';
   styleUrls: ['./course-form.component.scss']
 })
 export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
-  @Input() user: UserModel = {};
-  @Output() userNewOrUpdate = new EventEmitter<UserModel>();
-
   private subscriptions: Subscription[] = [];
   form: FormGroup;
   progressBar: boolean = false;
@@ -101,21 +98,14 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
       certificationType: [null, [Validators.required]],
       area: [null, [Validators.required]],
       name: [null, [Validators.required]],
-<<<<<<< HEAD
-      description: [null, [Validators.required]],
-      startDate: [null, [Validators.required]],
-      endDate: [null, [Validators.required]],
-=======
       description: [null, [Validators.minLength(10)]],
       startedAt: [null, [Validators.required]],
-      EndedAt: [null, [Validators.required]],
->>>>>>> 63b7d7a561fc680be40f04f3398937807e5359e5
+      endedAt: [null, [Validators.required]],
       hours: [null, [Validators.required]],
       institution: [null, [Validators.required]],
     });
   }
 
-  // ForeignKeys
   getAreas() {
     this.coreHttpService.getCatalogues('COURSE_AREA')
       .subscribe(
@@ -217,12 +207,12 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
     return this.form.controls['description'];
   }
 
-  get startDateField() {
+  get startedAtField() {
     return this.form.controls['startedAt'];
   }
 
   get endDateField() {
-    return this.form.controls['EndedAt'];
+    return this.form.controls['endedAt'];
   }
 
   get hoursField() {

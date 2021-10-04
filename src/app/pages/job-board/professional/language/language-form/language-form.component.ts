@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
@@ -23,7 +23,8 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
   title: string = 'Crear Lenguage';
   buttonTitle: string = 'Crear Lenguage';
 
-  types: CatalogueModel[] = [];
+  idioms: CatalogueModel[] = [];
+  spokenLevels: CatalogueModel[] = [];
   certificationTypes: CatalogueModel[] = [];
   areas: CatalogueModel[] = [];
 
@@ -101,11 +102,11 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
       readLevel: [null, [Validators.minLength(10)]],
     });
   }
-// Foreingkeys
+
   loadIdioms() {
     this.coreHttpService.getCatalogues('IDIOM').subscribe(
       response => {
-        this.certificationTypes = response.data;
+        this.idioms = response.data;
       }, error => {
         this.messageService.error(error);
       }
@@ -155,7 +156,7 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
 
   store(language: LanguageModel): void {
     this.progressBar = true;
-    this.jobBoardHttpService.storeCourse(language, this.jobBoardService.professional.id!).subscribe(
+    this.jobBoardHttpService.storeLanguage(language, this.jobBoardService.professional.id!).subscribe(
       response => {
         this.messageService.success(response);
         this.progressBar = false;
@@ -171,7 +172,7 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
 
   update(language: LanguageModel): void {
     this.progressBar = true;
-    this.jobBoardHttpService.updateCourse(language.id!, language, this.jobBoardService.professional.id!).subscribe(
+    this.jobBoardHttpService.updateLanguage(language.id!, language, this.jobBoardService.professional.id!).subscribe(
       response => {
         this.messageService.success(response);
         this.form.reset();
@@ -190,16 +191,12 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
     return this.form.controls['id'];
   }
 
-  get professionalField() {
-    return this.form.controls['professional'];
-  }
-
   get idiomField() {
     return this.form.controls['idiom'];
   }
 
   get writtenLevelField() {
-    return this.form.controls['written_Level'];
+    return this.form.controls['writtenLevel'];
   }
 
   get spokenLevelField() {

@@ -70,7 +70,7 @@ export class AcademicFormationFormComponent implements OnInit,OnDestroy, OnExitI
     return true;
   }
 
-  getAcademicFormation() {
+  loadAcademicFormation() {
     this.skeletonLoading = true;
     this.subscriptions.push(this.jobBardHttpService.getAcademicFormation(this.jobBardService.professional.id!, this.activatedRoute.snapshot.params.id).subscribe(
       response => {
@@ -128,7 +128,7 @@ export class AcademicFormationFormComponent implements OnInit,OnDestroy, OnExitI
         this.form.reset();
         this.userNewOrUpdate.emit(academicFormation);
         this.progressBar = false;
-        this.router.navigate(['/job-board/professional/academicFormation']);
+        this.router.navigate(['/job-board/professional/academic-formation']);
       },
       error => {
         this.messageService.error(error);
