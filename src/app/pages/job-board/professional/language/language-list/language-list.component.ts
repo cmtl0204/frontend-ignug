@@ -5,9 +5,9 @@ import {MenuItem} from 'primeng/api';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {JobBoardHttpService, JobBoardService} from '@services/job-board';
 import {MessageService} from '@services/core';
-import {CourseModel} from '@models/job-board';
+import {LanguageModel} from '@models/job-board';
 import {ColModel, PaginatorModel} from '@models/core';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-language-list',
@@ -16,14 +16,15 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 })
 export class LanguageListComponent implements OnInit {
   private subscriptions: Subscription[] = [];
-  courses: CourseModel[] = [];
   cols: ColModel[] = [];
   items: MenuItem[] = [];
   loading: boolean = false;
   paginator: PaginatorModel = {current_page: 1, per_page: 5, total: 0};
-  selectedCourse: CourseModel = {};
-  selectedCourses: CourseModel[] = [];
   filter: FormControl;
+
+  languages: LanguageModel[] = [];
+  selectedLanguage: LanguageModel = {};
+  selectedLanguages: LanguageModel[] = [];
 
   constructor(private breadcrumbService: BreadcrumbService,
               private jobBoardHttpService: JobBoardHttpService,
@@ -33,7 +34,7 @@ export class LanguageListComponent implements OnInit {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
-      {label: 'Cursos y Capacitaciones', disabled: true},
+      {label: 'Idioma', disabled: true},
     ]);
 
     this.filter = new FormControl('');
@@ -42,20 +43,20 @@ export class LanguageListComponent implements OnInit {
   ngOnInit(): void {
     this.setCols();
     this.setItems();
-    this.getCourses();
+    this.loadLanguages();
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  getCourses() {
+  loadLanguages() {
     this.loading = true;
     this.subscriptions.push(
-      this.jobBoardHttpService.getCourses(this.jobBoardService.professional.id!, this.paginator, this.filter.value).subscribe(
+      this.jobBoardHttpService.getLanguages(this.jobBoardService.professional.id!, this.paginator, this.filter.value).subscribe(
         response => {
           this.loading = false;
-          this.courses = response.data;
+          this.languages = response.data;
           this.paginator = response.meta;
         }, error => {
           this.loading = false;
@@ -64,31 +65,31 @@ export class LanguageListComponent implements OnInit {
       ));
   }
 
-  filterCourses(event: any) {
+  filterLanguages(event: any) {
     if (event.key === 'Enter' || event.type === 'click') {
-      this.getCourses();
+      this.loadLanguages();
     }
   }
 
-  editCourse(user: CourseModel) {
-    this.router.navigate(['/job-board/professional/course/', user.id]);
+  editLanguage(user: LanguageModel) {
+    this.router.navigate(['/job-board/professional/language/', user.id]);
   }
 
-  createCourse() {
-    this.router.navigate(['/job-board/professional/course/', 'new']);
+  createLanguage() {
+    this.router.navigate(['/job-board/professional/language/', 'new']);
   }
 
-  selectCourse(course: CourseModel) {
-    this.selectedCourse = course;
+  selectLanguage(language: LanguageModel) {
+    this.selectedLanguage = language;
   }
 
-  deleteCourse(course: CourseModel): void {
+  deleteLanguage(language: LanguageModel): void {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
-          this.subscriptions.push(this.jobBoardHttpService.deleteCourse(this.jobBoardService.professional?.id!, course.id!).subscribe(
+          this.subscriptions.push(this.jobBoardHttpService.deleteLanguage(this.jobBoardService.professional?.id!, language.id!).subscribe(
             response => {
-              this.removeCourse(course);
+              this.removeLanguage(language);
               this.messageService.success(response);
             },
             error => {
@@ -99,14 +100,14 @@ export class LanguageListComponent implements OnInit {
       });
   }
 
-  deleteCourses(): void {
+  deleteLanguages(): void {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
-          const ids = this.selectedCourses.map(element => element.id);
-          this.subscriptions.push(this.jobBoardHttpService.deleteCourses(ids).subscribe(
+          const ids = this.selectedLanguages.map(element => element.id);
+          this.subscriptions.push(this.jobBoardHttpService.deleteLanguages(ids).subscribe(
             response => {
-              this.removeCourses(ids!);
+              this.removeLanguages(ids!);
               this.messageService.success(response);
             },
             error => {
@@ -118,29 +119,31 @@ export class LanguageListComponent implements OnInit {
 
   }
 
-  removeCourse(course: CourseModel) {
-    this.courses = this.courses.filter(element => element.id !== course.id);
+  removeLanguage(language: LanguageModel) {
+    this.languages = this.languages.filter(element => element.id !== language.id);
   }
 
-  removeCourses(ids: (number | undefined)[]) {
+  removeLanguages(ids: (number | undefined)[]) {
     for (const id of ids) {
-      this.courses = this.courses.filter(element => element.id !== id);
+      this.languages = this.languages.filter(element => element.id !== id);
     }
-    this.selectedCourses = [];
+    this.selectedLanguages = [];
   }
 
   paginate(event: any) {
     this.paginator.current_page = event.page + 1;
-    this.getCourses();
+    this.loadLanguages();
   }
 
   setCols() {
     this.cols = [
-      {field: 'name', header: 'Evento'},
-      {field: 'institution', header: 'Institución'},
-      {field: 'hours', header: 'Horas'},
-      {field: 'startDate', header: 'Inicio'},
-      {field: 'endDate', header: 'Fin'},
+      {field: 'id', header: 'id'},
+      {field: 'idiom', header: 'Idioma'},
+      {field: 'writtenLevel', header: 'Nivel escrito'},
+      {field: 'spokenLevel', header: 'Nivel de hablado'},
+      {field: 'readLevel', header: 'Nivel de lectura'},
+      {field: 'createdAt', header: 'Fin'},
+      {field: 'updatedAt', header: 'Fin'},
     ];
 
   }
@@ -149,12 +152,12 @@ export class LanguageListComponent implements OnInit {
     this.items = [
       {
         label: 'Modificar', icon: 'pi pi-pencil', command: () => {
-          this.editCourse(this.selectedCourse);
+          this.editLanguage(this.selectedLanguage);
         }
       },
       {
         label: 'Eliminar', icon: 'pi pi-trash', command: () => {
-          this.deleteCourse(this.selectedCourse);
+          this.deleteLanguage(this.selectedLanguage);
         }
       }
     ];

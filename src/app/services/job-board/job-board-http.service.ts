@@ -3,7 +3,7 @@ import {environment} from '@env/environment';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {PaginatorModel, ServerResponse} from '@models/core';
-import {CategoryModel, CourseModel, ExperienceModel, LanguageModel} from '@models/job-board';
+import {AcademicFormationModel, CategoryModel, CourseModel, ExperienceModel, LanguageModel, ReferenceModel, SkillModel} from '@models/job-board';
 import {catchError, map} from 'rxjs/operators';
 import {Handler} from '../../exceptions/handler';
 
@@ -12,9 +12,7 @@ import {Handler} from '../../exceptions/handler';
 })
 
 export class JobBoardHttpService {
-  getSkill(arg0: number, id: any) {
-    throw new Error('Method not implemented.');
-  }
+
   API_URL: string = environment.API_URL;
 
   constructor(private httpClient: HttpClient) {
@@ -106,7 +104,7 @@ export class JobBoardHttpService {
       );
   }
 
-  storeAcademicFormation(academicFormation: CourseModel, professionalId: number): Observable<ServerResponse> {
+  storeAcademicFormation(academicFormation: AcademicFormationModel, professionalId: number): Observable<ServerResponse> {
     const url = `${this.API_URL}/professionals/${professionalId}/academic-formations`;
     return this.httpClient.post<ServerResponse>(url, academicFormation)
       .pipe(
@@ -115,7 +113,7 @@ export class JobBoardHttpService {
       );
   }
 
-  updateAcademicFormation(id: number, academicFormation: CourseModel, professionalId: number): Observable<ServerResponse> {
+  updateAcademicFormation(id: number, academicFormation: AcademicFormationModel, professionalId: number): Observable<ServerResponse> {
     const url = `${this.API_URL}/professionals/${professionalId}/academic-formations/${id}`;
     return this.httpClient.put<ServerResponse>(url, academicFormation)
       .pipe(
@@ -289,7 +287,7 @@ export class JobBoardHttpService {
       );
   }
 
-  storeReference(reference: CourseModel, professionalId: number): Observable<ServerResponse> {
+  storeReference(reference: ReferenceModel, professionalId: number): Observable<ServerResponse> {
     const url = `${this.API_URL}/professionals/${professionalId}/references`;
     return this.httpClient.post<ServerResponse>(url, reference)
       .pipe(
@@ -298,7 +296,7 @@ export class JobBoardHttpService {
       );
   }
 
-  updateReference(id: number, reference: CourseModel, professionalId: number): Observable<ServerResponse> {
+  updateReference(id: number, reference: ReferenceModel, professionalId: number): Observable<ServerResponse> {
     const url = `${this.API_URL}/professionals/${professionalId}/references/${id}`;
     return this.httpClient.put<ServerResponse>(url, reference)
       .pipe(
@@ -350,7 +348,7 @@ export class JobBoardHttpService {
       );
   }
 
-  storeSkill(skill: CourseModel, professionalId: number): Observable<ServerResponse> {
+  storeSkill(skill: SkillModel, professionalId: number): Observable<ServerResponse> {
     const url = `${this.API_URL}/professionals/${professionalId}/skills`;
     return this.httpClient.post<ServerResponse>(url, skill)
       .pipe(
@@ -359,7 +357,7 @@ export class JobBoardHttpService {
       );
   }
 
-  updateSkill(id: number, skill: CourseModel, professionalId: number): Observable<ServerResponse> {
+  updateSkill(id: number, skill: SkillModel, professionalId: number): Observable<ServerResponse> {
     const url = `${this.API_URL}/professionals/${professionalId}/skills/${id}`;
     return this.httpClient.put<ServerResponse>(url, skill)
       .pipe(
