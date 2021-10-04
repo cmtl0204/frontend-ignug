@@ -386,10 +386,9 @@ export class JobBoardHttpService {
       );
   }
 
-  getCategories(type: string | undefined): Observable<ServerResponse> {
-    const params = new HttpParams().append('name', String(type));
-    const url = this.API_URL + '/categories';
-    return this.httpClient.get<ServerResponse>(url, {params})
+  getProfessionalDegrees(): Observable<ServerResponse> {
+    const url = `${this.API_URL}/category/professional-degrees`;
+    return this.httpClient.get<ServerResponse>(url)
       .pipe(
         map(response => response),
         catchError(Handler.render)
