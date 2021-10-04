@@ -6,7 +6,7 @@ import {UserAdministrationHttpService} from '@services/core/user-administration-
 import {MessageService} from '@services/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {JobBoardHttpService, JobBoardService} from '@services/job-board';
-import {CourseModel} from '@models/job-board';
+import {LanguageModel} from '@models/job-board';
 import {AppService} from '@services/core/app.service';
 import {Subscription} from 'rxjs';
 import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
@@ -53,7 +53,7 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
     if (this.activatedRoute.snapshot.params.id != 'new') {
       this.title = 'Actualizar evento';
       this.buttonTitle = 'Actualizar evento';
-      this.getCourse();
+      this.getLanguage();
       this.form.markAllAsTouched();
     }
     this.getCertificationType();
@@ -74,9 +74,9 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
     return true;
   }
 
-  getCourse() {
+  getLanguage() {
     this.skeletonLoading = true;
-    this.subscriptions.push(this.jobBardHttpService.getCourse(this.jobBardService.professional.id!, this.activatedRoute.snapshot.params.id).subscribe(
+    this.subscriptions.push(this.jobBardHttpService.getLanguage(this.jobBardService.professional.id!, this.activatedRoute.snapshot.params.id).subscribe(
       response => {
         response.data.startDate = new Date('2021-08-22');
         response.data.startDate.setDate(response.data.startDate.getDate() + 1);
@@ -102,8 +102,8 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
       readLevel: [null, [Validators.minLength(10)]],
     });
   }
-
-  getAreas() {
+// Foreingkeys
+  getProfessionals() {
     this.userAdministrationHttpService.getCatalogues('COURSE_AREA').subscribe(
       response => {
         this.areas = response.data;
@@ -113,8 +113,8 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
     );
   }
 
-  getCertificationType() {
-    this.userAdministrationHttpService.getCatalogues('COURSE_CERTIFICATION_TYPE').subscribe(
+  getIdiom() {
+    this.userAdministrationHttpService.getCatalogues('IDIOM').subscribe(
       response => {
         this.certificationTypes = response.data;
       }, error => {
@@ -123,7 +123,7 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
     );
   }
 
-  getTypes() {
+  getWrittenLevel() {
     this.userAdministrationHttpService.getCatalogues('COURSE_EVENT_TYPE').subscribe(
       response => {
         this.types = response.data;
@@ -133,6 +133,25 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
     );
   }
 
+  getSpokenLevel() {
+    this.userAdministrationHttpService.getCatalogues('COURSE_EVENT_TYPE').subscribe(
+      response => {
+        this.types = response.data;
+      }, error => {
+        this.messageService.error(error);
+      }
+    );
+  }
+
+  getReadLevel() {
+    this.userAdministrationHttpService.getCatalogues('COURSE_EVENT_TYPE').subscribe(
+      response => {
+        this.types = response.data;
+      }, error => {
+        this.messageService.error(error);
+      }
+    );
+  }
   onSubmit() {
     if (this.form.valid) {
       if (this.idField.value) {
@@ -145,15 +164,15 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
     }
   }
 
-  store(course: CourseModel): void {
+  store(language: LanguageModel): void {
     this.progressBar = true;
-    this.jobBardHttpService.storeCourse(course, this.jobBardService.professional.id!).subscribe(
+    this.jobBardHttpService.storeCourse(language, this.jobBardService.professional.id!).subscribe(
       response => {
         this.messageService.success(response);
         this.form.reset();
-        this.userNewOrUpdate.emit(course);
+        this.userNewOrUpdate.emit(language);
         this.progressBar = false;
-        this.router.navigate(['/job-board/professional/course']);
+        this.router.navigate(['/job-board/professional/language']);
       },
       error => {
         this.messageService.error(error);
@@ -162,15 +181,15 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
     );
   }
 
-  update(course: CourseModel): void {
+  update(language: LanguageModel): void {
     this.progressBar = true;
-    this.jobBardHttpService.updateCourse(course.id!, course, this.jobBardService.professional.id!).subscribe(
+    this.jobBardHttpService.updateCourse(language.id!, language, this.jobBardService.professional.id!).subscribe(
       response => {
         this.messageService.success(response);
         this.form.reset();
-        this.userNewOrUpdate.emit(course);
+        this.userNewOrUpdate.emit(language);
         this.progressBar = false;
-        this.router.navigate(['/job-board/professional/course']);
+        this.router.navigate(['/job-board/professional/language']);
       },
       error => {
         this.messageService.error(error);
@@ -183,40 +202,24 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
     return this.form.controls['id'];
   }
 
-  get typeField() {
-    return this.form.controls['type'];
+  get professionalField() {
+    return this.form.controls['professional'];
   }
 
-  get certificationTypeField() {
-    return this.form.controls['certificationType'];
+  get idiomField() {
+    return this.form.controls['idiom'];
   }
 
-  get areaField() {
-    return this.form.controls['area'];
+  get writtenLevelField() {
+    return this.form.controls['written_Level'];
   }
 
-  get nameField() {
-    return this.form.controls['name'];
+  get spokenLevelField() {
+    return this.form.controls['spoken_Level'];
   }
 
-  get descriptionField() {
-    return this.form.controls['description'];
-  }
-
-  get startDateField() {
-    return this.form.controls['startDate'];
-  }
-
-  get endDateField() {
-    return this.form.controls['endDate'];
-  }
-
-  get hoursField() {
-    return this.form.controls['hours'];
-  }
-
-  get institutionField() {
-    return this.form.controls['institution'];
+  get readLevelField() {
+    return this.form.controls['read_Level'];
   }
 }
 
