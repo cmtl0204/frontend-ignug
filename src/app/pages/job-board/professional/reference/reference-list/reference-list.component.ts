@@ -1,39 +1,45 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
-import {Router} from '@angular/router';
+import {FormBuilder, FormControl} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {MenuItem} from 'primeng/api';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {JobBoardHttpService, JobBoardService} from '@services/job-board';
-import {MessageService} from '@services/core';
-import {CourseModel} from '@models/job-board';
+import {CoreHttpService, MessageService} from '@services/core';
+import {ReferenceModel} from '@models/job-board';
 import {ColModel, PaginatorModel} from '@models/core';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-reference-list',
   templateUrl: './reference-list.component.html',
   styleUrls: ['./reference-list.component.scss']
 })
-export class ReferenceListComponent implements OnInit, OnDestroy {
+export class ReferenceComponent implements OnInit {
   private subscriptions: Subscription[] = [];
-  courses: CourseModel[] = [];
   cols: ColModel[] = [];
   items: MenuItem[] = [];
   loading: boolean = false;
   paginator: PaginatorModel = {current_page: 1, per_page: 5, total: 0};
-  selectedCourse: CourseModel = {};
-  selectedCourses: CourseModel[] = [];
   filter: FormControl;
 
-  constructor(private breadcrumbService: BreadcrumbService,
-              private jobBoardHttpService: JobBoardHttpService,
-              private jobBoardService: JobBoardService,
-              public messageService: MessageService,
-              private router: Router) {
+  references: ReferenceModel[] = [];
+  selectedReference: ReferenceModel = {};
+  selectedReferences: ReferenceModel[] = [];
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private breadcrumbService: BreadcrumbService,
+    public messageService: MessageService,
+    private coreHttpService: CoreHttpService,
+    private jobBoardHttpService: JobBoardHttpService,
+    private jobBoardService: JobBoardService
+    ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
-      {label: 'Cursos y Capacitaciones', disabled: true},
+      {label: 'Referencias', disabled: true},
     ]);
 
     this.filter = new FormControl('');
@@ -42,20 +48,20 @@ export class ReferenceListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.setCols();
     this.setItems();
-    this.getCourses();
+    this.loadReferences();
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  getCourses() {
+  loadReferences() {
     this.loading = true;
     this.subscriptions.push(
-      this.jobBoardHttpService.getCourses(this.jobBoardService.professional.id!, this.paginator, this.filter.value).subscribe(
+      this.jobBoardHttpService.getReferences(this.jobBoardService.professional.id!, this.paginator, this.filter.value).subscribe(
         response => {
           this.loading = false;
-          this.courses = response.data;
+          this.references = response.data;
           this.paginator = response.meta;
         }, error => {
           this.loading = false;
@@ -64,31 +70,31 @@ export class ReferenceListComponent implements OnInit, OnDestroy {
       ));
   }
 
-  filterCourses(event: any) {
+  filterReferences(event: any) {
     if (event.key === 'Enter' || event.type === 'click') {
-      this.getCourses();
+      this.loadReferences();
     }
   }
 
-  editCourse(user: CourseModel) {
-    this.router.navigate(['/job-board/professional/course/', user.id]);
+  editReference(reference: ReferenceModel) {
+    this.router.navigate(['/job-board/professional/reference/', reference.id]);
   }
 
-  createCourse() {
-    this.router.navigate(['/job-board/professional/course/', 'new']);
+  createReference() {
+    this.router.navigate(['/job-board/professional/reference/', 'new']);
   }
 
-  selectCourse(course: CourseModel) {
-    this.selectedCourse = course;
+  selectReference(reference: ReferenceModel) {
+    this.selectedReference = reference;
   }
 
-  deleteCourse(course: CourseModel): void {
+  deleteReference(reference: ReferenceModel): void {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
-          this.subscriptions.push(this.jobBoardHttpService.deleteCourse(this.jobBoardService.professional?.id!, course.id!).subscribe(
+          this.subscriptions.push(this.jobBoardHttpService.deleteReference(this.jobBoardService.professional?.id!, reference.id!).subscribe(
             response => {
-              this.removeCourse(course);
+              this.removeReference(reference);
               this.messageService.success(response);
             },
             error => {
@@ -99,14 +105,14 @@ export class ReferenceListComponent implements OnInit, OnDestroy {
       });
   }
 
-  deleteCourses(): void {
+  deleteReferences(): void {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
-          const ids = this.selectedCourses.map(element => element.id);
-          this.subscriptions.push(this.jobBoardHttpService.deleteCourses(ids).subscribe(
+          const ids = this.selectedReferences.map(element => element.id);
+          this.subscriptions.push(this.jobBoardHttpService.deleteReferences(ids).subscribe(
             response => {
-              this.removeCourses(ids!);
+              this.removeReferences(ids!);
               this.messageService.success(response);
             },
             error => {
@@ -118,46 +124,45 @@ export class ReferenceListComponent implements OnInit, OnDestroy {
 
   }
 
-  removeCourse(course: CourseModel) {
-    this.courses = this.courses.filter(element => element.id !== course.id);
+  removeReference(reference: ReferenceModel) {
+    this.references = this.references.filter(element => element.id !== reference.id);
   }
 
-  removeCourses(ids: (number | undefined)[]) {
+  removeReferences(ids: (number | undefined)[]) {
     for (const id of ids) {
-      this.courses = this.courses.filter(element => element.id !== id);
+      this.references = this.references.filter(element => element.id !== id);
     }
-    this.selectedCourses = [];
+    this.selectedReferences = [];
   }
 
   paginate(event: any) {
     this.paginator.current_page = event.page + 1;
-    this.getCourses();
+    this.loadReferences();
   }
 
   setCols() {
     this.cols = [
-      {field: 'name', header: 'Evento'},
+      {field: 'contactName', header: 'Nombre'},
+      {field: 'contactPhone', header: 'Celular'},
+      {field: 'contactEmail', header: 'E-mail'},
       {field: 'institution', header: 'Institución'},
-      {field: 'hours', header: 'Horas'},
-      {field: 'startDate', header: 'Inicio'},
-      {field: 'endDate', header: 'Fin'},
+      {field: 'createdAt', header: 'Crear fecha'},
+      {field: 'updatedAt', header: 'Aztualizar fecha'},
     ];
-
   }
 
   setItems() {
     this.items = [
       {
         label: 'Modificar', icon: 'pi pi-pencil', command: () => {
-          this.editCourse(this.selectedCourse);
+          this.editReference(this.selectedReference);
         }
       },
       {
         label: 'Eliminar', icon: 'pi pi-trash', command: () => {
-          this.deleteCourse(this.selectedCourse);
+          this.deleteReference(this.selectedReference);
         }
       }
     ];
   }
 }
-

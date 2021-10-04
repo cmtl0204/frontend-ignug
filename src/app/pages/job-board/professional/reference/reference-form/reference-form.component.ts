@@ -6,7 +6,6 @@ import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {MessageService} from '@services/core';
 import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
 import {JobBoardHttpService, JobBoardService} from '@services/job-board';
-import {CatalogueModel} from '@models/core';
 import {ReferenceModel} from '@models/job-board';
 
 @Component({
@@ -19,14 +18,9 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
   private subscriptions: Subscription[] = [];
   form: FormGroup;
   progressBar: boolean = false;
-  types: CatalogueModel[] = [];
-  certificationTypes: CatalogueModel[] = [];
-  areas: CatalogueModel[] = [];
   skeletonLoading: boolean = false;
   title: string = 'Crear referencia';
   buttonTitle: string = 'Crear referencia';
-  coreHttpService: any;
-  userAdministrationHttpService: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -50,7 +44,7 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
     if (this.activatedRoute.snapshot.params.id != 'new') {
       this.title = 'Actualizar referencias';
       this.buttonTitle = 'Actualizar referencias';
-      this.getReference();
+      this.loadReference();
       this.form.markAllAsTouched();
     }
   }
@@ -68,7 +62,7 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
     return true;
   }
 
-  getReference() {
+  loadReference() {
     this.skeletonLoading = true;
     this.subscriptions.push(this.jobBoardHttpService.getReference(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id).subscribe(
       response => {
@@ -86,8 +80,8 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
       id: [null],
       position: [null, [Validators.required]],
       contactName: [null, [Validators.required]],
-      contact_phone: [null, [Validators.required]],
-      contact_email: [null, [Validators.required]],
+      contactPhone: [null, [Validators.required]],
+      contactEmail: [null, [Validators.required]],
       institution: [null, [Validators.required]],
     });
   }
@@ -107,7 +101,7 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
 
   store(reference: ReferenceModel): void {
     this.progressBar = true;
-    this.coreHttpService.storeReference(reference.id!, reference, this.jobBoardService.professional.id!).subscribe(
+    this.jobBoardHttpService.storeReference(reference, this.jobBoardService.professional.id!).subscribe(
       response => {
         this.messageService.success(response);
         this.progressBar = false;
@@ -147,15 +141,15 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
   }
 
   get contactNameField() {
-    return this.form.controls['contact_name'];
+    return this.form.controls['contactName'];
   }
 
   get contactPhoneField() {
-    return this.form.controls['contact_phone'];
+    return this.form.controls['contactPhone'];
   }
 
   get contactEmailField() {
-    return this.form.controls[' contact_email'];
+    return this.form.controls[' contactEmail'];
   }
 
   get institutionField() {

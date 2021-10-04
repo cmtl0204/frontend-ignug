@@ -1,14 +1,13 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
-import {Router} from '@angular/router';
+import {FormBuilder, FormControl} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {MenuItem} from 'primeng/api';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {JobBoardHttpService, JobBoardService} from '@services/job-board';
-import {MessageService} from '@services/core';
-import {CourseModel} from '@models/job-board';
+import {CoreHttpService, MessageService} from '@services/core';
+import {SkillModel} from '@models/job-board';
 import {ColModel, PaginatorModel} from '@models/core';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-
 
 @Component({
   selector: 'app-skill-list',
@@ -17,20 +16,22 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 })
 export class SkillListComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
-  courses: CourseModel[] = [];
   cols: ColModel[] = [];
   items: MenuItem[] = [];
   loading: boolean = false;
   paginator: PaginatorModel = {current_page: 1, per_page: 5, total: 0};
-  selectedCourse: CourseModel = {};
-  selectedCourses: CourseModel[] = [];
   filter: FormControl;
 
-  constructor(private breadcrumbService: BreadcrumbService,
+  skills: SkillModel[] = [];
+  selectedSkill: SkillModel = {};
+  selectedSkills: SkillModel[] = [];
+
+  constructor(private router: Router,
+              private breadcrumbService: BreadcrumbService,
+              public messageService: MessageService,
               private jobBoardHttpService: JobBoardHttpService,
               private jobBoardService: JobBoardService,
-              public messageService: MessageService,
-              private router: Router) {
+              ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
@@ -43,20 +44,20 @@ export class SkillListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.setCols();
     this.setItems();
-    this.getCourses();
+    this.loadSkills();
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  getCourses() {
+  loadSkills() {
     this.loading = true;
     this.subscriptions.push(
-      this.jobBoardHttpService.getCourses(this.jobBoardService.professional.id!, this.paginator, this.filter.value).subscribe(
+      this.jobBoardHttpService.getSkills(this.jobBoardService.professional.id!, this.paginator, this.filter.value).subscribe(
         response => {
           this.loading = false;
-          this.courses = response.data;
+          this.skills = response.data;
           this.paginator = response.meta;
         }, error => {
           this.loading = false;
@@ -65,31 +66,31 @@ export class SkillListComponent implements OnInit, OnDestroy {
       ));
   }
 
-  filterCourses(event: any) {
+  filterSkills(event: any) {
     if (event.key === 'Enter' || event.type === 'click') {
-      this.getCourses();
+      this.loadSkills();
     }
   }
 
-  editCourse(user: CourseModel) {
-    this.router.navigate(['/job-board/professional/course/', user.id]);
+  editSkill(skill: SkillModel) {
+    this.router.navigate(['/job-board/professional/skill/', skill.id]);
   }
 
-  createCourse() {
-    this.router.navigate(['/job-board/professional/course/', 'new']);
+  createSkill() {
+    this.router.navigate(['/job-board/professional/skill/', 'new']);
   }
 
-  selectCourse(course: CourseModel) {
-    this.selectedCourse = course;
+  selectSkill(skill: SkillModel) {
+    this.selectedSkill = skill;
   }
 
-  deleteCourse(course: CourseModel): void {
+  deleteSkill(skill: SkillModel): void {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
-          this.subscriptions.push(this.jobBoardHttpService.deleteCourse(this.jobBoardService.professional?.id!, course.id!).subscribe(
+          this.subscriptions.push(this.jobBoardHttpService.deleteSkill(this.jobBoardService.professional?.id!, skill.id!).subscribe(
             response => {
-              this.removeCourse(course);
+              this.removeSkill(skill);
               this.messageService.success(response);
             },
             error => {
@@ -100,14 +101,14 @@ export class SkillListComponent implements OnInit, OnDestroy {
       });
   }
 
-  deleteCourses(): void {
+  deleteSkills(): void {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
-          const ids = this.selectedCourses.map(element => element.id);
-          this.subscriptions.push(this.jobBoardHttpService.deleteCourses(ids).subscribe(
+          const ids = this.selectedSkills.map(element => element.id);
+          this.subscriptions.push(this.jobBoardHttpService.deleteSkills(ids).subscribe(
             response => {
-              this.removeCourses(ids!);
+              this.removeSkills(ids!);
               this.messageService.success(response);
             },
             error => {
@@ -119,46 +120,43 @@ export class SkillListComponent implements OnInit, OnDestroy {
 
   }
 
-  removeCourse(course: CourseModel) {
-    this.courses = this.courses.filter(element => element.id !== course.id);
+  removeSkill(skill: SkillModel) {
+    this.skills = this.skills.filter(element => element.id !== skill.id);
   }
 
-  removeCourses(ids: (number | undefined)[]) {
+  removeSkills(ids: (number | undefined)[]) {
     for (const id of ids) {
-      this.courses = this.courses.filter(element => element.id !== id);
+      this.skills = this.skills.filter(element => element.id !== id);
     }
-    this.selectedCourses = [];
+    this.selectedSkills = [];
   }
 
   paginate(event: any) {
     this.paginator.current_page = event.page + 1;
-    this.getCourses();
+    this.loadSkills();
   }
 
   setCols() {
     this.cols = [
-      {field: 'name', header: 'Evento'},
-      {field: 'institution', header: 'Institución'},
-      {field: 'hours', header: 'Horas'},
-      {field: 'startDate', header: 'Inicio'},
-      {field: 'endDate', header: 'Fin'},
+      {field: 'type', header: 'Tipo'},
+      {field: 'description', header: 'Descripción'},
+      {field: 'createdAt', header: 'Crear fecha'},
+      {field: 'updatedAt', header: 'Aztualizar fecha'},
     ];
-
   }
 
   setItems() {
     this.items = [
       {
         label: 'Modificar', icon: 'pi pi-pencil', command: () => {
-          this.editCourse(this.selectedCourse);
+          this.editSkill(this.selectedSkill);
         }
       },
       {
         label: 'Eliminar', icon: 'pi pi-trash', command: () => {
-          this.deleteCourse(this.selectedCourse);
+          this.deleteSkill(this.selectedSkill);
         }
       }
     ];
   }
 }
-

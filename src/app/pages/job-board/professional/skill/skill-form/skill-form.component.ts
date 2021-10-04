@@ -18,12 +18,11 @@ export class SkillFormComponent implements OnInit , OnDestroy, OnExitInterface {
   private subscriptions: Subscription[] = [];
   form: FormGroup;
   progressBar: boolean = false;
-  types: CatalogueModel[] = [];
-  certificationTypes: CatalogueModel[] = [];
-  areas: CatalogueModel[] = [];
   skeletonLoading: boolean = false;
   title: string = 'Crear habilidades';
   buttonTitle: string = 'Crear habilidades';
+  
+  types: CatalogueModel[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -52,7 +51,7 @@ export class SkillFormComponent implements OnInit , OnDestroy, OnExitInterface {
       this.form.markAllAsTouched();
     }
 
-    this.getTypes();
+    this.loadTypes();
   }
 
   ngOnDestroy(): void {
@@ -86,12 +85,13 @@ export class SkillFormComponent implements OnInit , OnDestroy, OnExitInterface {
 
   newForm(): FormGroup {
     return this.formBuilder.group({
+      id: [null, [Validators.required]],
       type: [null, [Validators.required]],
       description: [null, [Validators.minLength(10)]]
     });
   }
 
-  getTypes() {
+  loadTypes() {
     this.coreHttpService.getCatalogues('SKILL_TYPE').subscribe(
       response => {
         this.types = response.data;
