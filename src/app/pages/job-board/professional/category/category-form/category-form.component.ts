@@ -91,7 +91,7 @@ export class CategoryFormComponent implements OnInit {
 
   // ForeignKeys
   loadAreas() {
-    this.jobBoardHttpService.getCategories()
+    this.jobBoardHttpService.getAreas()
       .subscribe(
       response => {
         this.areas = response.data;

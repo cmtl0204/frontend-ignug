@@ -24,13 +24,13 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
   certificationTypes: CatalogueModel[] = [];
   areas: CatalogueModel[] = [];
   skeletonLoading: boolean = false;
-  title: string = 'Crear evento';
-  buttonTitle: string = 'Crear evento';
+  title: string = 'Crear curso';
+  buttonTitle: string = 'Crear curso';
 
   constructor(
+    private formBuilder: FormBuilder,
     private router: Router,
     private breadcrumbService: BreadcrumbService,
-    private formBuilder: FormBuilder,
     private coreHttpService: CoreHttpService,
     private jobBardHttpService: JobBoardHttpService,
     private jobBardService: JobBoardService,
@@ -48,14 +48,14 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
 
   ngOnInit(): void {
     if (this.activatedRoute.snapshot.params.id != 'new') {
-      this.title = 'Actualizar evento';
-      this.buttonTitle = 'Actualizar evento';
+      this.title = 'Actualizar curso';
+      this.buttonTitle = 'Actualizar curso';
       this.getCourse();
       this.form.markAllAsTouched();
     }
-    this.getCertificationTypes();
-    this.getTypes();
-    this.getAreas();
+    this.loadCertificationTypes();
+    this.loadTypes();
+    this.loadAreas();
   }
 
   ngOnDestroy(): void {
@@ -106,7 +106,7 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
     });
   }
 
-  getAreas() {
+  loadAreas() {
     this.coreHttpService.getCatalogues('COURSE_AREA')
       .subscribe(
       response => {
@@ -117,7 +117,7 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
     );
   }
 
-  getCertificationTypes() {
+  loadCertificationTypes() {
     this.coreHttpService.getCatalogues('COURSE_CERTIFICATION_TYPE').subscribe(
       response => {
         this.certificationTypes = response.data;
@@ -127,7 +127,7 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
     );
   }
 
-  getTypes() {
+  loadTypes() {
     this.coreHttpService.getCatalogues('COURSE_EVENT_TYPE').subscribe(
       response => {
         this.types = response.data;
@@ -155,7 +155,7 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
       response => {
         this.messageService.success(response);
         this.form.reset();
-        this.userNewOrUpdate.emit(course);
+
         this.progressBar = false;
         this.router.navigate(['/job-board/professional/course']);
       },
@@ -172,7 +172,7 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
       response => {
         this.messageService.success(response);
         this.form.reset();
-        this.userNewOrUpdate.emit(course);
+
         this.progressBar = false;
         this.router.navigate(['/job-board/professional/course']);
       },

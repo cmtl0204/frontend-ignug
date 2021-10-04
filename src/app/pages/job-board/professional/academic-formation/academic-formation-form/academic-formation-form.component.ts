@@ -17,8 +17,7 @@ import { OnExitInterface } from '@shared/interfaces/on-exit.interface';
   styleUrls: ['./academic-formation-form.component.scss']
 })
 export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExitInterface {
-  @Input() user: UserModel = {};
-  @Output() userNewOrUpdate = new EventEmitter<UserModel>();
+  
 
   private subscriptions: Subscription[] = [];
   form: FormGroup;
