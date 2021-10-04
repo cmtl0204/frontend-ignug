@@ -24,21 +24,19 @@ import {CalendarModule} from 'primeng/calendar';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {SharedModule} from '@shared/shared.module';
 import {ToolbarModule} from 'primeng/toolbar';
-<<<<<<< HEAD
+
 import { SkillComponent } from './skill/skill.component';
 import { SkillFormComponent } from './skill/skill-form/skill-form.component';
 import { SkillListComponent } from './skill/skill-list/skill-list.component';
 import { ReferenceComponent } from './reference/reference.component';
 import { ReferenceFormComponent } from './reference/reference-form/reference-form.component';
 import { ReferenceListComponent } from './reference/reference-list/reference-list.component';
-=======
 import { ExperienceComponent } from './experience/experience.component';
 import { ExperienceFormComponent } from './Experience/experience-form/experience-form.component';
 import { ExperienceListComponent } from './Experience/experience-list/experience-list.component';
 import { LanguageComponent } from './language/language.component';
 import { LanguageFormComponent } from './Language/language-form/language-form.component';
 import { LanguageListComponent } from './Language/language-list/language-list.component';
->>>>>>> 63b7d7a561fc680be40f04f3398937807e5359e5
 import { AcademicFormationComponent } from './academic-formation/academic-formation.component';
 import { AcademicFormationFormComponent } from './academic-formation/academic-formation-form/academic-formation-form.component';
 import { AcademicFormationListComponent } from './academic-formation/academic-formation-list/academic-formation-list.component';
@@ -50,21 +48,18 @@ import { AcademicFormationListComponent } from './academic-formation/academic-fo
     CourseComponent,
     CourseListComponent,
     CourseFormComponent,
-<<<<<<< HEAD
     SkillComponent,
     SkillFormComponent,
     SkillListComponent,
     ReferenceComponent,
     ReferenceFormComponent,
     ReferenceListComponent,
-=======
     ExperienceComponent,
     ExperienceFormComponent,
     ExperienceListComponent,
     LanguageComponent,
     LanguageFormComponent,
     LanguageListComponent,
->>>>>>> 63b7d7a561fc680be40f04f3398937807e5359e5
     AcademicFormationComponent,
     AcademicFormationFormComponent,
     AcademicFormationListComponent
