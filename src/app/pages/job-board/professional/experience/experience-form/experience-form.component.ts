@@ -6,7 +6,7 @@ import {UserAdministrationHttpService} from '@services/core/user-administration-
 import {MessageService} from '@services/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {JobBoardHttpService, JobBoardService} from '@services/job-board';
-import {CourseModel} from '@models/job-board';
+import {ExperienceModel} from '@models/job-board';
 import {AppService} from '@services/core/app.service';
 import {Subscription} from 'rxjs';
 import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
@@ -52,12 +52,11 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
     if (this.activatedRoute.snapshot.params.id != 'new') {
       this.title = 'Actualizar evento';
       this.buttonTitle = 'Actualizar evento';
-      this.getCourse();
+      this.getExperience();
       this.form.markAllAsTouched();
     }
-    this.getCertificationType();
-    this.getTypes();
     this.getAreas();
+    this.getProfessional();
   }
 
   ngOnDestroy(): void {
@@ -77,10 +76,8 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
     this.skeletonLoading = true;
     this.subscriptions.push(this.jobBardHttpService.getExperience(this.jobBardService.professional.id!, this.activatedRoute.snapshot.params.id).subscribe(
       response => {
-        response.data.startDate = new Date('2021-08-22');
-        response.data.startDate.setDate(response.data.startDate.getDate() + 1);
-        response.data.endDate = new Date(response.data.endDate);
-        response.data.endDate.setDate(response.data.endDate.getDate() + 1);
+        response.data.startAt.setDate(response.data.startAt.getDate() + 1);
+        response.data.endAt.setDate(response.data.endAt.getDate() + 1);
 
         this.form.patchValue(response.data);
         this.skeletonLoading = false;
@@ -138,13 +135,13 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
     }
   }
 
-  store(course: CourseModel): void {
+  store(experience: ExperienceModel): void {
     this.progressBar = true;
-    this.jobBardHttpService.storeCourse(course, this.jobBardService.professional.id!).subscribe(
+    this.jobBardHttpService.storeCourse(experience, this.jobBardService.professional.id!).subscribe(
       response => {
         this.messageService.success(response);
         this.form.reset();
-        this.userNewOrUpdate.emit(course);
+        this.userNewOrUpdate.emit(experience);
         this.progressBar = false;
         this.router.navigate(['/job-board/professional/course']);
       },
@@ -155,13 +152,13 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
     );
   }
 
-  update(course: CourseModel): void {
+  update(experience: ExperienceModel): void {
     this.progressBar = true;
-    this.jobBardHttpService.updateCourse(course.id!, course, this.jobBardService.professional.id!).subscribe(
+    this.jobBardHttpService.updateCourse(experience.id!, experience, this.jobBardService.professional.id!).subscribe(
       response => {
         this.messageService.success(response);
         this.form.reset();
-        this.userNewOrUpdate.emit(course);
+        this.userNewOrUpdate.emit(experience);
         this.progressBar = false;
         this.router.navigate(['/job-board/professional/course']);
       },
@@ -176,40 +173,40 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
     return this.form.controls['id'];
   }
 
-  get typeField() {
-    return this.form.controls['type'];
-  }
-
-  get certificationTypeField() {
-    return this.form.controls['certificationType'];
-  }
-
   get areaField() {
     return this.form.controls['area'];
   }
 
-  get nameField() {
-    return this.form.controls['name'];
+  get professionalField() {
+    return this.form.controls['professional'];
   }
 
-  get descriptionField() {
-    return this.form.controls['description'];
+  get activitiesField() {
+    return this.form.controls['activities'];
   }
 
-  get startDateField() {
-    return this.form.controls['startDate'];
+  get employerField() {
+    return this.form.controls['employer'];
   }
 
-  get endDateField() {
-    return this.form.controls['endDate'];
+  get endAtField() {
+    return this.form.controls['endAt'];
   }
 
-  get hoursField() {
-    return this.form.controls['hours'];
+  get positionField() {
+    return this.form.controls['position'];
   }
 
-  get institutionField() {
-    return this.form.controls['institution'];
+  get reasonLeaveField() {
+    return this.form.controls['reason_Leave'];
+  }
+
+  get startAtField() {
+    return this.form.controls['startAt'];
+  }
+
+  get workedField() {
+    return this.form.controls['worked'];
   }
 }
 
