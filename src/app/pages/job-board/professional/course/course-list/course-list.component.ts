@@ -16,20 +16,22 @@ import {FormControl} from '@angular/forms';
 })
 export class CourseListComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
-  courses: CourseModel[] = [];
-  selectedCourse: CourseModel = {};
-  selectedCourses: CourseModel[] = [];
   cols: ColModel[] = [];
   items: MenuItem[] = [];
   loading: boolean = false;
   paginator: PaginatorModel = {current_page: 1, per_page: 5, total: 0};
   filter: FormControl;
 
-  constructor(private breadcrumbService: BreadcrumbService,
+  courses: CourseModel[] = [];
+  selectedCourse: CourseModel = {};
+  selectedCourses: CourseModel[] = [];
+
+  constructor(private router: Router,
+              private breadcrumbService: BreadcrumbService,
+              public messageService: MessageService,
               private jobBoardHttpService: JobBoardHttpService,
               private jobBoardService: JobBoardService,
-              public messageService: MessageService,
-              private router: Router) {
+              ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
@@ -42,14 +44,14 @@ export class CourseListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.setCols();
     this.setItems();
-    this.getCourses();
+    this.loadCourses();
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  getCourses() {
+  loadCourses() {
     this.loading = true;
     this.subscriptions.push(
       this.jobBoardHttpService.getCourses(this.jobBoardService.professional.id!, this.paginator, this.filter.value).subscribe(
@@ -66,12 +68,12 @@ export class CourseListComponent implements OnInit, OnDestroy {
 
   filterCourses(event: any) {
     if (event.key === 'Enter' || event.type === 'click') {
-      this.getCourses();
+      this.loadCourses();
     }
   }
 
-  editCourse(user: CourseModel) {
-    this.router.navigate(['/job-board/professional/course/', user.id]);
+  editCourse(course: CourseModel) {
+    this.router.navigate(['/job-board/professional/course/', course.id]);
   }
 
   createCourse() {
@@ -131,7 +133,7 @@ export class CourseListComponent implements OnInit, OnDestroy {
 
   paginate(event: any) {
     this.paginator.current_page = event.page + 1;
-    this.getCourses();
+    this.loadCourses();
   }
 
   setCols() {
@@ -140,9 +142,8 @@ export class CourseListComponent implements OnInit, OnDestroy {
       {field: 'institution', header: 'Institución'},
       {field: 'hours', header: 'Horas'},
       {field: 'startedAt', header: 'Inicio'},
-      {field: 'EndedAt', header: 'Fin'},
+      {field: 'endedAt', header: 'Fin'},
     ];
-
   }
 
   setItems() {
