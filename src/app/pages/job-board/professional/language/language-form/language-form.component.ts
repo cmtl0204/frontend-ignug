@@ -20,13 +20,15 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
   form: FormGroup;
   progressBar: boolean = false;
   skeletonLoading: boolean = false;
-  title: string = 'Crear Lenguage';
-  buttonTitle: string = 'Crear Lenguage';
+  title: string = 'Idioma';
+  buttonTitle: string = 'Idioma';
 
   idioms: CatalogueModel[] = [];
-  spokenLevels: CatalogueModel[] = [];
   certificationTypes: CatalogueModel[] = [];
   areas: CatalogueModel[] = [];
+  writtenLevel: CatalogueModel[] = [];
+  spokenLevels: CatalogueModel[] = [];
+  readLevels: CatalogueModel[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -41,7 +43,7 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
-      {label: 'Lenguage Profesional', routerLink: ['/job-board/professional/language']},
+      {label: 'Idiomas', routerLink: ['/job-board/professional/language']},
       {label: 'Formulario', disabled: true},
     ]);
     this.form = this.newForm();
@@ -49,8 +51,8 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
 
   ngOnInit(): void {
     if (this.activatedRoute.snapshot.params.id != 'new') {
-      this.title = 'Actualizar lenguage';
-      this.buttonTitle = 'Actualizar lenguage';
+      this.title = 'Actualizar idioma';
+      this.buttonTitle = 'Actualizar idioma';
       this.loadLanguage();
       this.form.markAllAsTouched();
     }
@@ -73,25 +75,6 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
     return true;
   }
 
-  loadLanguage():void {
-    this.skeletonLoading = true;
-    this.subscriptions.push(
-      this.jobBoardHttpService
-        .getLanguage(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
-      .subscribe(
-      response => {
-        response.data.startedAt.setDate(response.data.startedAt.getDate() + 1);
-        response.data.endedAt.setDate(response.data.endedAt.getDate() + 1);
-
-        this.form.patchValue(response.data);
-        this.skeletonLoading = false;
-      }, error => {
-        this.skeletonLoading = false;
-        this.messageService.error(error);
-      }
-    ));
-  }
-
   newForm(): FormGroup {
     return this.formBuilder.group({
       id: [null],
@@ -99,8 +82,24 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
       idiom: [null, [Validators.required]],
       writtenLevel: [null, [Validators.required]],
       spokenLevel: [null, [Validators.required]],
-      readLevel: [null, [Validators.minLength(10)]],
+      readLevel: [null, [Validators.required]],
     });
+  }
+
+  loadLanguage():void {
+    this.skeletonLoading = true;
+    this.subscriptions.push(
+      this.jobBoardHttpService
+        .getLanguage(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
+      .subscribe(
+      response => {
+        this.form.patchValue(response.data);
+        this.skeletonLoading = false;
+      }, error => {
+        this.skeletonLoading = false;
+        this.messageService.error(error);
+      }
+    ));
   }
 
   loadIdioms() {
@@ -116,7 +115,7 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
   loadWrittenLevels() {
     this.coreHttpService.getCatalogues('COURSE_EVENT_TYPE').subscribe(
       response => {
-        this.types = response.data;
+        this.writtenLevel = response.data;
       }, error => {
         this.messageService.error(error);
       }
@@ -126,7 +125,7 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
   loadSpokenLevels() {
     this.coreHttpService.getCatalogues('COURSE_EVENT_TYPE').subscribe(
       response => {
-        this.types = response.data;
+        this.spokenLevels = response.data;
       }, error => {
         this.messageService.error(error);
       }
@@ -136,7 +135,7 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
   loadReadLevels() {
     this.coreHttpService.getCatalogues('NIVELES_DE_LECTURA').subscribe(
       response => {
-        this.types = response.data;
+        this.readLevels = response.data;
       }, error => {
         this.messageService.error(error);
       }
@@ -176,7 +175,6 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
       response => {
         this.messageService.success(response);
         this.form.reset();
-        //this.userNewOrUpdate.emit(language);
         this.progressBar = false;
         this.router.navigate(['/job-board/professional/language']);
       },
@@ -200,11 +198,11 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
   }
 
   get spokenLevelField() {
-    return this.form.controls['spoken_Level'];
+    return this.form.controls['spokenLevel'];
   }
 
   get readLevelField() {
-    return this.form.controls['read_Level'];
+    return this.form.controls['readLevel'];
   }
 }
 
