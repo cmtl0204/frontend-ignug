@@ -91,9 +91,8 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
   newForm(): FormGroup {
     return this.formBuilder.group({
       id: [null],
-      professional_id: [null,[Validators.required]],
       position: [null, [Validators.required]],
-      contact_name: [null, [Validators.required]],
+      contactName: [null, [Validators.required]],
       contact_phone: [null, [Validators.required]],
       contact_email: [null, [Validators.required]],
       institution: [null, [Validators.required]],

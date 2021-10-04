@@ -90,8 +90,7 @@ export class SkillFormComponent implements OnInit , OnDestroy, OnExitInterface {
 
   newForm(): FormGroup {
     return this.formBuilder.group({
-      professional_id: [null],
-      type_id: [null, [Validators.required]],
+      type: [null, [Validators.required]],
       description: [null, [Validators.minLength(10)]]
     });
   }
@@ -117,7 +116,7 @@ export class SkillFormComponent implements OnInit , OnDestroy, OnExitInterface {
   }
 
   getTypes() {
-    this.coreHttpService.getCatalogues('COURSE_EVENT_TYPE').subscribe(
+    this.coreHttpService.getCatalogues('SKILL_TYPE').subscribe(
       response => {
         this.types = response.data;
       }, error => {
