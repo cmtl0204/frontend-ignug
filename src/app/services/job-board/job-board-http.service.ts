@@ -3,7 +3,7 @@ import {environment} from '@env/environment';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {PaginatorModel, ServerResponse} from '@models/core';
-import {CourseModel, ExperienceModel, LanguageModel} from '@models/job-board';
+import {CategoryModel, CourseModel, ExperienceModel, LanguageModel} from '@models/job-board';
 import {catchError, map} from 'rxjs/operators';
 import {Handler} from '../../exceptions/handler';
 
@@ -429,25 +429,25 @@ export class JobBoardHttpService {
       );
   }
 
-  storeCategory(skill: CourseModel, professionalId: number): Observable<ServerResponse> {
+  storeCategory(category: CategoryModel): Observable<ServerResponse> {
     const url = `${this.API_URL}/categories`;
-    return this.httpClient.post<ServerResponse>(url, skill)
+    return this.httpClient.post<ServerResponse>(url, category)
       .pipe(
         map(response => response),
         catchError(Handler.render)
       );
   }
 
-  updateCategory(id: number, skill: CourseModel, professionalId: number): Observable<ServerResponse> {
+  updateCategory(id: number, category: CategoryModel): Observable<ServerResponse> {
     const url = `${this.API_URL}/categories/${id}`;
-    return this.httpClient.put<ServerResponse>(url, skill)
+    return this.httpClient.put<ServerResponse>(url, category)
       .pipe(
         map(response => response),
         catchError(Handler.render)
       );
   }
 
-  deleteCategory(id: number, professionalId: number): Observable<ServerResponse> {
+  deleteCategory(id: number): Observable<ServerResponse> {
     const url = `${this.API_URL}/categories/${id}`;
     return this.httpClient.delete<ServerResponse>(url)
       .pipe(
@@ -457,7 +457,7 @@ export class JobBoardHttpService {
   }
 
   deleteCategories(ids: (number | undefined)[]): Observable<ServerResponse> {
-    const url = `${this.API_URL}/skill/destroys`;
+    const url = `${this.API_URL}/category/destroys`;
     return this.httpClient.patch<ServerResponse>(url, {ids})
       .pipe(
         map(response => response),
