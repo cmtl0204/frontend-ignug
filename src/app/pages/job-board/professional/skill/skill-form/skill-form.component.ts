@@ -2,15 +2,14 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {CatalogueModel, UserModel} from '@models/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {UserAdministrationHttpService} from '@services/core/user-administration-http.service';
 import {MessageService} from '@services/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {JobBoardHttpService, JobBoardService} from '@services/job-board';
-import {CourseModel} from '@models/job-board';
-import {AppService} from '@services/core/app.service';
+import {SkillModel} from '@models/job-board';
+import {CoreService} from '@services/core/core.service';
 import {Subscription} from 'rxjs';
 import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
-
+import {CoreHttpService} from '@services/core/core-http.service';
 @Component({
   selector: 'app-skill-form',
   templateUrl: './skill-form.component.html',
@@ -53,7 +52,7 @@ export class SkillFormComponent implements OnInit , OnDestroy, OnExitInterface {
     if (this.activatedRoute.snapshot.params.id != 'new') {
       this.title = 'Actualizar evento';
       this.buttonTitle = 'Actualizar evento';
-      this.getCourse();
+      this.getSkill();
       this.form.markAllAsTouched();
     }
     this.getCertificationType();
@@ -74,7 +73,7 @@ export class SkillFormComponent implements OnInit , OnDestroy, OnExitInterface {
     return true;
   }
 
-  getCourse() {
+  getSkill() {
     this.skeletonLoading = true;
     this.subscriptions.push(this.jobBardHttpService.getCourse(this.jobBardService.professional.id!, this.activatedRoute.snapshot.params.id).subscribe(
       response => {
@@ -142,13 +141,13 @@ export class SkillFormComponent implements OnInit , OnDestroy, OnExitInterface {
     }
   }
 
-  store(course: CourseModel): void {
+  store(skill: SkillModel): void {
     this.progressBar = true;
-    this.jobBardHttpService.storeCourse(course, this.jobBardService.professional.id!).subscribe(
+    this.jobBardHttpService.storeCourse(skill, this.jobBardService.professional.id!).subscribe(
       response => {
         this.messageService.success(response);
         this.form.reset();
-        this.userNewOrUpdate.emit(course);
+        this.userNewOrUpdate.emit(skill);
         this.progressBar = false;
         this.router.navigate(['/job-board/professional/course']);
       },
@@ -159,13 +158,13 @@ export class SkillFormComponent implements OnInit , OnDestroy, OnExitInterface {
     );
   }
 
-  update(course: CourseModel): void {
+  update(skill: SkillModel): void {
     this.progressBar = true;
-    this.jobBardHttpService.updateCourse(course.id!, course, this.jobBardService.professional.id!).subscribe(
+    this.jobBardHttpService.updateCourse(skill.id!, skill, this.jobBardService.professional.id!).subscribe(
       response => {
         this.messageService.success(response);
         this.form.reset();
-        this.userNewOrUpdate.emit(course);
+        this.userNewOrUpdate.emit(skill);
         this.progressBar = false;
         this.router.navigate(['/job-board/professional/course']);
       },

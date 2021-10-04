@@ -12,6 +12,9 @@ import {Handler} from '../../exceptions/handler';
 })
 
 export class JobBoardHttpService {
+  getSkill(arg0: number, id: any) {
+    throw new Error('Method not implemented.');
+  }
   API_URL: string = environment.API_URL;
 
   constructor(private httpClient: HttpClient) {

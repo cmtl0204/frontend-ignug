@@ -6,7 +6,7 @@ import {UserAdministrationHttpService} from '@services/core/user-administration-
 import {MessageService} from '@services/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {JobBoardHttpService, JobBoardService} from '@services/job-board';
-import {CourseModel} from '@models/job-board';
+import {ReferenceModel} from '@models/job-board';
 import {AppService} from '@services/core/app.service';
 import {Subscription} from 'rxjs';
 import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
@@ -145,13 +145,13 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
     }
   }
 
-  store(course: CourseModel): void {
+  store(reference: ReferenceModel): void {
     this.progressBar = true;
-    this.jobBardHttpService.storeCourse(course, this.jobBardService.professional.id!).subscribe(
+    this.jobBardHttpService.storeCourse(reference, this.jobBardService.professional.id!).subscribe(
       response => {
         this.messageService.success(response);
         this.form.reset();
-        this.userNewOrUpdate.emit(course);
+        this.userNewOrUpdate.emit(reference);
         this.progressBar = false;
         this.router.navigate(['/job-board/professional/course']);
       },
@@ -162,13 +162,13 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
     );
   }
 
-  update(course: CourseModel): void {
+  update(c: ReferenceModel): void {
     this.progressBar = true;
-    this.jobBardHttpService.updateCourse(course.id!, course, this.jobBardService.professional.id!).subscribe(
+    this.jobBardHttpService.updateCourse(reference.id!, reference, this.jobBardService.professional.id!).subscribe(
       response => {
         this.messageService.success(response);
         this.form.reset();
-        this.userNewOrUpdate.emit(course);
+        this.userNewOrUpdate.emit(reference);
         this.progressBar = false;
         this.router.navigate(['/job-board/professional/course']);
       },
