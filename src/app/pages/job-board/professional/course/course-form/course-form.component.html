@@ -163,13 +163,13 @@
             </small>
           </div>
           <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
-            <label for="startDate" appLabel label="Fecha de Inicio:"
+            <label for="startedAt" appLabel label="Fecha de Inicio:"
                    [required]="true"
                    [valid]="startDateField.valid"
                    [touched]="startDateField.touched"
                    [dirty]="startDateField.dirty">
             </label>
-            <p-calendar id="startDate" formControlName="startDate" dateFormat="yy-mm-dd"
+            <p-calendar id="startedAt" formControlName="startedAt" dateFormat="yy-mm-dd"
                         [yearRange]="'1900:2021'"
                         [showIcon]="true"
                         [monthNavigator]="true"
@@ -182,13 +182,13 @@
             </small>
           </div>
           <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
-            <label for="endDate" appLabel label="Fecha de Fin:"
+            <label for="EndedAt" appLabel label="Fecha de Fin:"
                    [required]="true"
                    [valid]="endDateField.valid"
                    [touched]="endDateField.touched"
                    [dirty]="endDateField.dirty">
             </label>
-            <p-calendar id="endDate" formControlName="endDate" dateFormat="yy-mm-dd"
+            <p-calendar id="EndedAt" formControlName="EndedAt" dateFormat="yy-mm-dd"
                         [yearRange]="'1900:2021'"
                         [showIcon]="true"
                         [minDate]="startDateField.value"

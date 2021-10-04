@@ -7,10 +7,10 @@ export interface ExperienceModel {
   area?: CatalogueModel;
   employer?: string;
   position?: string;
-  start_date?: Date;
-  end_date?: Date;
-  activities?: string;
+  startedAt?: Date;
+  endedAt?: Date;
+  activities?: string[];
   reason_leave?: string;
-  is_working?: boolean;
-  is_disability?: boolean;
+  worked?: boolean;
+  disabilited?: boolean;
 }

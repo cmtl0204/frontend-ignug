@@ -21,9 +21,9 @@ export interface OfferModel {
     contact_cellphone?: string;
     remuneration?: string;
     vacancies?: number;
-    start_date?: string;
-    end_date?: string;
-    activities?: string;
+    startedAt?: string;
+    endedAt?: string;
+    activities?: string[];
     requirements?: string;
     aditional_information?: string;
     deleted_at?: null;

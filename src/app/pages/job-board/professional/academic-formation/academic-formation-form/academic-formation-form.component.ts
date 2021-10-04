@@ -8,7 +8,7 @@ import {UserAdministrationHttpService} from '@services/core/user-administration-
 import {JobBoardHttpService, JobBoardService} from '@services/job-board';
 import {CoreService} from '@services/core/core.service';
 import {MessageService} from '@services/core';
-import {CourseModel} from '@models/job-board';
+import {AcademicFormationModel, CategoryModel, CourseModel} from '@models/job-board';
 import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
 
 @Component({
@@ -23,9 +23,7 @@ export class AcademicFormationFormComponent implements OnInit,OnDestroy, OnExitI
   private subscriptions: Subscription[] = [];
   form: FormGroup;
   progressBar: boolean = false;
-  types: CatalogueModel[] = [];
-  certificationTypes: CatalogueModel[] = [];
-  areas: CatalogueModel[] = [];
+  professionalDegrees: CategoryModel[] = [];
   skeletonLoading: boolean = false;
   title: string = 'Crear evento';
   buttonTitle: string = 'Crear evento';
@@ -43,7 +41,7 @@ export class AcademicFormationFormComponent implements OnInit,OnDestroy, OnExitI
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
-      {label: 'Cursos y Capacitaciones', routerLink: ['/job-board/professional/course']},
+      {label: 'Formación Académica', routerLink: ['/job-board/professional/academic-formation']},
       {label: 'Formulario', disabled: true},
     ]);
     this.form = this.newForm();
@@ -51,14 +49,12 @@ export class AcademicFormationFormComponent implements OnInit,OnDestroy, OnExitI
 
   ngOnInit(): void {
     if (this.activatedRoute.snapshot.params.id != 'new') {
-      this.title = 'Actualizar evento';
-      this.buttonTitle = 'Actualizar evento';
-      this.getCourse();
+      this.title = 'Actualizar formación académica';
+      this.buttonTitle = 'Actualizar formación académica';
+      this.getAcademicFormation();
       this.form.markAllAsTouched();
     }
-    this.getCertificationType();
-    this.getTypes();
-    this.getAreas();
+    this.getProfessionalDegrees();
   }
 
   ngOnDestroy(): void {
@@ -74,14 +70,12 @@ export class AcademicFormationFormComponent implements OnInit,OnDestroy, OnExitI
     return true;
   }
 
-  getCourse() {
+  getAcademicFormation() {
     this.skeletonLoading = true;
-    this.subscriptions.push(this.jobBardHttpService.getCourse(this.jobBardService.professional.id!, this.activatedRoute.snapshot.params.id).subscribe(
+    this.subscriptions.push(this.jobBardHttpService.getAcademicFormation(this.jobBardService.professional.id!, this.activatedRoute.snapshot.params.id).subscribe(
       response => {
-        response.data.startDate = new Date('2021-08-22');
-        response.data.startDate.setDate(response.data.startDate.getDate() + 1);
-        response.data.endDate = new Date(response.data.endDate);
-        response.data.endDate.setDate(response.data.endDate.getDate() + 1);
+        response.data.registeredAt = new Date('2021-08-22');
+        response.data.registeredAt.setDate(response.data.registeredAt.getDate() + 1);
 
         this.form.patchValue(response.data);
         this.skeletonLoading = false;
@@ -95,47 +89,24 @@ export class AcademicFormationFormComponent implements OnInit,OnDestroy, OnExitI
   newForm(): FormGroup {
     return this.formBuilder.group({
       id: [null],
-      type: [null, [Validators.required]],
-      certificationType: [null, [Validators.required]],
-      area: [null, [Validators.required]],
-      name: [null, [Validators.required]],
-      description: [null, [Validators.minLength(10)]],
-      startDate: [null, [Validators.required]],
-      endDate: [null, [Validators.required]],
-      hours: [null, [Validators.required]],
-      institution: [null, [Validators.required]],
+      professionalDegree: [null, [Validators.required]],
+      registeredAt: [null, [Validators.required]],
+      senescytCode: [null, [Validators.required]],
+      certificated: [null, [Validators.required]],
     });
   }
 
-  getAreas() {
-    this.userAdministrationHttpService.getCatalogues('COURSE_AREA').subscribe(
+  getProfessionalDegrees() {
+    this.jobBardHttpService.getCategories('professionalDegrees')
+      .subscribe(
       response => {
-        this.areas = response.data;
+        this.professionalDegrees = response.data;
       }, error => {
         this.messageService.error(error);
       }
     );
   }
 
-  getCertificationType() {
-    this.userAdministrationHttpService.getCatalogues('COURSE_CERTIFICATION_TYPE').subscribe(
-      response => {
-        this.certificationTypes = response.data;
-      }, error => {
-        this.messageService.error(error);
-      }
-    );
-  }
-
-  getTypes() {
-    this.userAdministrationHttpService.getCatalogues('COURSE_EVENT_TYPE').subscribe(
-      response => {
-        this.types = response.data;
-      }, error => {
-        this.messageService.error(error);
-      }
-    );
-  }
 
   onSubmit() {
     if (this.form.valid) {
@@ -149,15 +120,15 @@ export class AcademicFormationFormComponent implements OnInit,OnDestroy, OnExitI
     }
   }
 
-  store(course: CourseModel): void {
+  store(academicFormation: AcademicFormationModel): void {
     this.progressBar = true;
-    this.jobBardHttpService.storeCourse(course, this.jobBardService.professional.id!).subscribe(
+    this.jobBardHttpService.storeAcademicFormation(academicFormation, this.jobBardService.professional.id!).subscribe(
       response => {
         this.messageService.success(response);
         this.form.reset();
-        this.userNewOrUpdate.emit(course);
+        this.userNewOrUpdate.emit(academicFormation);
         this.progressBar = false;
-        this.router.navigate(['/job-board/professional/course']);
+        this.router.navigate(['/job-board/professional/academicFormation']);
       },
       error => {
         this.messageService.error(error);
@@ -166,15 +137,15 @@ export class AcademicFormationFormComponent implements OnInit,OnDestroy, OnExitI
     );
   }
 
-  update(course: CourseModel): void {
+  update(academicFormation: AcademicFormationModel): void {
     this.progressBar = true;
-    this.jobBardHttpService.updateCourse(course.id!, course, this.jobBardService.professional.id!).subscribe(
+    this.jobBardHttpService.updateAcademicFormation(academicFormation.id!, academicFormation, this.jobBardService.professional.id!).subscribe(
       response => {
         this.messageService.success(response);
         this.form.reset();
-        this.userNewOrUpdate.emit(course);
+        this.userNewOrUpdate.emit(academicFormation);
         this.progressBar = false;
-        this.router.navigate(['/job-board/professional/course']);
+        this.router.navigate(['/job-board/professional/academicFormation']);
       },
       error => {
         this.messageService.error(error);
@@ -187,40 +158,20 @@ export class AcademicFormationFormComponent implements OnInit,OnDestroy, OnExitI
     return this.form.controls['id'];
   }
 
-  get typeField() {
+  get professionalDegreeField() {
     return this.form.controls['type'];
   }
 
-  get certificationTypeField() {
+  get registeredAtField() {
     return this.form.controls['certificationType'];
   }
 
-  get areaField() {
+  get senescytCodeField() {
     return this.form.controls['area'];
   }
 
-  get nameField() {
+  get certificatedField() {
     return this.form.controls['name'];
-  }
-
-  get descriptionField() {
-    return this.form.controls['description'];
-  }
-
-  get startDateField() {
-    return this.form.controls['startDate'];
-  }
-
-  get endDateField() {
-    return this.form.controls['endDate'];
-  }
-
-  get hoursField() {
-    return this.form.controls['hours'];
-  }
-
-  get institutionField() {
-    return this.form.controls['institution'];
   }
 }
 

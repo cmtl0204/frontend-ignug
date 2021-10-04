@@ -2,21 +2,21 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {CatalogueModel, UserModel} from '@models/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UserAdministrationHttpService} from '@services/core/user-administration-http.service';
 import {MessageService} from '@services/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {JobBoardHttpService, JobBoardService} from '@services/job-board';
-import {CourseModel} from '@models/job-board';
-import {CoreService} from '@services/core/core.service';
+import {ExperienceModel} from '@models/job-board';
+import {AppService} from '@services/core/app.service';
 import {Subscription} from 'rxjs';
 import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
-import {CoreHttpService} from '@services/core/core-http.service';
 
 @Component({
-  selector: 'app-course-form',
-  templateUrl: './course-form.component.html',
-  styleUrls: ['./course-form.component.scss']
+  selector: 'app-experience-form',
+  templateUrl: './experience-form.component.html',
+  styleUrls: ['./experience-form.component.scss']
 })
-export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
+export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterface {
   @Input() user: UserModel = {};
   @Output() userNewOrUpdate = new EventEmitter<UserModel>();
 
@@ -29,15 +29,14 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
   skeletonLoading: boolean = false;
   title: string = 'Crear evento';
   buttonTitle: string = 'Crear evento';
-
   constructor(
     private router: Router,
     private breadcrumbService: BreadcrumbService,
     private formBuilder: FormBuilder,
-    private coreHttpService: CoreHttpService,
+    private userAdministrationHttpService: UserAdministrationHttpService,
     private jobBardHttpService: JobBoardHttpService,
     private jobBardService: JobBoardService,
-    private appService: CoreService,
+    private appService: AppService,
     public messageService: MessageService,
     private activatedRoute: ActivatedRoute) {
     this.breadcrumbService.setItems([
@@ -53,12 +52,11 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
     if (this.activatedRoute.snapshot.params.id != 'new') {
       this.title = 'Actualizar evento';
       this.buttonTitle = 'Actualizar evento';
-      this.getCourse();
+      this.getExperience();
       this.form.markAllAsTouched();
     }
-    this.getCertificationTypes();
-    this.getTypes();
     this.getAreas();
+    this.getProfessional();
   }
 
   ngOnDestroy(): void {
@@ -74,16 +72,12 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
     return true;
   }
 
-  getCourse() {
+  getExperience() {
     this.skeletonLoading = true;
-    this.subscriptions.push(
-      this.jobBardHttpService.getCourse(this.jobBardService.professional.id!, this.activatedRoute.snapshot.params.id)
-        .subscribe(
+    this.subscriptions.push(this.jobBardHttpService.getExperience(this.jobBardService.professional.id!, this.activatedRoute.snapshot.params.id).subscribe(
       response => {
-        response.data.startedAt = new Date('2021-08-22');
-        response.data.startedAt.setDate(response.data.startedAt.getDate() + 1);
-        response.data.EndedAt = new Date(response.data.EndedAt);
-        response.data.EndedAt.setDate(response.data.EndedAt.getDate() + 1);
+        response.data.startAt.setDate(response.data.startAt.getDate() + 1);
+        response.data.endAt.setDate(response.data.endAt.getDate() + 1);
 
         this.form.patchValue(response.data);
         this.skeletonLoading = false;
@@ -97,28 +91,20 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
   newForm(): FormGroup {
     return this.formBuilder.group({
       id: [null],
-      type: [null, [Validators.required]],
-      certificationType: [null, [Validators.required]],
       area: [null, [Validators.required]],
-      name: [null, [Validators.required]],
-<<<<<<< HEAD
-      description: [null, [Validators.required]],
-      startDate: [null, [Validators.required]],
-      endDate: [null, [Validators.required]],
-=======
-      description: [null, [Validators.minLength(10)]],
-      startedAt: [null, [Validators.required]],
-      EndedAt: [null, [Validators.required]],
->>>>>>> 63b7d7a561fc680be40f04f3398937807e5359e5
-      hours: [null, [Validators.required]],
-      institution: [null, [Validators.required]],
+      professional: [null, [Validators.required]],
+      activities: [this.formBuilder.array([]), [Validators.required]],
+      employer: [null, [Validators.required]],
+      endAt: [null, [Validators.required]],
+      position: [null, [Validators.required]],
+      reasonLeave: [null, [Validators.required]],
+      startAt: [null, [Validators.required]],
+      worked: [false, [Validators.required]],
     });
   }
-
-  // ForeignKeys
+//ForeignKeys
   getAreas() {
-    this.coreHttpService.getCatalogues('COURSE_AREA')
-      .subscribe(
+    this.coreHttpService.getCatalogues('COURSE_AREA').subscribe(
       response => {
         this.areas = response.data;
       }, error => {
@@ -127,20 +113,10 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
     );
   }
 
-  getCertificationTypes() {
-    this.coreHttpService.getCatalogues('COURSE_CERTIFICATION_TYPE').subscribe(
+  getProfessional() {
+    this.job_boardHttpService.getProfessional('PROFESSIONAL').subscribe(
       response => {
         this.certificationTypes = response.data;
-      }, error => {
-        this.messageService.error(error);
-      }
-    );
-  }
-
-  getTypes() {
-    this.coreHttpService.getCatalogues('COURSE_EVENT_TYPE').subscribe(
-      response => {
-        this.types = response.data;
       }, error => {
         this.messageService.error(error);
       }
@@ -159,13 +135,13 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
     }
   }
 
-  store(course: CourseModel): void {
+  store(experience: ExperienceModel): void {
     this.progressBar = true;
-    this.jobBardHttpService.storeCourse(course, this.jobBardService.professional.id!).subscribe(
+    this.jobBardHttpService.storeCourse(experience, this.jobBardService.professional.id!).subscribe(
       response => {
         this.messageService.success(response);
         this.form.reset();
-        this.userNewOrUpdate.emit(course);
+        this.userNewOrUpdate.emit(experience);
         this.progressBar = false;
         this.router.navigate(['/job-board/professional/course']);
       },
@@ -176,13 +152,13 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
     );
   }
 
-  update(course: CourseModel): void {
+  update(experience: ExperienceModel): void {
     this.progressBar = true;
-    this.jobBardHttpService.updateCourse(course.id!, course, this.jobBardService.professional.id!).subscribe(
+    this.jobBardHttpService.updateCourse(experience.id!, experience, this.jobBardService.professional.id!).subscribe(
       response => {
         this.messageService.success(response);
         this.form.reset();
-        this.userNewOrUpdate.emit(course);
+        this.userNewOrUpdate.emit(experience);
         this.progressBar = false;
         this.router.navigate(['/job-board/professional/course']);
       },
@@ -197,39 +173,40 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
     return this.form.controls['id'];
   }
 
-  get typeField() {
-    return this.form.controls['type'];
-  }
-
-  get certificationTypeField() {
-    return this.form.controls['certificationType'];
-  }
-
   get areaField() {
     return this.form.controls['area'];
   }
 
-  get nameField() {
-    return this.form.controls['name'];
+  get professionalField() {
+    return this.form.controls['professional'];
   }
 
-  get descriptionField() {
-    return this.form.controls['description'];
+  get activitiesField() {
+    return this.form.controls['activities'];
   }
 
-  get startDateField() {
-    return this.form.controls['startedAt'];
+  get employerField() {
+    return this.form.controls['employer'];
   }
 
-  get endDateField() {
-    return this.form.controls['EndedAt'];
+  get endAtField() {
+    return this.form.controls['endAt'];
   }
 
-  get hoursField() {
-    return this.form.controls['hours'];
+  get positionField() {
+    return this.form.controls['position'];
   }
 
-  get institutionField() {
-    return this.form.controls['institution'];
+  get reasonLeaveField() {
+    return this.form.controls['reason_Leave'];
+  }
+
+  get startAtField() {
+    return this.form.controls['startAt'];
+  }
+
+  get workedField() {
+    return this.form.controls['worked'];
   }
 }
+

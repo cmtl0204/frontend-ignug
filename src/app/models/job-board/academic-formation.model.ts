@@ -4,7 +4,7 @@ export interface AcademicFormationModel {
   id?: number;
   professional?: ProfessionalModel;
   professionalDegree?: CategoryModel;
-  registrationDate?: Date;
+  registeredAt?: Date;
   senescytCode?: string;
   certificated?: boolean;
 }

@@ -7,22 +7,22 @@ import {JobBoardHttpService, JobBoardService} from '@services/job-board';
 import {MessageService} from '@services/core';
 import {CourseModel} from '@models/job-board';
 import {ColModel, PaginatorModel} from '@models/core';
-import {FormControl} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 
 @Component({
-  selector: 'app-course-list',
-  templateUrl: './course-list.component.html',
-  styleUrls: ['./course-list.component.scss']
+  selector: 'app-language-list',
+  templateUrl: './language-list.component.html',
+  styleUrls: ['./language-list.component.scss']
 })
-export class CourseListComponent implements OnInit, OnDestroy {
+export class LanguageListComponent implements OnInit {
   private subscriptions: Subscription[] = [];
   courses: CourseModel[] = [];
-  selectedCourse: CourseModel = {};
-  selectedCourses: CourseModel[] = [];
   cols: ColModel[] = [];
   items: MenuItem[] = [];
   loading: boolean = false;
   paginator: PaginatorModel = {current_page: 1, per_page: 5, total: 0};
+  selectedCourse: CourseModel = {};
+  selectedCourses: CourseModel[] = [];
   filter: FormControl;
 
   constructor(private breadcrumbService: BreadcrumbService,
@@ -139,8 +139,8 @@ export class CourseListComponent implements OnInit, OnDestroy {
       {field: 'name', header: 'Evento'},
       {field: 'institution', header: 'Institución'},
       {field: 'hours', header: 'Horas'},
-      {field: 'startedAt', header: 'Inicio'},
-      {field: 'EndedAt', header: 'Fin'},
+      {field: 'startDate', header: 'Inicio'},
+      {field: 'endDate', header: 'Fin'},
     ];
 
   }
@@ -160,3 +160,4 @@ export class CourseListComponent implements OnInit, OnDestroy {
     ];
   }
 }
+

@@ -5,6 +5,7 @@ import {UserAdministrationHttpService} from '@services/core/user-administration-
 import {MessageService} from '@services/core/message.service';
 import {MenuItem} from 'primeng/api';
 import {PhoneModel} from '@models/core/phone.model';
+import {CoreHttpService} from '@services/core/core-http.service';
 
 @Component({
   selector: 'app-user-administration-form',
@@ -25,6 +26,7 @@ export class UserAdministrationFormComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
               private userAdministrationHttpService: UserAdministrationHttpService,
+              private coreHttpService: CoreHttpService,
               public messageService: MessageService) {
     this.formUser = this.newFormUser();
     this.automaticPassword = this.formBuilder.control(false);
@@ -74,7 +76,7 @@ export class UserAdministrationFormComponent implements OnInit {
   }
 
   getIdentificationTypes() {
-    this.userAdministrationHttpService.getCatalogues('IDENTIFICATION_TYPE').subscribe(
+    this.coreHttpService.getCatalogues('IDENTIFICATION_TYPE').subscribe(
       response => {
         this.identificationTypes = response.data;
       }, error => {
@@ -84,7 +86,7 @@ export class UserAdministrationFormComponent implements OnInit {
   }
 
   getPhoneOperators() {
-    this.userAdministrationHttpService.getCatalogues('PHONE_OPERATOR').subscribe(
+    this.coreHttpService.getCatalogues('PHONE_OPERATOR').subscribe(
       response => {
         this.phoneOperators = response.data;
       }, error => {
@@ -94,7 +96,7 @@ export class UserAdministrationFormComponent implements OnInit {
   }
 
   getPhoneTypes() {
-    this.userAdministrationHttpService.getCatalogues('PHONE_TYPE').subscribe(
+    this.coreHttpService.getCatalogues('PHONE_TYPE').subscribe(
       response => {
         this.phoneTypes = response.data;
       }, error => {
@@ -104,7 +106,7 @@ export class UserAdministrationFormComponent implements OnInit {
   }
 
   getPhoneLocations() {
-    this.userAdministrationHttpService.getLocations('COUNTRY').subscribe(
+    this.coreHttpService.getLocations('COUNTRY').subscribe(
       response => {
         this.phoneLocations = response.data;
       }, error => {
