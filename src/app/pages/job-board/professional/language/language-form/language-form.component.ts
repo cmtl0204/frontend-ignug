@@ -1,15 +1,14 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {BreadcrumbService} from '@services/core/breadcrumb.service';
-import {CatalogueModel, UserModel} from '@models/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {UserAdministrationHttpService} from '@services/core/user-administration-http.service';
-import {MessageService} from '@services/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {JobBoardHttpService, JobBoardService} from '@services/job-board';
-import {LanguageModel} from '@models/job-board';
-import {AppService} from '@services/core/app.service';
 import {Subscription} from 'rxjs';
+import {BreadcrumbService} from '@services/core/breadcrumb.service';
+import {MessageService} from '@services/core';
 import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
+import {CoreHttpService} from '@services/core';
+import {JobBoardHttpService, JobBoardService} from '@services/job-board';
+import {CatalogueModel} from '@models/core';
+import {LanguageModel} from '@models/job-board';
 
 @Component({
   selector: 'app-language-form',
@@ -17,33 +16,31 @@ import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
   styleUrls: ['./language-form.component.scss']
 })
 export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface {
-  @Input() user: UserModel = {};
-  @Output() userNewOrUpdate = new EventEmitter<UserModel>();
-
   private subscriptions: Subscription[] = [];
   form: FormGroup;
   progressBar: boolean = false;
+  skeletonLoading: boolean = false;
+  title: string = 'Crear Lenguage';
+  buttonTitle: string = 'Crear Lenguage';
+
   types: CatalogueModel[] = [];
   certificationTypes: CatalogueModel[] = [];
   areas: CatalogueModel[] = [];
-  skeletonLoading: boolean = false;
-  title: string = 'Crear evento';
-  buttonTitle: string = 'Crear evento';
 
   constructor(
-    private router: Router,
-    private breadcrumbService: BreadcrumbService,
     private formBuilder: FormBuilder,
-    private userAdministrationHttpService: UserAdministrationHttpService,
-    private jobBardHttpService: JobBoardHttpService,
-    private jobBardService: JobBoardService,
-    private appService: AppService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private breadcrumbService: BreadcrumbService,
     public messageService: MessageService,
-    private activatedRoute: ActivatedRoute) {
+    private coreHttpService: CoreHttpService,
+    private jobBoardHttpService: JobBoardHttpService,
+    private jobBoardService: JobBoardService
+    ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
-      {label: 'Cursos y Capacitaciones', routerLink: ['/job-board/professional/course']},
+      {label: 'Lenguage Profesional', routerLink: ['/job-board/professional/language']},
       {label: 'Formulario', disabled: true},
     ]);
     this.form = this.newForm();
@@ -51,14 +48,15 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
 
   ngOnInit(): void {
     if (this.activatedRoute.snapshot.params.id != 'new') {
-      this.title = 'Actualizar evento';
-      this.buttonTitle = 'Actualizar evento';
-      this.getLanguage();
+      this.title = 'Actualizar lenguage';
+      this.buttonTitle = 'Actualizar lenguage';
+      this.loadLanguage();
       this.form.markAllAsTouched();
     }
-    this.getCertificationType();
-    this.getTypes();
-    this.getAreas();
+    this.loadIdioms();
+    this.loadWrittenLevels();
+    this.loadSpokenLevels();
+    this.loadReadLevels();
   }
 
   ngOnDestroy(): void {
@@ -74,14 +72,15 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
     return true;
   }
 
-  getLanguage() {
+  loadLanguage():void {
     this.skeletonLoading = true;
-    this.subscriptions.push(this.jobBardHttpService.getLanguage(this.jobBardService.professional.id!, this.activatedRoute.snapshot.params.id).subscribe(
+    this.subscriptions.push(
+      this.jobBoardHttpService
+        .getLanguage(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
+      .subscribe(
       response => {
-        response.data.startDate = new Date('2021-08-22');
-        response.data.startDate.setDate(response.data.startDate.getDate() + 1);
-        response.data.endDate = new Date(response.data.endDate);
-        response.data.endDate.setDate(response.data.endDate.getDate() + 1);
+        response.data.startedAt.setDate(response.data.startedAt.getDate() + 1);
+        response.data.endedAt.setDate(response.data.endedAt.getDate() + 1);
 
         this.form.patchValue(response.data);
         this.skeletonLoading = false;
@@ -103,18 +102,8 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
     });
   }
 // Foreingkeys
-  getProfessionals() {
-    this.userAdministrationHttpService.getCatalogues('COURSE_AREA').subscribe(
-      response => {
-        this.areas = response.data;
-      }, error => {
-        this.messageService.error(error);
-      }
-    );
-  }
-
-  getIdiom() {
-    this.userAdministrationHttpService.getCatalogues('IDIOM').subscribe(
+  loadIdioms() {
+    this.coreHttpService.getCatalogues('IDIOM').subscribe(
       response => {
         this.certificationTypes = response.data;
       }, error => {
@@ -123,8 +112,8 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
     );
   }
 
-  getWrittenLevel() {
-    this.userAdministrationHttpService.getCatalogues('COURSE_EVENT_TYPE').subscribe(
+  loadWrittenLevels() {
+    this.coreHttpService.getCatalogues('COURSE_EVENT_TYPE').subscribe(
       response => {
         this.types = response.data;
       }, error => {
@@ -133,8 +122,8 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
     );
   }
 
-  getSpokenLevel() {
-    this.userAdministrationHttpService.getCatalogues('COURSE_EVENT_TYPE').subscribe(
+  loadSpokenLevels() {
+    this.coreHttpService.getCatalogues('COURSE_EVENT_TYPE').subscribe(
       response => {
         this.types = response.data;
       }, error => {
@@ -143,8 +132,8 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
     );
   }
 
-  getReadLevel() {
-    this.userAdministrationHttpService.getCatalogues('COURSE_EVENT_TYPE').subscribe(
+  loadReadLevels() {
+    this.coreHttpService.getCatalogues('NIVELES_DE_LECTURA').subscribe(
       response => {
         this.types = response.data;
       }, error => {
@@ -166,12 +155,11 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
 
   store(language: LanguageModel): void {
     this.progressBar = true;
-    this.jobBardHttpService.storeCourse(language, this.jobBardService.professional.id!).subscribe(
+    this.jobBoardHttpService.storeCourse(language, this.jobBoardService.professional.id!).subscribe(
       response => {
         this.messageService.success(response);
-        this.form.reset();
-        this.userNewOrUpdate.emit(language);
         this.progressBar = false;
+        this.form.reset();
         this.router.navigate(['/job-board/professional/language']);
       },
       error => {
@@ -183,11 +171,11 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
 
   update(language: LanguageModel): void {
     this.progressBar = true;
-    this.jobBardHttpService.updateCourse(language.id!, language, this.jobBardService.professional.id!).subscribe(
+    this.jobBoardHttpService.updateCourse(language.id!, language, this.jobBoardService.professional.id!).subscribe(
       response => {
         this.messageService.success(response);
         this.form.reset();
-        this.userNewOrUpdate.emit(language);
+        //this.userNewOrUpdate.emit(language);
         this.progressBar = false;
         this.router.navigate(['/job-board/professional/language']);
       },
