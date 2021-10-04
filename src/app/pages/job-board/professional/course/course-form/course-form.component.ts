@@ -17,8 +17,7 @@ import {CoreHttpService} from '@services/core/core-http.service';
   styleUrls: ['./course-form.component.scss']
 })
 export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
-  @Input() user: UserModel = {};
-  @Output() userNewOrUpdate = new EventEmitter<UserModel>();
+  
 
   private subscriptions: Subscription[] = [];
   form: FormGroup;
@@ -27,13 +26,13 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
   certificationTypes: CatalogueModel[] = [];
   areas: CatalogueModel[] = [];
   skeletonLoading: boolean = false;
-  title: string = 'Crear evento';
-  buttonTitle: string = 'Crear evento';
+  title: string = 'Crear curso';
+  buttonTitle: string = 'Crear curso';
 
   constructor(
+    private formBuilder: FormBuilder,
     private router: Router,
     private breadcrumbService: BreadcrumbService,
-    private formBuilder: FormBuilder,
     private coreHttpService: CoreHttpService,
     private jobBardHttpService: JobBoardHttpService,
     private jobBardService: JobBoardService,
@@ -51,14 +50,14 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
 
   ngOnInit(): void {
     if (this.activatedRoute.snapshot.params.id != 'new') {
-      this.title = 'Actualizar evento';
-      this.buttonTitle = 'Actualizar evento';
+      this.title = 'Actualizar curso';
+      this.buttonTitle = 'Actualizar curso';
       this.getCourse();
       this.form.markAllAsTouched();
     }
-    this.getCertificationTypes();
-    this.getTypes();
-    this.getAreas();
+    this.loadCertificationTypes();
+    this.loadTypes();
+    this.loadAreas();
   }
 
   ngOnDestroy(): void {
@@ -101,22 +100,16 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
       certificationType: [null, [Validators.required]],
       area: [null, [Validators.required]],
       name: [null, [Validators.required]],
-<<<<<<< HEAD
-      description: [null, [Validators.required]],
-      startDate: [null, [Validators.required]],
-      endDate: [null, [Validators.required]],
-=======
       description: [null, [Validators.minLength(10)]],
       startedAt: [null, [Validators.required]],
       EndedAt: [null, [Validators.required]],
->>>>>>> 63b7d7a561fc680be40f04f3398937807e5359e5
       hours: [null, [Validators.required]],
       institution: [null, [Validators.required]],
     });
   }
 
   // ForeignKeys
-  getAreas() {
+  loadAreas() {
     this.coreHttpService.getCatalogues('COURSE_AREA')
       .subscribe(
       response => {
@@ -127,7 +120,7 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
     );
   }
 
-  getCertificationTypes() {
+  loadCertificationTypes() {
     this.coreHttpService.getCatalogues('COURSE_CERTIFICATION_TYPE').subscribe(
       response => {
         this.certificationTypes = response.data;
@@ -137,7 +130,7 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
     );
   }
 
-  getTypes() {
+  loadTypes() {
     this.coreHttpService.getCatalogues('COURSE_EVENT_TYPE').subscribe(
       response => {
         this.types = response.data;
@@ -165,7 +158,7 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
       response => {
         this.messageService.success(response);
         this.form.reset();
-        this.userNewOrUpdate.emit(course);
+        
         this.progressBar = false;
         this.router.navigate(['/job-board/professional/course']);
       },
@@ -182,7 +175,7 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
       response => {
         this.messageService.success(response);
         this.form.reset();
-        this.userNewOrUpdate.emit(course);
+        
         this.progressBar = false;
         this.router.navigate(['/job-board/professional/course']);
       },
@@ -217,7 +210,7 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
     return this.form.controls['description'];
   }
 
-  get startDateField() {
+  get startAtField() {
     return this.form.controls['startedAt'];
   }
 
