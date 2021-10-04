@@ -24,6 +24,13 @@ import {CalendarModule} from 'primeng/calendar';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {SharedModule} from '@shared/shared.module';
 import {ToolbarModule} from 'primeng/toolbar';
+
+import { SkillComponent } from './skill/skill.component';
+import { SkillFormComponent } from './skill/skill-form/skill-form.component';
+import { SkillListComponent } from './skill/skill-list/skill-list.component';
+import { ReferenceComponent } from './reference/reference.component';
+import { ReferenceFormComponent } from './reference/reference-form/reference-form.component';
+import { ReferenceListComponent } from './reference/reference-list/reference-list.component';
 import { ExperienceComponent } from './experience/experience.component';
 import { ExperienceFormComponent } from './Experience/experience-form/experience-form.component';
 import { ExperienceListComponent } from './Experience/experience-list/experience-list.component';
@@ -44,6 +51,12 @@ import { CategoryListComponent } from './category/category-list/category-list.co
     CourseComponent,
     CourseListComponent,
     CourseFormComponent,
+    SkillComponent,
+    SkillFormComponent,
+    SkillListComponent,
+    ReferenceComponent,
+    ReferenceFormComponent,
+    ReferenceListComponent,
     ExperienceComponent,
     ExperienceFormComponent,
     ExperienceListComponent,

@@ -1,15 +1,14 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {BreadcrumbService} from '@services/core/breadcrumb.service';
-import {CatalogueModel, UserModel} from '@models/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {UserAdministrationHttpService} from '@services/core/user-administration-http.service';
-import {MessageService} from '@services/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {JobBoardHttpService, JobBoardService} from '@services/job-board';
-import {CourseModel} from '@models/job-board';
-import {AppService} from '@services/core/app.service';
 import {Subscription} from 'rxjs';
+import {BreadcrumbService} from '@services/core/breadcrumb.service';
+import {MessageService} from '@services/core';
 import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
+import {CoreHttpService} from '@services/core';
+import {JobBoardHttpService, JobBoardService} from '@services/job-board';
+import {CatalogueModel} from '@models/core';
+import {ExperienceModel} from '@models/job-board';
 
 @Component({
   selector: 'app-experience-form',
@@ -17,32 +16,31 @@ import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
   styleUrls: ['./experience-form.component.scss']
 })
 export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterface {
-  @Input() user: UserModel = {};
-  @Output() userNewOrUpdate = new EventEmitter<UserModel>();
-
   private subscriptions: Subscription[] = [];
   form: FormGroup;
   progressBar: boolean = false;
+  skeletonLoading: boolean = false;
+  title: string = 'Crear experiencia';
+  buttonTitle: string = 'Crear experiencia';
+
   types: CatalogueModel[] = [];
   certificationTypes: CatalogueModel[] = [];
   areas: CatalogueModel[] = [];
-  skeletonLoading: boolean = false;
-  title: string = 'Crear evento';
-  buttonTitle: string = 'Crear evento';
+
   constructor(
-    private router: Router,
-    private breadcrumbService: BreadcrumbService,
     private formBuilder: FormBuilder,
-    private userAdministrationHttpService: UserAdministrationHttpService,
-    private jobBardHttpService: JobBoardHttpService,
-    private jobBardService: JobBoardService,
-    private appService: AppService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private breadcrumbService: BreadcrumbService,
     public messageService: MessageService,
-    private activatedRoute: ActivatedRoute) {
+    private coreHttpService: CoreHttpService,
+    private jobBoardHttpService: JobBoardHttpService,
+    private jobBoardService: JobBoardService
+    ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
-      {label: 'Cursos y Capacitaciones', routerLink: ['/job-board/professional/course']},
+      {label: 'Experiencia Profesional', routerLink: ['/job-board/professional/experience']},
       {label: 'Formulario', disabled: true},
     ]);
     this.form = this.newForm();
@@ -50,14 +48,13 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
 
   ngOnInit(): void {
     if (this.activatedRoute.snapshot.params.id != 'new') {
-      this.title = 'Actualizar evento';
-      this.buttonTitle = 'Actualizar evento';
-      this.getCourse();
+      this.title = 'Actualizar experiencia';
+      this.buttonTitle = 'Actualizar experiencia';
+      this.loadExperience();
       this.form.markAllAsTouched();
     }
-    this.getCertificationType();
-    this.getTypes();
-    this.getAreas();
+
+    this.loadAreas();
   }
 
   ngOnDestroy(): void {
@@ -66,21 +63,23 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
 
   async onExit() {
     if (this.form.touched || this.form.dirty) {
-      return await this.messageService.questionOnExit({}).then((result) => {
+      return await this.messageService.questionOnExit({})
+        .then((result) => {
         return result.isConfirmed;
       });
     }
     return true;
   }
 
-  getExperience() {
+  loadExperience():void {
     this.skeletonLoading = true;
-    this.subscriptions.push(this.jobBardHttpService.getExperience(this.jobBardService.professional.id!, this.activatedRoute.snapshot.params.id).subscribe(
+    this.subscriptions.push(
+      this.jobBoardHttpService
+        .getExperience(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
+      .subscribe(
       response => {
-        response.data.startDate = new Date('2021-08-22');
-        response.data.startDate.setDate(response.data.startDate.getDate() + 1);
-        response.data.endDate = new Date(response.data.endDate);
-        response.data.endDate.setDate(response.data.endDate.getDate() + 1);
+        response.data.startedAt.setDate(response.data.startedAt.getDate() + 1);
+        response.data.endedAt.setDate(response.data.endedAt.getDate() + 1);
 
         this.form.patchValue(response.data);
         this.skeletonLoading = false;
@@ -94,20 +93,20 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
   newForm(): FormGroup {
     return this.formBuilder.group({
       id: [null],
-      area: [null, [Validators.required]],
       professional: [null, [Validators.required]],
+      area: [null, [Validators.required]],
       activities: [this.formBuilder.array([]), [Validators.required]],
       employer: [null, [Validators.required]],
-      endAt: [null, [Validators.required]],
+      endedAt: [null, [Validators.required]],
       position: [null, [Validators.required]],
       reasonLeave: [null, [Validators.required]],
-      startAt: [null, [Validators.required]],
+      startedAt: [null, [Validators.required]],
       worked: [false, [Validators.required]],
     });
   }
-//ForeignKeys
-  getAreas() {
-    this.coreHttpService.getCatalogues('COURSE_AREA').subscribe(
+
+  loadAreas():void {
+    this.coreHttpService.getCatalogues('EXPERIENCE_AREA').subscribe(
       response => {
         this.areas = response.data;
       }, error => {
@@ -116,17 +115,7 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
     );
   }
 
-  getProfessional() {
-    this.job_boardHttpService.getProfessional('PROFESSIONAL').subscribe(
-      response => {
-        this.certificationTypes = response.data;
-      }, error => {
-        this.messageService.error(error);
-      }
-    );
-  }
-
-  onSubmit() {
+  onSubmit():void {
     if (this.form.valid) {
       if (this.idField.value) {
         this.update(this.form.value);
@@ -138,15 +127,14 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
     }
   }
 
-  store(course: CourseModel): void {
+  store(experience: ExperienceModel): void {
     this.progressBar = true;
-    this.jobBardHttpService.storeCourse(course, this.jobBardService.professional.id!).subscribe(
+    this.jobBoardHttpService.storeCourse(experience, this.jobBoardService.professional.id!).subscribe(
       response => {
         this.messageService.success(response);
-        this.form.reset();
-        this.userNewOrUpdate.emit(course);
         this.progressBar = false;
-        this.router.navigate(['/job-board/professional/course']);
+        this.form.reset();
+        this.router.navigate(['/job-board/professional/experience']);
       },
       error => {
         this.messageService.error(error);
@@ -155,15 +143,15 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
     );
   }
 
-  update(course: CourseModel): void {
+  update(experience: ExperienceModel): void {
     this.progressBar = true;
-    this.jobBardHttpService.updateCourse(course.id!, course, this.jobBardService.professional.id!).subscribe(
+    this.jobBoardHttpService.updateExperience(experience.id!, experience, this.jobBoardService.professional.id!)
+      .subscribe(
       response => {
         this.messageService.success(response);
-        this.form.reset();
-        this.userNewOrUpdate.emit(course);
         this.progressBar = false;
-        this.router.navigate(['/job-board/professional/course']);
+        this.form.reset();
+        this.router.navigate(['/job-board/professional/experience']);
       },
       error => {
         this.messageService.error(error);
@@ -176,40 +164,41 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
     return this.form.controls['id'];
   }
 
-  get typeField() {
-    return this.form.controls['type'];
-  }
-
-  get certificationTypeField() {
-    return this.form.controls['certificationType'];
-  }
-
   get areaField() {
     return this.form.controls['area'];
   }
 
-  get nameField() {
-    return this.form.controls['name'];
+  get professionalField() {
+    return this.form.controls['professional'];
   }
 
-  get descriptionField() {
-    return this.form.controls['description'];
+  get activitiesField():FormArray {
+    return this.form.controls['activities'] as FormArray;
   }
 
-  get startDateField() {
-    return this.form.controls['startDate'];
+  get employerField() {
+    return this.form.controls['employer'];
   }
 
-  get endDateField() {
-    return this.form.controls['endDate'];
+  get endedAtField() {
+    return this.form.controls['endedAt'];
   }
 
-  get hoursField() {
-    return this.form.controls['hours'];
+  get positionField() {
+    return this.form.controls['position'];
   }
 
-  get institutionField() {
-    return this.form.controls['institution'];
+  get reasonLeaveField() {
+    return this.form.controls['reason_Leave'];
+  }
+
+  get startedAtField() {
+    return this.form.controls['startedAt'];
+
+  }
+
+  get workedField() {
+    return this.form.controls['worked'];
   }
 }
 

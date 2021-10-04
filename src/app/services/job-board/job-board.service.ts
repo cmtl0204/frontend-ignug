@@ -10,7 +10,6 @@ export class JobBoardService {
   }
 
   set professional(professional: ProfessionalModel | undefined) {
-    console.log(professional);
     localStorage.setItem('professional', JSON.stringify(professional));
   }
 
