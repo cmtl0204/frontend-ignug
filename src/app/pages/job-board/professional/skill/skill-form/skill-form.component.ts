@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
@@ -22,8 +22,8 @@ export class SkillFormComponent implements OnInit , OnDestroy, OnExitInterface {
   certificationTypes: CatalogueModel[] = [];
   areas: CatalogueModel[] = [];
   skeletonLoading: boolean = false;
-  title: string = 'Crear evento';
-  buttonTitle: string = 'Crear evento';
+  title: string = 'Crear habilidades';
+  buttonTitle: string = 'Crear habilidades';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -38,7 +38,7 @@ export class SkillFormComponent implements OnInit , OnDestroy, OnExitInterface {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
-      {label: 'skills', routerLink: ['/job-board/professional/skill']},
+      {label: 'Habilidades', routerLink: ['/job-board/professional/skill']},
       {label: 'Formulario', disabled: true},
     ]);
     this.form = this.newForm();
@@ -46,14 +46,13 @@ export class SkillFormComponent implements OnInit , OnDestroy, OnExitInterface {
 
   ngOnInit(): void {
     if (this.activatedRoute.snapshot.params.id != 'new') {
-      this.title = 'Actualizar evento';
-      this.buttonTitle = 'Actualizar evento';
+      this.title = 'Actualizar habilidades';
+      this.buttonTitle = 'Actualizar habilidades';
       this.loadSkill();
       this.form.markAllAsTouched();
     }
-    this.getCertificationType();
+
     this.getTypes();
-    this.loadAreas();
   }
 
   ngOnDestroy(): void {
@@ -76,9 +75,6 @@ export class SkillFormComponent implements OnInit , OnDestroy, OnExitInterface {
         .getExperience(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
       .subscribe(
       response => {
-        response.data.startedAt.setDate(response.data.startedAt.getDate() + 1);
-        response.data.endedAt.setDate(response.data.endedAt.getDate() + 1);
-
         this.form.patchValue(response.data);
         this.skeletonLoading = false;
       }, error => {
@@ -96,28 +92,8 @@ export class SkillFormComponent implements OnInit , OnDestroy, OnExitInterface {
     });
   }
 
-  loadAreas(): void {
-    this.coreHttpService.getCatalogues('SKLL_AREA').subscribe(
-      response => {
-        this.areas = response.data;
-      }, error => {
-        this.messageService.error(error);
-      }
-    );
-  }
-
-  getCertificationType() {
-    this.coreHttpService.getCatalogues('SKILL_CERTIFICATION_TYPE').subscribe(
-      response => {
-        this.certificationTypes = response.data;
-      }, error => {
-        this.messageService.error(error);
-      }
-    );
-  }
-
   getTypes() {
-    this.coreHttpService.getCatalogues('COURSE_EVENT_TYPE').subscribe(
+    this.coreHttpService.getCatalogues('SKILL_TYPE').subscribe(
       response => {
         this.types = response.data;
       }, error => {
@@ -140,12 +116,12 @@ export class SkillFormComponent implements OnInit , OnDestroy, OnExitInterface {
 
   store(skill: SkillModel): void {
     this.progressBar = true;
-    this.jobBoardHttpService.storeCourse(skill, this.jobBoardService.professional.id!).subscribe(
+    this.jobBoardHttpService.storeSkill(skill, this.jobBoardService.professional.id!).subscribe(
       response => {
         this.messageService.success(response);
         this.form.reset();
         this.progressBar = false;
-        this.router.navigate(['/job-board/professional/course']);
+        this.router.navigate(['/job-board/professional/skill']);
       },
       error => {
         this.messageService.error(error);
@@ -156,12 +132,12 @@ export class SkillFormComponent implements OnInit , OnDestroy, OnExitInterface {
 
   update(skill: SkillModel): void {
     this.progressBar = true;
-    this.jobBoardHttpService.updateCourse(skill.id!, skill, this.jobBoardService.professional.id!).subscribe(
+    this.jobBoardHttpService.updateSkill(skill.id!, skill, this.jobBoardService.professional.id!).subscribe(
       response => {
         this.messageService.success(response);
         this.form.reset();
         this.progressBar = false;
-        this.router.navigate(['/job-board/professional/course']);
+        this.router.navigate(['/job-board/professional/skill']);
       },
       error => {
         this.messageService.error(error);
@@ -178,35 +154,8 @@ export class SkillFormComponent implements OnInit , OnDestroy, OnExitInterface {
     return this.form.controls['type'];
   }
 
-  get certificationTypeField() {
-    return this.form.controls['certificationType'];
-  }
-
-  get areaField() {
-    return this.form.controls['area'];
-  }
-
-  get nameField() {
-    return this.form.controls['name'];
-  }
-
   get descriptionField() {
     return this.form.controls['description'];
   }
 
-  get startDateField() {
-    return this.form.controls['startDate'];
-  }
-
-  get endDateField() {
-    return this.form.controls['endDate'];
-  }
-
-  get hoursField() {
-    return this.form.controls['hours'];
-  }
-
-  get institutionField() {
-    return this.form.controls['institution'];
-  }
 }
