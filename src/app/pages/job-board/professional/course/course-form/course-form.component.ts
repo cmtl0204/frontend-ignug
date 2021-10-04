@@ -20,23 +20,24 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
   private subscriptions: Subscription[] = [];
   form: FormGroup;
   progressBar: boolean = false;
-  types: CatalogueModel[] = [];
-  certificationTypes: CatalogueModel[] = [];
-  areas: CatalogueModel[] = [];
   skeletonLoading: boolean = false;
   title: string = 'Crear curso';
   buttonTitle: string = 'Crear curso';
+  types: CatalogueModel[] = [];
+  certificationTypes: CatalogueModel[] = [];
+  areas: CatalogueModel[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
+    private activatedRoute: ActivatedRoute,
     private breadcrumbService: BreadcrumbService,
     private coreHttpService: CoreHttpService,
     private jobBardHttpService: JobBoardHttpService,
     private jobBardService: JobBoardService,
     private appService: CoreService,
-    public messageService: MessageService,
-    private activatedRoute: ActivatedRoute) {
+    public messageService: MessageService
+    ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
