@@ -5,7 +5,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {MessageService} from '@services/core';
 import {JobBoardHttpService, JobBoardService} from '@services/job-board';
-import {CoreHttpService} from '@services/core/core-http.service';
 import {CategoryModel} from '@models/job-board';
 
 @Component({
@@ -19,15 +18,14 @@ export class CategoryFormComponent implements OnInit {
   form: FormGroup;
   progressBar: boolean = false;
   skeletonLoading: boolean = false;
-  title: string = 'Crear categoría';
-  buttonTitle: string = 'Crear categoría';
+  title: string = 'Crear evento';
+  buttonTitle: string = 'Crear evento';
   areas: CategoryModel[] = [];
 
   constructor(
     private router: Router,
     private breadcrumbService: BreadcrumbService,
     private formBuilder: FormBuilder,
-    private coreHttpService: CoreHttpService,
     private jobBoardHttpService: JobBoardHttpService,
     private jobBoardService: JobBoardService,
     public messageService: MessageService,
@@ -67,7 +65,7 @@ export class CategoryFormComponent implements OnInit {
   loadCategory():void {
     this.skeletonLoading = true;
     this.subscriptions.push(
-      this.jobBoardHttpService.getCategory(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
+      this.jobBoardHttpService.getCategory(this.activatedRoute.snapshot.params.id)
         .subscribe(
       response => {
         this.form.patchValue(response.data);
@@ -115,7 +113,7 @@ export class CategoryFormComponent implements OnInit {
 
   store(category: CategoryModel): void {
     this.progressBar = true;
-    this.jobBoardHttpService.storeCategory(category, this.jobBoardService.professional.id!).subscribe(
+    this.jobBoardHttpService.storeCategory(category).subscribe(
       response => {
         this.messageService.success(response);
         this.form.reset();
@@ -131,7 +129,7 @@ export class CategoryFormComponent implements OnInit {
 
   update(category: CategoryModel): void {
     this.progressBar = true;
-    this.jobBoardHttpService.updateCategory(category.id!, category, this.jobBoardService.professional.id!).subscribe(
+    this.jobBoardHttpService.updateCategory(category.id!, category).subscribe(
       response => {
         this.messageService.success(response);
         this.form.reset();
