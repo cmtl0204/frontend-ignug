@@ -103,7 +103,7 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
   }
 
   loadIdioms() {
-    this.coreHttpService.getCatalogues('IDIOM').subscribe(
+    this.coreHttpService.getCatalogues('LANGUAGE_IDIOM').subscribe(
       response => {
         this.idioms = response.data;
       }, error => {
@@ -113,7 +113,7 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
   }
 
   loadWrittenLevels() {
-    this.coreHttpService.getCatalogues('COURSE_EVENT_TYPE').subscribe(
+    this.coreHttpService.getCatalogues('LANGUAGE_WRITTEN_LEVEL').subscribe(
       response => {
         this.writtenLevel = response.data;
       }, error => {
@@ -123,7 +123,7 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
   }
 
   loadSpokenLevels() {
-    this.coreHttpService.getCatalogues('COURSE_EVENT_TYPE').subscribe(
+    this.coreHttpService.getCatalogues('LANGUAGE_SPOKEN_LEVEL').subscribe(
       response => {
         this.spokenLevels = response.data;
       }, error => {
@@ -133,7 +133,7 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
   }
 
   loadReadLevels() {
-    this.coreHttpService.getCatalogues('NIVELES_DE_LECTURA').subscribe(
+    this.coreHttpService.getCatalogues('LANGUAGE_READ_LEVEL').subscribe(
       response => {
         this.readLevels = response.data;
       }, error => {
