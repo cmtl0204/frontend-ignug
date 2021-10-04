@@ -139,9 +139,9 @@ export class LanguageListComponent implements OnInit {
     this.cols = [
       {field: 'id', header: 'id'},
       {field: 'idiom', header: 'Idioma'},
-      {field: 'writtenLevel', header: 'Horas'},
-      {field: 'spokenLevel', header: 'Inicio'},
-      {field: 'readLevel', header: 'Fin'},
+      {field: 'writtenLevel', header: 'Nivel escrito'},
+      {field: 'spokenLevel', header: 'Nivel de hablado'},
+      {field: 'readLevel', header: 'Nivel de lectura'},
       {field: 'createdAt', header: 'Fin'},
       {field: 'updatedAt', header: 'Fin'},
     ];

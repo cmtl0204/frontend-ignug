@@ -138,11 +138,16 @@ export class ExperienceListComponent implements OnInit {
 
   setCols() {
     this.cols = [
-      {field: 'name', header: 'Evento'},
-      {field: 'institution', header: 'Institución'},
-      {field: 'hours', header: 'Horas'},
-      {field: 'startDate', header: 'Inicio'},
-      {field: 'endDate', header: 'Fin'},
+      {field: 'id', header: 'ID'},
+      {field: 'area', header: 'Area'},
+      {field: 'activities', header: 'Actividades'},
+      {field: 'endedAt', header: 'Fecha final'},
+      {field: 'position', header: 'Posicion'},
+      {field: 'reasonLeave', header: 'Posicion'},
+      {field: 'startedAt', header: 'Fecha de inicio'},
+      {field: 'worked', header: 'Posicion'},
+      {field: 'createdAt', header: 'crated'},
+      {field: 'updatedAt', header: 'update'},
     ];
 
   }
