@@ -1,22 +1,22 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {CatalogueModel, UserModel} from '@models/core';
-import {Subscription} from 'rxjs';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
-import {BreadcrumbService} from '@services/core/breadcrumb.service';
-import {UserAdministrationHttpService} from '@services/core/user-administration-http.service';
-import {JobBoardHttpService, JobBoardService} from '@services/job-board';
-import {CoreService} from '@services/core/core.service';
-import {MessageService} from '@services/core';
-import {AcademicFormationModel, CategoryModel, CourseModel} from '@models/job-board';
-import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { CatalogueModel, UserModel } from '@models/core';
+import { Subscription } from 'rxjs';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BreadcrumbService } from '@services/core/breadcrumb.service';
+import { UserAdministrationHttpService } from '@services/core/user-administration-http.service';
+import { JobBoardHttpService, JobBoardService } from '@services/job-board';
+import { CoreService } from '@services/core/core.service';
+import { MessageService } from '@services/core';
+import { AcademicFormationModel, CategoryModel, CourseModel } from '@models/job-board';
+import { OnExitInterface } from '@shared/interfaces/on-exit.interface';
 
 @Component({
   selector: 'app-academic-formation-form',
   templateUrl: './academic-formation-form.component.html',
   styleUrls: ['./academic-formation-form.component.scss']
 })
-export class AcademicFormationFormComponent implements OnInit,OnDestroy, OnExitInterface {
+export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExitInterface {
   @Input() user: UserModel = {};
   @Output() userNewOrUpdate = new EventEmitter<UserModel>();
 
@@ -39,10 +39,10 @@ export class AcademicFormationFormComponent implements OnInit,OnDestroy, OnExitI
     public messageService: MessageService,
     private activatedRoute: ActivatedRoute) {
     this.breadcrumbService.setItems([
-      {label: 'Dashboard', routerLink: ['/dashboard']},
-      {label: 'Profesional', routerLink: ['/job-board/professional']},
-      {label: 'Formación Académica', routerLink: ['/job-board/professional/academic-formation']},
-      {label: 'Formulario', disabled: true},
+      { label: 'Dashboard', routerLink: ['/dashboard'] },
+      { label: 'Profesional', routerLink: ['/job-board/professional'] },
+      { label: 'Formación Académica', routerLink: ['/job-board/professional/academic-formation'] },
+      { label: 'Formulario', disabled: true },
     ]);
     this.form = this.newForm();
   }
@@ -97,14 +97,14 @@ export class AcademicFormationFormComponent implements OnInit,OnDestroy, OnExitI
   }
 
   getProfessionalDegrees() {
-    this.jobBardHttpService.getCategories('professionalDegrees')
+    this.jobBardHttpService.getProfessionalDegrees()
       .subscribe(
-      response => {
-        this.professionalDegrees = response.data;
-      }, error => {
-        this.messageService.error(error);
-      }
-    );
+        response => {
+          this.professionalDegrees = response.data;
+        }, error => {
+          this.messageService.error(error);
+        }
+      );
   }
 
 

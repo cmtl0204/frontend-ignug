@@ -1,15 +1,14 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {BreadcrumbService} from '@services/core/breadcrumb.service';
-import {CatalogueModel, UserModel} from '@models/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {UserAdministrationHttpService} from '@services/core/user-administration-http.service';
-import {MessageService} from '@services/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {JobBoardHttpService, JobBoardService} from '@services/job-board';
-import {ReferenceModel} from '@models/job-board';
-import {AppService} from '@services/core/app.service';
 import {Subscription} from 'rxjs';
+import {BreadcrumbService} from '@services/core/breadcrumb.service';
+import {MessageService} from '@services/core';
 import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
+import {CoreHttpService} from '@services/core';
+import {JobBoardHttpService, JobBoardService} from '@services/job-board';
+import {CatalogueModel} from '@models/core';
+import {ReferenceModel} from '@models/job-board';
 
 @Component({
   selector: 'app-reference-form',
@@ -17,8 +16,6 @@ import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
   styleUrls: ['./reference-form.component.scss']
 })
 export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterface {
-  @Input() user: UserModel = {};
-  @Output() userNewOrUpdate = new EventEmitter<UserModel>();
 
   private subscriptions: Subscription[] = [];
   form: FormGroup;
@@ -27,23 +24,24 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
   certificationTypes: CatalogueModel[] = [];
   areas: CatalogueModel[] = [];
   skeletonLoading: boolean = false;
-  title: string = 'Crear evento';
-  buttonTitle: string = 'Crear evento';
+  title: string = 'Crear referencia';
+  buttonTitle: string = 'Crear referencia';
+  coreHttpService: any;
+  userAdministrationHttpService: any;
 
   constructor(
-    private router: Router,
-    private breadcrumbService: BreadcrumbService,
     private formBuilder: FormBuilder,
-    private userAdministrationHttpService: UserAdministrationHttpService,
-    private jobBardHttpService: JobBoardHttpService,
-    private jobBardService: JobBoardService,
-    private appService: AppService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private breadcrumbService: BreadcrumbService,
     public messageService: MessageService,
-    private activatedRoute: ActivatedRoute) {
+    private jobBoardHttpService: JobBoardHttpService,
+    private jobBoardService: JobBoardService
+    ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
-      {label: 'Cursos y Capacitaciones', routerLink: ['/job-board/professional/course']},
+      {label: 'referencias', routerLink: ['/job-board/professional/reference']},
       {label: 'Formulario', disabled: true},
     ]);
     this.form = this.newForm();
@@ -51,14 +49,12 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
 
   ngOnInit(): void {
     if (this.activatedRoute.snapshot.params.id != 'new') {
-      this.title = 'Actualizar evento';
-      this.buttonTitle = 'Actualizar evento';
+      this.title = 'Actualizar referencia';
+      this.buttonTitle = 'Actualizar referencia';
       this.getCourse();
       this.form.markAllAsTouched();
     }
-    this.getCertificationType();
-    this.getTypes();
-    this.getAreas();
+    this.loadAreas();
   }
 
   ngOnDestroy(): void {
@@ -76,7 +72,7 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
 
   getCourse() {
     this.skeletonLoading = true;
-    this.subscriptions.push(this.jobBardHttpService.getCourse(this.jobBardService.professional.id!, this.activatedRoute.snapshot.params.id).subscribe(
+    this.subscriptions.push(this.jobBoardHttpService.getCourse(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id).subscribe(
       response => {
         response.data.startDate = new Date('2021-08-22');
         response.data.startDate.setDate(response.data.startDate.getDate() + 1);
@@ -94,7 +90,8 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
 
   newForm(): FormGroup {
     return this.formBuilder.group({
-      professional_id: [null],
+      id: [null],
+      professional_id: [null,[Validators.required]],
       position: [null, [Validators.required]],
       contact_name: [null, [Validators.required]],
       contact_phone: [null, [Validators.required]],
@@ -103,8 +100,8 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
     });
   }
 
-  getAreas() {
-    this.userAdministrationHttpService.getCatalogues('COURSE_AREA').subscribe(
+  loadAreas(): void {
+    this.coreHttpService.getCatalogues('reference_AREA').subscribe(
       response => {
         this.areas = response.data;
       }, error => {
@@ -113,27 +110,7 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
     );
   }
 
-  getCertificationType() {
-    this.userAdministrationHttpService.getCatalogues('COURSE_CERTIFICATION_TYPE').subscribe(
-      response => {
-        this.certificationTypes = response.data;
-      }, error => {
-        this.messageService.error(error);
-      }
-    );
-  }
-
-  getTypes() {
-    this.userAdministrationHttpService.getCatalogues('COURSE_EVENT_TYPE').subscribe(
-      response => {
-        this.types = response.data;
-      }, error => {
-        this.messageService.error(error);
-      }
-    );
-  }
-
-  onSubmit() {
+  onSubmit():void {
     if (this.form.valid) {
       if (this.idField.value) {
         this.update(this.form.value);
@@ -147,13 +124,12 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
 
   store(reference: ReferenceModel): void {
     this.progressBar = true;
-    this.jobBardHttpService.storeCourse(reference, this.jobBardService.professional.id!).subscribe(
+    this.coreHttpService.storeCourse(reference.id!, reference, this.jobBoardService.professional.id!).subscribe(
       response => {
         this.messageService.success(response);
-        this.form.reset();
-        this.userNewOrUpdate.emit(reference);
         this.progressBar = false;
-        this.router.navigate(['/job-board/professional/course']);
+        this.form.reset();
+        this.router.navigate(['/job-board/professional/reference']);
       },
       error => {
         this.messageService.error(error);
@@ -162,15 +138,15 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
     );
   }
 
-  update(c: ReferenceModel): void {
+  update(reference: ReferenceModel): void {
     this.progressBar = true;
-    this.jobBardHttpService.updateCourse(reference.id!, reference, this.jobBardService.professional.id!).subscribe(
+    this.jobBoardHttpService.updateExperience(reference.id!, reference, this.jobBoardService.professional.id!)
+      .subscribe(
       response => {
         this.messageService.success(response);
-        this.form.reset();
-        this.userNewOrUpdate.emit(reference);
         this.progressBar = false;
-        this.router.navigate(['/job-board/professional/course']);
+        this.form.reset();
+        this.router.navigate(['/job-board/professional/experience']);
       },
       error => {
         this.messageService.error(error);
