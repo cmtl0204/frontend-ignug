@@ -141,7 +141,7 @@ export class SkillListComponent implements OnInit, OnDestroy {
       {field: 'type', header: 'Tipo'},
       {field: 'description', header: 'Descripción'},
       {field: 'createdAt', header: 'Creado en'},
-      {field: 'updatedAt', header: 'Actualizar en'},
+      {field: 'updatedAt', header: 'Actualizado en'},
     ];
   }
 

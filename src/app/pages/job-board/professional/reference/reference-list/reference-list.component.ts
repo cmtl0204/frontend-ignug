@@ -143,7 +143,7 @@ export class ReferenceComponent implements OnInit, OnDestroy {
       {field: 'contactEmail', header: 'E-mail'},
       {field: 'institution', header: 'Institución'},
       {field: 'createdAt', header: 'Creado en '},
-      {field: 'updatedAt', header: 'Actualizar en '},
+      {field: 'updatedAt', header: 'Actualizado en '},
     ];
   }
 
