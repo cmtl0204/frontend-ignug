@@ -14,7 +14,7 @@ import {FormControl, FormGroup} from '@angular/forms';
   templateUrl: './language-list.component.html',
   styleUrls: ['./language-list.component.scss']
 })
-export class LanguageListComponent implements OnInit {
+export class LanguageListComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   cols: ColModel[] = [];
   items: MenuItem[] = [];
@@ -26,11 +26,12 @@ export class LanguageListComponent implements OnInit {
   selectedLanguage: LanguageModel = {};
   selectedLanguages: LanguageModel[] = [];
 
-  constructor(private breadcrumbService: BreadcrumbService,
-              private jobBoardHttpService: JobBoardHttpService,
-              private jobBoardService: JobBoardService,
-              public messageService: MessageService,
-              private router: Router) {
+  constructor(private router: Router,
+    private breadcrumbService: BreadcrumbService,
+    public messageService: MessageService,
+    private jobBoardHttpService: JobBoardHttpService,
+    private jobBoardService: JobBoardService,
+    ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
