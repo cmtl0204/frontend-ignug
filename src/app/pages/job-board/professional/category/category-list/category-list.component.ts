@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {MenuItem} from 'primeng/api';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
-import {JobBoardHttpService, JobBoardService} from '@services/job-board';
+import {JobBoardHttpService} from '@services/job-board';
 import {MessageService} from '@services/core';
 import {CategoryModel} from '@models/job-board';
 import {ColModel, PaginatorModel} from '@models/core';
@@ -14,7 +14,7 @@ import {FormControl} from '@angular/forms';
   templateUrl: './category-list.component.html',
   styleUrls: ['./category-list.component.scss']
 })
-export class CategoryListComponent implements OnInit {
+export class CategoryListComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   cols: ColModel[] = [];
   items: MenuItem[] = [];
@@ -34,7 +34,7 @@ export class CategoryListComponent implements OnInit {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
-      {label: 'Cursos y Capacitaciones', disabled: true},
+      {label: 'Títulos profesionales', disabled: true},
     ]);
 
     this.filter = new FormControl('');

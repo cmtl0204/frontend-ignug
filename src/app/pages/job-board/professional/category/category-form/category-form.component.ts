@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {BreadcrumbService} from '@services/core/breadcrumb.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
+import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {MessageService} from '@services/core';
-import {JobBoardHttpService, JobBoardService} from '@services/job-board';
+import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
+import {JobBoardHttpService} from '@services/job-board';
 import {CategoryModel} from '@models/job-board';
 
 @Component({
@@ -12,7 +13,7 @@ import {CategoryModel} from '@models/job-board';
   templateUrl: './category-form.component.html',
   styleUrls: ['./category-form.component.scss']
 })
-export class CategoryFormComponent implements OnInit {
+export class CategoryFormComponent implements OnInit, OnDestroy, OnExitInterface {
 
   private subscriptions: Subscription[] = [];
   form: FormGroup;
@@ -23,13 +24,12 @@ export class CategoryFormComponent implements OnInit {
   areas: CategoryModel[] = [];
 
   constructor(
-    private router: Router,
-    private breadcrumbService: BreadcrumbService,
     private formBuilder: FormBuilder,
-    private jobBoardHttpService: JobBoardHttpService,
-    private jobBoardService: JobBoardService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private breadcrumbService: BreadcrumbService,
     public messageService: MessageService,
-    private activatedRoute: ActivatedRoute) {
+    private jobBoardHttpService: JobBoardHttpService) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
@@ -55,7 +55,8 @@ export class CategoryFormComponent implements OnInit {
 
   async onExit() {
     if (this.form.touched || this.form.dirty) {
-      return await this.messageService.questionOnExit({}).then((result) => {
+      return await this.messageService.questionOnExit({})
+        .then((result) => {
         return result.isConfirmed;
       });
     }
@@ -65,8 +66,9 @@ export class CategoryFormComponent implements OnInit {
   loadCategory():void {
     this.skeletonLoading = true;
     this.subscriptions.push(
-      this.jobBoardHttpService.getCategory(this.activatedRoute.snapshot.params.id)
-        .subscribe(
+      this.jobBoardHttpService
+        .getCategory(this.activatedRoute.snapshot.params.id)
+      .subscribe(
       response => {
         this.form.patchValue(response.data);
         this.skeletonLoading = false;
@@ -129,11 +131,12 @@ export class CategoryFormComponent implements OnInit {
 
   update(category: CategoryModel): void {
     this.progressBar = true;
-    this.jobBoardHttpService.updateCategory(category.id!, category).subscribe(
+    this.jobBoardHttpService.updateCategory(category.id!, category)
+      .subscribe(
       response => {
         this.messageService.success(response);
-        this.form.reset();
         this.progressBar = false;
+        this.form.reset();
         this.router.navigate(['/job-board/category']);
       },
       error => {
