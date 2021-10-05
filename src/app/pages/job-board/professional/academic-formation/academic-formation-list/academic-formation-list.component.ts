@@ -5,7 +5,7 @@ import {MenuItem} from 'primeng/api';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {JobBoardHttpService, JobBoardService} from '@services/job-board';
 import {MessageService} from '@services/core';
-import {AcademicFormationModel, CourseModel} from '@models/job-board';
+import {AcademicFormationModel, } from '@models/job-board';
 import {ColModel, PaginatorModel} from '@models/core';
 import {FormControl} from '@angular/forms';
 
@@ -15,22 +15,23 @@ import {FormControl} from '@angular/forms';
   styleUrls: ['./academic-formation-list.component.scss']
 })
 export class AcademicFormationListComponent implements OnInit {
-
   private subscriptions: Subscription[] = [];
-  academicFormations: AcademicFormationModel[] = [];
-  selectedAcademicFormation: AcademicFormationModel= {};
-  selectedAcademicFormations: AcademicFormationModel[] = [];
   cols: ColModel[] = [];
   items: MenuItem[] = [];
   loading: boolean = false;
   paginator: PaginatorModel = {current_page: 1, per_page: 5, total: 0};
   filter: FormControl;
 
-  constructor(private breadcrumbService: BreadcrumbService,
-              private jobBoardHttpService: JobBoardHttpService,
-              private jobBoardService: JobBoardService,
-              public messageService: MessageService,
-              private router: Router) {
+  academicFormations: AcademicFormationModel[] = [];
+  selectedAcademicFormation: AcademicFormationModel= {};
+  selectedAcademicFormations: AcademicFormationModel[] = [];
+
+  constructor(private router: Router,
+             private breadcrumbService: BreadcrumbService,
+             public messageService: MessageService,
+             private jobBoardHttpService: JobBoardHttpService,
+             private jobBoardService: JobBoardService,
+             ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Formación académica', routerLink: ['/job-board/professional']},

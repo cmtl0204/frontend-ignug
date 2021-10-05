@@ -1,12 +1,12 @@
-import { Component, OnDestroy, OnInit, } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BreadcrumbService } from '@services/core/breadcrumb.service';
-import { JobBoardHttpService, JobBoardService } from '@services/job-board';
-import { MessageService } from '@services/core';
-import { AcademicFormationModel, CategoryModel, } from '@models/job-board';
-import { OnExitInterface } from '@shared/interfaces/on-exit.interface';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {BreadcrumbService} from '@services/core/breadcrumb.service';
+import {MessageService} from '@services/core';
+import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
+import {JobBoardHttpService, JobBoardService} from '@services/job-board';
+import {AcademicFormationModel, CategoryModel, } from '@models/job-board';
 
 @Component({
   selector: 'app-academic-formation-form',
@@ -14,8 +14,6 @@ import { OnExitInterface } from '@shared/interfaces/on-exit.interface';
   styleUrls: ['./academic-formation-form.component.scss']
 })
 export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExitInterface {
-  
-
   private subscriptions: Subscription[] = [];
   form: FormGroup;
   progressBar: boolean = false;
@@ -67,7 +65,10 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
 
   loadAcademicFormation() {
     this.skeletonLoading = true;
-    this.subscriptions.push(this.jobBoardHttpService.getAcademicFormation(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id).subscribe(
+    this.subscriptions.push(
+      this.jobBoardHttpService
+        .getAcademicFormation(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
+      .subscribe(
       response => {
         response.data.registeredAt = new Date('2021-08-22');
         response.data.registeredAt.setDate(response.data.registeredAt.getDate() + 1);
