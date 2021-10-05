@@ -26,7 +26,7 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
   idioms: CatalogueModel[] = [];
   certificationTypes: CatalogueModel[] = [];
   areas: CatalogueModel[] = [];
-  writtenLevel: CatalogueModel[] = [];
+  writtenLevels: CatalogueModel[] = [];
   spokenLevels: CatalogueModel[] = [];
   readLevels: CatalogueModel[] = [];
 
@@ -115,7 +115,7 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
   loadWrittenLevels() {
     this.coreHttpService.getCatalogues('LANGUAGE_WRITTEN_LEVEL').subscribe(
       response => {
-        this.writtenLevel = response.data;
+        this.writtenLevels = response.data;
       }, error => {
         this.messageService.error(error);
       }
