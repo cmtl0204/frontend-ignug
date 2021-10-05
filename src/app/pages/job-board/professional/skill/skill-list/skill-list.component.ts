@@ -1,13 +1,13 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
-import {FormBuilder, FormControl} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {MenuItem} from 'primeng/api';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {JobBoardHttpService, JobBoardService} from '@services/job-board';
-import {CoreHttpService, MessageService} from '@services/core';
+import {MessageService} from '@services/core';
 import {SkillModel} from '@models/job-board';
 import {ColModel, PaginatorModel} from '@models/core';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-skill-list',
@@ -35,7 +35,7 @@ export class SkillListComponent implements OnInit, OnDestroy {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
-      {label: 'Cursos y Capacitaciones', disabled: true},
+      {label: 'Habilidades', disabled: true},
     ]);
 
     this.filter = new FormControl('');
@@ -140,8 +140,8 @@ export class SkillListComponent implements OnInit, OnDestroy {
     this.cols = [
       {field: 'type', header: 'Tipo'},
       {field: 'description', header: 'Descripción'},
-      {field: 'createdAt', header: 'Crear fecha'},
-      {field: 'updatedAt', header: 'Aztualizar fecha'},
+      {field: 'createdAt', header: 'Creado en'},
+      {field: 'updatedAt', header: 'Actualizar en'},
     ];
   }
 

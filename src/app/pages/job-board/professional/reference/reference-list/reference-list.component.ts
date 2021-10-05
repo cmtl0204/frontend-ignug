@@ -1,20 +1,20 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
-import {FormBuilder, FormControl} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {MenuItem} from 'primeng/api';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {JobBoardHttpService, JobBoardService} from '@services/job-board';
-import {CoreHttpService, MessageService} from '@services/core';
+import {MessageService} from '@services/core';
 import {ReferenceModel} from '@models/job-board';
 import {ColModel, PaginatorModel} from '@models/core';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-reference-list',
   templateUrl: './reference-list.component.html',
   styleUrls: ['./reference-list.component.scss']
 })
-export class ReferenceComponent implements OnInit {
+export class ReferenceComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   cols: ColModel[] = [];
   items: MenuItem[] = [];
@@ -26,15 +26,11 @@ export class ReferenceComponent implements OnInit {
   selectedReference: ReferenceModel = {};
   selectedReferences: ReferenceModel[] = [];
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
+  constructor(private router: Router,
     private breadcrumbService: BreadcrumbService,
     public messageService: MessageService,
-    private coreHttpService: CoreHttpService,
     private jobBoardHttpService: JobBoardHttpService,
-    private jobBoardService: JobBoardService
+    private jobBoardService: JobBoardService,
     ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
@@ -146,8 +142,8 @@ export class ReferenceComponent implements OnInit {
       {field: 'contactPhone', header: 'Celular'},
       {field: 'contactEmail', header: 'E-mail'},
       {field: 'institution', header: 'Institución'},
-      {field: 'createdAt', header: 'Crear fecha'},
-      {field: 'updatedAt', header: 'Aztualizar fecha'},
+      {field: 'createdAt', header: 'Creado en '},
+      {field: 'updatedAt', header: 'Actualizar en '},
     ];
   }
 
