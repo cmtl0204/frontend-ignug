@@ -2,20 +2,20 @@
 
     <p-toolbar>
       <div class="p-toolbar-group-left">
-        <button pButton pRipple type="button" label="Crear evento"
+        <button pButton pRipple type="button" label="Crear Referencia"
                 class="p-button-success p-button-rounded" icon="pi pi-plus"
-                (click)="createCourse()"></button>
+                (click)="createReference()"></button>
         <button pButton pRipple type="button" label="Refrescar"
                 class="p-button-rounded ml-2" icon="pi pi-refresh"
-                (click)="getCourses()"></button>
-        <button *ngIf="selectedCourses?.length" pButton pRipple type="button" label="Eliminar eventos"
+                (click)="loadReferences()"></button>
+        <button *ngIf="selectedReferences?.length" pButton pRipple type="button" label="Eliminar Referencias"
                 class="p-button-danger p-button-rounded ml-2" icon="pi pi-trash"
-                (click)="deleteCourses()"></button>
+                (click)="deleteReferences()"></button>
       </div>
       <div class="p-toolbar-group-right">
         <div class="p-inputgroup">
-          <input pInputText id="search" [formControl]="filter" (keypress)="filterCourses($event)">
-          <button pButton pRipple type="button" icon="pi pi-search" (click)="filterCourses($event)"></button>
+          <input pInputText id="search" [formControl]="filter" (keypress)="filterReferences($event)">
+          <button pButton pRipple type="button" icon="pi pi-search" (click)="filterReferences($event)"></button>
         </div>
       </div>
     </p-toolbar>
@@ -27,10 +27,10 @@
         dataKey="id"
         styleClass="p-datatable-striped"
         paginatorPosition="both"
-        [value]="courses"
+        [value]="references"
         [columns]="cols"
         [loading]="loading"
-        [(selection)]="selectedCourses"
+        [(selection)]="selectedReferences"
         [responsive]="true">
         <ng-template pTemplate="header" let-columns>
           <tr>
@@ -60,7 +60,7 @@
               {{rowData[col.field]}}
             </td>
             <td style="text-align: center">
-              <p-splitButton label="Más" styleClass="p-button-secondary" (onDropdownClick)="selectCourse(rowData)"
+              <p-splitButton label="Más" styleClass="p-button-secondary" (onDropdownClick)="selectReference(rowData)"
                              [model]="items"></p-splitButton>
             </td>
           </tr>
