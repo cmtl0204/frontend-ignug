@@ -14,6 +14,7 @@ import {FormControl} from '@angular/forms';
   templateUrl: './academic-formation-list.component.html',
   styleUrls: ['./academic-formation-list.component.scss']
 })
+
 export class AcademicFormationListComponent implements OnInit {
   private subscriptions: Subscription[] = [];
   cols: ColModel[] = [];
@@ -34,8 +35,8 @@ export class AcademicFormationListComponent implements OnInit {
              ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
-      {label: 'Formación académica', routerLink: ['/job-board/professional']},
-      {label: 'Cursos y Capacitaciones', disabled: true},
+      {label: 'Profesional', routerLink: ['/job-board/professional']},
+      {label: 'Formación académica', disabled: true},
     ]);
 
     this.filter = new FormControl('');
@@ -138,10 +139,10 @@ export class AcademicFormationListComponent implements OnInit {
 
   setCols() {
     this.cols = [
-      {field: 'professionalDegree', header: 'Títulos profesionales'},
+      {field: 'professionalDegree', header: 'Títulos'},
       {field: 'registeredAt', header: 'Fecha de resgistro '},
       {field: 'senescytCode', header: 'Código de Senescyt'},
-      {field: 'certificated', header: 'Está certificado'},
+      {field: 'certificated', header: 'Graduado'},
     ];
 
   }

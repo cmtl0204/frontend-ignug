@@ -1,13 +1,12 @@
 <div class="container">
-
   <p-toolbar>
     <div class="p-toolbar-group-left">
-      <button pButton pRipple type="button" label="Crear evento"
+      <button pButton pRipple type="button" label="Crear Evento"
               class="p-button-success p-button-rounded" icon="pi pi-plus"
               (click)="createCourse()"></button>
       <button pButton pRipple type="button" label="Refrescar"
               class="p-button-rounded ml-2" icon="pi pi-refresh"
-              (click)="getCourses()"></button>
+              (click)="loadCourses()"></button>
       <button *ngIf="selectedCourses?.length" pButton pRipple type="button" label="Eliminar eventos"
               class="p-button-danger p-button-rounded ml-2" icon="pi pi-trash"
               (click)="deleteCourses()"></button>

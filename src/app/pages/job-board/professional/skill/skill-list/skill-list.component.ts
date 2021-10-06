@@ -14,6 +14,7 @@ import {FormControl} from '@angular/forms';
   templateUrl: './skill-list.component.html',
   styleUrls: ['./skill-list.component.scss']
 })
+
 export class SkillListComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   cols: ColModel[] = [];
@@ -21,7 +22,6 @@ export class SkillListComponent implements OnInit, OnDestroy {
   loading: boolean = false;
   paginator: PaginatorModel = {current_page: 1, per_page: 5, total: 0};
   filter: FormControl;
-
   skills: SkillModel[] = [];
   selectedSkill: SkillModel = {};
   selectedSkills: SkillModel[] = [];
@@ -140,8 +140,7 @@ export class SkillListComponent implements OnInit, OnDestroy {
     this.cols = [
       {field: 'type', header: 'Tipo'},
       {field: 'description', header: 'Descripción'},
-      {field: 'createdAt', header: 'Creado en'},
-      {field: 'updatedAt', header: 'Actualizado en'},
+      {field: 'updatedAt', header: 'Actualizado'},
     ];
   }
 

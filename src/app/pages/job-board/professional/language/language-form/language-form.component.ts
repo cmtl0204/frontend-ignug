@@ -15,17 +15,15 @@ import {LanguageModel} from '@models/job-board';
   templateUrl: './language-form.component.html',
   styleUrls: ['./language-form.component.scss']
 })
+
 export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface {
   private subscriptions: Subscription[] = [];
   form: FormGroup;
   progressBar: boolean = false;
   skeletonLoading: boolean = false;
-  title: string = 'Idioma';
-  buttonTitle: string = 'Idioma';
-
+  title: string = 'Crear idioma';
+  buttonTitle: string = 'Crear idioma';
   idioms: CatalogueModel[] = [];
-  certificationTypes: CatalogueModel[] = [];
-  areas: CatalogueModel[] = [];
   writtenLevels: CatalogueModel[] = [];
   spokenLevels: CatalogueModel[] = [];
   readLevels: CatalogueModel[] = [];
@@ -68,7 +66,8 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
 
   async onExit() {
     if (this.form.touched || this.form.dirty) {
-      return await this.messageService.questionOnExit({}).then((result) => {
+      return await this.messageService.questionOnExit({})
+        .then((result) => {
         return result.isConfirmed;
       });
     }
@@ -78,7 +77,6 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
   newForm(): FormGroup {
     return this.formBuilder.group({
       id: [null],
-      professional: [null, [Validators.required]],
       idiom: [null, [Validators.required]],
       writtenLevel: [null, [Validators.required]],
       spokenLevel: [null, [Validators.required]],

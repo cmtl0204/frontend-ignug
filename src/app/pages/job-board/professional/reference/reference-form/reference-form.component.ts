@@ -13,6 +13,7 @@ import {ReferenceModel} from '@models/job-board';
   templateUrl: './reference-form.component.html',
   styleUrls: ['./reference-form.component.scss']
 })
+
 export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterface {
 
   private subscriptions: Subscription[] = [];
@@ -34,7 +35,7 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
-      {label: 'Referencias profesionales', routerLink: ['/job-board/professional/reference']},
+      {label: 'Referencias Profesionales', routerLink: ['/job-board/professional/reference']},
       {label: 'Formulario', disabled: true},
     ]);
     this.form = this.newForm();
@@ -55,7 +56,8 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
 
   async onExit() {
     if (this.form.touched || this.form.dirty) {
-      return await this.messageService.questionOnExit({}).then((result) => {
+      return await this.messageService.questionOnExit({})
+        .then((result) => {
         return result.isConfirmed;
       });
     }
@@ -64,7 +66,8 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
 
   loadReference() {
     this.skeletonLoading = true;
-    this.subscriptions.push(this.jobBoardHttpService.getReference(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id).subscribe(
+    this.subscriptions.push(this.jobBoardHttpService.getReference(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
+      .subscribe(
       response => {
         this.form.patchValue(response.data);
         this.skeletonLoading = false;
@@ -86,7 +89,6 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
     });
   }
 
-
   onSubmit():void {
     if (this.form.valid) {
       if (this.idField.value) {
@@ -101,7 +103,8 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
 
   store(reference: ReferenceModel): void {
     this.progressBar = true;
-    this.jobBoardHttpService.storeReference(reference, this.jobBoardService.professional.id!).subscribe(
+    this.jobBoardHttpService.storeReference(reference, this.jobBoardService.professional.id!)
+      .subscribe(
       response => {
         this.messageService.success(response);
         this.progressBar = false;

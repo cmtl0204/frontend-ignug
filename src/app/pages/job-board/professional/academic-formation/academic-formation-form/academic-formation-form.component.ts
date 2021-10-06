@@ -13,14 +13,15 @@ import {AcademicFormationModel, CategoryModel, } from '@models/job-board';
   templateUrl: './academic-formation-form.component.html',
   styleUrls: ['./academic-formation-form.component.scss']
 })
+
 export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExitInterface {
   private subscriptions: Subscription[] = [];
   form: FormGroup;
   progressBar: boolean = false;
   professionalDegrees: CategoryModel[] = [];
   skeletonLoading: boolean = false;
-  title: string = 'Crear evento';
-  buttonTitle: string = 'Crear evento';
+  title: string = 'Crear formación';
+  buttonTitle: string = 'Crear formación';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -42,8 +43,8 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
 
   ngOnInit(): void {
     if (this.activatedRoute.snapshot.params.id != 'new') {
-      this.title = 'Actualizar formación académica';
-      this.buttonTitle = 'Actualizar formación académica';
+      this.title = 'Actualizar formación';
+      this.buttonTitle = 'Actualizar formación';
       this.loadAcademicFormation();
       this.form.markAllAsTouched();
     }
@@ -56,7 +57,8 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
 
   async onExit() {
     if (this.form.touched || this.form.dirty) {
-      return await this.messageService.questionOnExit({}).then((result) => {
+      return await this.messageService.questionOnExit({})
+        .then((result) => {
         return result.isConfirmed;
       });
     }
@@ -139,7 +141,7 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
         this.messageService.success(response);
         this.form.reset();
         this.progressBar = false;
-        this.router.navigate(['/job-board/professional/academicFormation']);
+        this.router.navigate(['/job-board/professional/academic-formation']);
       },
       error => {
         this.messageService.error(error);

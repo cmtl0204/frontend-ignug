@@ -1,6 +1,6 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
-import {CatalogueModel, UserModel} from '@models/core';
+import {CatalogueModel} from '@models/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MessageService} from '@services/core';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -16,6 +16,7 @@ import {CoreHttpService} from '@services/core/core-http.service';
   templateUrl: './course-form.component.html',
   styleUrls: ['./course-form.component.scss']
 })
+
 export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
   private subscriptions: Subscription[] = [];
   form: FormGroup;
@@ -212,7 +213,7 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
     return this.form.controls['startedAt'];
   }
 
-  get endDateField() {
+  get endedAtField() {
     return this.form.controls['endedAt'];
   }
 

@@ -14,6 +14,7 @@ import {FormControl} from '@angular/forms';
   templateUrl: './course-list.component.html',
   styleUrls: ['./course-list.component.scss']
 })
+
 export class CourseListComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   cols: ColModel[] = [];
@@ -21,7 +22,6 @@ export class CourseListComponent implements OnInit, OnDestroy {
   loading: boolean = false;
   paginator: PaginatorModel = {current_page: 1, per_page: 5, total: 0};
   filter: FormControl;
-
   courses: CourseModel[] = [];
   selectedCourse: CourseModel = {};
   selectedCourses: CourseModel[] = [];

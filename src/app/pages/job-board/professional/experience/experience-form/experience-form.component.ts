@@ -15,6 +15,7 @@ import {ExperienceModel} from '@models/job-board';
   templateUrl: './experience-form.component.html',
   styleUrls: ['./experience-form.component.scss']
 })
+
 export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterface {
   private subscriptions: Subscription[] = [];
   form: FormGroup;
@@ -22,9 +23,6 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
   skeletonLoading: boolean = false;
   title: string = 'Crear experiencia';
   buttonTitle: string = 'Crear experiencia';
-
-  types: CatalogueModel[] = [];
-  certificationTypes: CatalogueModel[] = [];
   areas: CatalogueModel[] = [];
 
   constructor(
@@ -93,7 +91,6 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
   newForm(): FormGroup {
     return this.formBuilder.group({
       id: [null],
-      professional: [null, [Validators.required]],
       area: [null, [Validators.required]],
       activities: [this.formBuilder.array([]), [Validators.required]],
       employer: [null, [Validators.required]],
@@ -166,10 +163,6 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
 
   get areaField() {
     return this.form.controls['area'];
-  }
-
-  get professionalField() {
-    return this.form.controls['professional'];
   }
 
   get activitiesField():FormArray {

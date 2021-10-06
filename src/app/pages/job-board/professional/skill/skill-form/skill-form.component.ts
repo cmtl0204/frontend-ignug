@@ -9,11 +9,13 @@ import {CoreHttpService} from '@services/core';
 import {JobBoardHttpService, JobBoardService} from '@services/job-board';
 import {CatalogueModel} from '@models/core';
 import {SkillModel} from '@models/job-board';
+
 @Component({
   selector: 'app-skill-form',
   templateUrl: './skill-form.component.html',
   styleUrls: ['./skill-form.component.scss']
 })
+
 export class SkillFormComponent implements OnInit , OnDestroy, OnExitInterface {
   private subscriptions: Subscription[] = [];
   form: FormGroup;
@@ -21,7 +23,6 @@ export class SkillFormComponent implements OnInit , OnDestroy, OnExitInterface {
   skeletonLoading: boolean = false;
   title: string = 'Crear habilidades';
   buttonTitle: string = 'Crear habilidades';
-  
   types: CatalogueModel[] = [];
 
   constructor(
@@ -60,7 +61,8 @@ export class SkillFormComponent implements OnInit , OnDestroy, OnExitInterface {
 
   async onExit() {
     if (this.form.touched || this.form.dirty) {
-      return await this.messageService.questionOnExit({}).then((result) => {
+      return await this.messageService.questionOnExit({})
+        .then((result) => {
         return result.isConfirmed;
       });
     }
@@ -115,7 +117,8 @@ export class SkillFormComponent implements OnInit , OnDestroy, OnExitInterface {
 
   store(skill: SkillModel): void {
     this.progressBar = true;
-    this.jobBoardHttpService.storeSkill(skill, this.jobBoardService.professional.id!).subscribe(
+    this.jobBoardHttpService.storeSkill(skill, this.jobBoardService.professional.id!)
+      .subscribe(
       response => {
         this.messageService.success(response);
         this.form.reset();
@@ -131,7 +134,8 @@ export class SkillFormComponent implements OnInit , OnDestroy, OnExitInterface {
 
   update(skill: SkillModel): void {
     this.progressBar = true;
-    this.jobBoardHttpService.updateSkill(skill.id!, skill, this.jobBoardService.professional.id!).subscribe(
+    this.jobBoardHttpService.updateSkill(skill.id!, skill, this.jobBoardService.professional.id!)
+      .subscribe(
       response => {
         this.messageService.success(response);
         this.form.reset();

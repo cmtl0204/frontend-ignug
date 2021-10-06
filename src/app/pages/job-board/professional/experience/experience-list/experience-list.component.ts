@@ -15,6 +15,7 @@ import {FormControl, FormGroup} from '@angular/forms';
   templateUrl: './experience-list.component.html',
   styleUrls: ['./experience-list.component.scss']
 })
+
 export class ExperienceListComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   cols: ColModel[] = [];
@@ -22,7 +23,6 @@ export class ExperienceListComponent implements OnInit, OnDestroy {
   loading: boolean = false;
   paginator: PaginatorModel = {current_page: 1, per_page: 5, total: 0};
   filter: FormControl;
-
   experiences: ExperienceModel[] = [];
   selectedExperience: ExperienceModel = {};
   selectedExperiences: ExperienceModel[] = [];
@@ -73,8 +73,8 @@ export class ExperienceListComponent implements OnInit, OnDestroy {
     }
   }
 
-  editExperience(user: ExperienceModel) {
-    this.router.navigate(['/job-board/professional/experience/', user.id]);
+  editExperience(experience: ExperienceModel) {
+    this.router.navigate(['/job-board/professional/experience/', experience.id]);
   }
 
   createExperience() {
