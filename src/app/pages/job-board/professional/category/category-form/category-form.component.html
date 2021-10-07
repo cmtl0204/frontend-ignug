@@ -1,11 +1,10 @@
-<h1>asdasdas</h1>
 <div class="container-fluid">
   <p-toolbar *ngIf="!skeletonLoading" styleClass="bg-primary">
     <div class="p-toolbar-group-left">
       <h3 class="ml-2">{{title}}</h3>
     </div>
     <div class="p-toolbar-group-right">
-      <i class="pi pi-times p-button p-button-text" [routerLink]="['/job-board/professional/course']"
+      <i class="pi pi-times p-button p-button-text" [routerLink]="['/job-board/professional/category']"
          style="font-size: 2rem; color: #fff"></i>
     </div>
   </p-toolbar>
@@ -15,23 +14,54 @@
   <p-card>
     <div class="p-fluid" *ngIf="!skeletonLoading">
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <div class="formgrid grid">
-          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-            <label for="area" appLabel label="Area de Estudios:"
+
+        <div class="field">
+          <label for="name" appLabel label="Título Profesional:"
                    [required]="true"
-                   [valid]="areaField.valid"
-                   [touched]="areaField.touched"
-                   [dirty]="areaField.dirty">
+                   [valid]="nameField.valid"
+                   [touched]="nameField.touched"
+                   [dirty]="nameField.dirty">
             </label>
-            <p-dropdown id="area"
+            <p-dropdown id="name"
+                        [options]="professionalDegrees"
+                        formControlName="name"
+                        [filter]="true"
+                        filterBy="name"
+                        placeholder="Seleccione">
+              <ng-template pTemplate="selectedItem">
+                <div class="country-item country-item-value" *ngIf="nameField.value">
+                  <div>{{nameField.value?.name}}</div>
+                </div>
+              </ng-template>
+              <ng-template let-item pTemplate="item">
+                <div class="country-item">
+                  <div>{{item.name}}</div>
+                </div>
+              </ng-template>
+            </p-dropdown>
+            <small appErrorMessage
+                   [errors]="nameField.errors"
+                   [touched]="nameField.touched"
+                   [dirty]="nameField.dirty">
+            </small>
+        </div>
+
+        <div class="field">
+         <label for="parent" appLabel label="Area de Estudios:"
+                   [required]="true"
+                   [valid]="parentField.valid"
+                   [touched]="parentField.touched"
+                   [dirty]="parentField.dirty">
+            </label>
+            <p-dropdown id="parent"
                         [options]="areas"
-                        formControlName="area"
+                        formControlName="parent"
                         [filter]="true"
                         filterBy="name"
                         placeholder="Seleccione">
               <ng-template pTemplate="selectedItem">
-                <div class="country-item country-item-value" *ngIf="areaField.value">
-                  <div>{{areaField.value?.name}}</div>
+                <div class="country-item country-item-value" *ngIf="parentField.value">
+                  <div>{{parentField.value?.name}}</div>
                 </div>
               </ng-template>
               <ng-template let-item pTemplate="item">
@@ -41,167 +71,26 @@
               </ng-template>
             </p-dropdown>
             <small appErrorMessage
-                   [errors]="areaField.errors"
-                   [touched]="areaField.touched"
-                   [dirty]="areaField.dirty">
+                   [errors]="parentField.errors"
+                   [touched]="parentField.touched"
+                   [dirty]="parentField.dirty">
             </small>
-          </div>
-          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-            <label for="institution" appLabel [required]="true" label="Institución:" [valid]="institutionField.valid"
-                   [touched]="institutionField.touched" [dirty]="institutionField.dirty"></label>
-            <input pInputText id="institution" formControlName="institution">
-            <small appErrorMessage
-                   [errors]="institutionField.errors"
-                   [touched]="institutionField.touched"
-                   [dirty]="institutionField.dirty">
-            </small>
-          </div>
         </div>
 
         <div class="field">
-          <label for="name" appLabel label="Nombre del Evento:"
-                 [required]="true"
-                 [valid]="nameField.valid"
-                 [touched]="nameField.touched"
-                 [dirty]="nameField.dirty">
+          <label for="code" appLabel label="Código:"
+                 [valid]="codeField.valid"
+                 [touched]="codeField.touched"
+                 [dirty]="codeField.dirty">
           </label>
-          <input pInputText id="name" formControlName="name">
+          <input pInputText id="code" formControlName="code">
           <small appErrorMessage
-                 [errors]="nameField.errors"
-                 [touched]="nameField.touched"
-                 [dirty]="nameField.dirty">
+                 [errors]="codeField.errors"
+                 [touched]="codeField.touched"
+                 [dirty]="codeField.dirty">
           </small>
         </div>
 
-        <div class="field">
-          <label for="description" appLabel label="Descripción:"
-                 [valid]="descriptionField.valid"
-                 [touched]="descriptionField.touched"
-                 [dirty]="descriptionField.dirty">
-          </label>
-          <input pInputText id="description" formControlName="description">
-          <small appErrorMessage
-                 [errors]="descriptionField.errors"
-                 [touched]="descriptionField.touched"
-                 [dirty]="descriptionField.dirty">
-          </small>
-        </div>
-
-        <div class="formgrid grid">
-          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-            <label for="type" appLabel label="Tipo de Evento:"
-                   [required]="true"
-                   [valid]="typeField.valid"
-                   [touched]="typeField.touched"
-                   [dirty]="typeField.dirty">
-            </label>
-            <p-dropdown id="type" [options]="types" formControlName="type"
-                        [filter]="true"
-                        filterBy="name" placeholder="Seleccione">
-              <ng-template pTemplate="selectedItem">
-                <div class="country-item country-item-value" *ngIf="typeField.value">
-                  <div>{{typeField.value?.name}}</div>
-                </div>
-              </ng-template>
-              <ng-template let-item pTemplate="item">
-                <div class="country-item">
-                  <div>{{item.name}}</div>
-                </div>
-              </ng-template>
-            </p-dropdown>
-            <small appErrorMessage
-                   [errors]="typeField.errors"
-                   [touched]="typeField.touched"
-                   [dirty]="typeField.dirty">
-            </small>
-          </div>
-          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-            <label for="certificationType" appLabel label="Tipo de Certificado:"
-                   [required]="true"
-                   [valid]="certificationTypeField.valid"
-                   [touched]="certificationTypeField.touched"
-                   [dirty]="certificationTypeField.dirty"></label>
-            <p-dropdown id="certificationType"
-                        [options]="certificationTypes"
-                        formControlName="certificationType"
-                        [filter]="true"
-                        filterBy="name"
-                        placeholder="Seleccione">
-              <ng-template pTemplate="selectedItem">
-                <div class="country-item country-item-value" *ngIf="certificationTypeField.value">
-                  <div>{{certificationTypeField.value?.name}}</div>
-                </div>
-              </ng-template>
-              <ng-template let-item pTemplate="item">
-                <div class="country-item">
-                  <div>{{item.name}}</div>
-                </div>
-              </ng-template>
-            </p-dropdown>
-            <small appErrorMessage
-                   [errors]="certificationTypeField.errors"
-                   [touched]="certificationTypeField.touched"
-                   [dirty]="certificationTypeField.dirty">
-            </small>
-          </div>
-        </div>
-        <div class="formgrid grid">
-          <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
-            <label for="hours" appLabel label="Horas:"
-                   [required]="true"
-                   [valid]="hoursField.valid"
-                   [touched]="hoursField.touched"
-                   [dirty]="hoursField.dirty">
-            </label>
-            <p-inputNumber id="hours" formControlName="hours" mode="decimal" [showButtons]="true"
-                           [min]="0" [max]="1000" [step]="10">
-            </p-inputNumber>
-            <small appErrorMessage
-                   [errors]="hoursField.errors"
-                   [touched]="hoursField.touched"
-                   [dirty]="hoursField.dirty">
-            </small>
-          </div>
-          <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
-            <label for="startedAt" appLabel label="Fecha de Inicio:"
-                   [required]="true"
-                   [valid]="startDateField.valid"
-                   [touched]="startDateField.touched"
-                   [dirty]="startDateField.dirty">
-            </label>
-            <p-calendar id="startedAt" formControlName="startedAt" dateFormat="yy-mm-dd"
-                        [yearRange]="'1900:2021'"
-                        [showIcon]="true"
-                        [monthNavigator]="true"
-                        [yearNavigator]="true"
-                        [readonlyInput]="true"></p-calendar>
-            <small appErrorMessage
-                   [errors]="startDateField.errors"
-                   [touched]="startDateField.touched"
-                   [dirty]="startDateField.dirty">
-            </small>
-          </div>
-          <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
-            <label for="EndedAt" appLabel label="Fecha de Fin:"
-                   [required]="true"
-                   [valid]="endDateField.valid"
-                   [touched]="endDateField.touched"
-                   [dirty]="endDateField.dirty">
-            </label>
-            <p-calendar id="EndedAt" formControlName="EndedAt" dateFormat="yy-mm-dd"
-                        [yearRange]="'1900:2021'"
-                        [showIcon]="true"
-                        [minDate]="startDateField.value"
-                        [monthNavigator]="true"
-                        [yearNavigator]="true"
-                        [readonlyInput]="true"></p-calendar>
-            <small appErrorMessage
-                   [errors]="endDateField.errors"
-                   [touched]="endDateField.touched"
-                   [dirty]="endDateField.dirty">
-            </small>
-          </div>
-        </div>
         <p-divider></p-divider>
         <div class="formgrid grid">
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">

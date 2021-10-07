@@ -22,7 +22,8 @@ export class CategoryFormComponent implements OnInit, OnDestroy, OnExitInterface
   title: string = 'Crear evento';
   buttonTitle: string = 'Crear evento';
   areas: CategoryModel[] = [];
-
+  professionalDegrees: CategoryModel[] = [];
+  
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -47,8 +48,10 @@ export class CategoryFormComponent implements OnInit, OnDestroy, OnExitInterface
       this.form.markAllAsTouched();
     }
     this.loadAreas();
+    this.loadProfessionalDegrees();
   }
-
+  
+  
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
@@ -101,6 +104,17 @@ export class CategoryFormComponent implements OnInit, OnDestroy, OnExitInterface
     );
   }
 
+  loadProfessionalDegrees() {
+    this.jobBoardHttpService.getProfessionalDegrees()
+    .subscribe(
+      response => {
+        this.professionalDegrees = response.data;
+      }, error => {
+        this.messageService.error(error);
+      }
+    );
+  }
+  
   onSubmit():void {
     if (this.form.valid) {
       if (this.idField.value) {
