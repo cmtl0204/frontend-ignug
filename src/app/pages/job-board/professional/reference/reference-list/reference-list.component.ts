@@ -14,7 +14,7 @@ import {FormControl} from '@angular/forms';
   templateUrl: './reference-list.component.html',
   styleUrls: ['./reference-list.component.scss']
 })
-export class ReferenceComponent implements OnInit, OnDestroy {
+export class ReferenceListComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   cols: ColModel[] = [];
   items: MenuItem[] = [];

@@ -1,98 +1,37 @@
 <p>language-form works!</p>
 <div class="container-fluid">
-    <p-toolbar *ngIf="!skeletonLoading" styleClass="bg-primary">
-      <div class="p-toolbar-group-left">
-        <h3 class="ml-2">{{title}}</h3>
-      </div>
-      <div class="p-toolbar-group-right">
-        <i class="pi pi-times p-button p-button-text" [routerLink]="['/job-board/professional/language']"
-           style="font-size: 2rem; color: #fff"></i>
-      </div>
-    </p-toolbar>
-  </div>
-  <div class="container">
-    <app-skeleton *ngIf="skeletonLoading" [type]="'card'"></app-skeleton>
-    <p-card>
-      <div class="p-fluid" *ngIf="!skeletonLoading">
-        <form [formGroup]="form" (ngSubmit)="onSubmit()">
-          <div class="formgrid grid">
-            <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-              <label for="idiom" appLabel label="Idioma:"
-                     [required]="true"
-                     [valid]="idiomField.valid"
-                     [touched]="idiomField.touched"
-                     [dirty]="idiomField.dirty">
-              </label>
-              <p-dropdown id="idiom"
-                          [options]="idioms"
-                          formControlName="idiom"
-                          [filter]="true"
-                          filterBy="idiom"
-                          placeholder="Seleccione">
-                <ng-template pTemplate="selectedItem">
-                  <div class="country-item country-item-value" *ngIf="idiomField.value">
-                    <div>{{idiomField.value?.name}}</div>
-                  </div>
-                </ng-template>
-                <ng-template let-item pTemplate="item">
-                  <div class="country-item">
-                    <div>{{item.name}}</div>
-                  </div>
-                </ng-template>
-              </p-dropdown>
-              <small appErrorMessage
-                     [errors]="idiomField.errors"
-                     [touched]="idiomField.touched"
-                     [dirty]="idiomField.dirty">
-              </small>
-            </div>
-            <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-              <label for="writtenLevel" appLabel label="Nivel de escrito:"
-                     [required]="true"
-                     [valid]="writtenLevelField.valid"
-                     [touched]="writtenLevelField.touched"
-                     [dirty]="writtenLevelField.dirty">
-              </label>
-              <p-dropdown id="writtenLevel"
-                          [options]="writtenLevels"
-                          formControlName="writtenLevel"
-                          [filter]="true"
-                          filterBy="name"
-                          placeholder="Seleccione">
-                <ng-template pTemplate="selectedItem">
-                  <div class="country-item country-item-value" *ngIf="writtenLevelField.value">
-                    <div>{{writtenLevelField.value?.name}}</div>
-                  </div>
-                </ng-template>
-                <ng-template let-item pTemplate="item">
-                  <div class="country-item">
-                    <div>{{item.name}}</div>
-                  </div>
-                </ng-template>
-              </p-dropdown>
-              <small appErrorMessage
-                     [errors]="writtenLevelField.errors"
-                     [touched]="writtenLevelField.touched"
-                     [dirty]="writtenLevelField.dirty">
-              </small>
-            </div>
-          </div> 
+  <p-toolbar *ngIf="!skeletonLoading" styleClass="bg-primary">
+    <div class="p-toolbar-group-left">
+      <h3 class="ml-2">{{title}}</h3>
+    </div>
+    <div class="p-toolbar-group-right">
+      <i class="pi pi-times p-button p-button-text" [routerLink]="['/job-board/professional/language']"
+         style="font-size: 2rem; color: #fff"></i>
+    </div>
+  </p-toolbar>
+</div>
+<div class="container">
+  <app-skeleton *ngIf="skeletonLoading" [type]="'card'"></app-skeleton>
+  <p-card>
+    <div class="p-fluid" *ngIf="!skeletonLoading">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="formgrid grid">
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-            <label for="spokenLevel" appLabel label="Nivel de escrito:"
+            <label for="idiom" appLabel label="Idioma:"
                    [required]="true"
-                   [valid]="spokenLevelField.valid"
-                   [touched]="spokenLevelField.touched"
-                   [dirty]="spokenLevelField.dirty">
+                   [valid]="idiomField.valid"
+                   [touched]="idiomField.touched"
+                   [dirty]="idiomField.dirty">
             </label>
-            <p-dropdown id="spokenLevel"
-                        [options]="spokenLevels"
-                        formControlName="spokenLevel"
+            <p-dropdown id="idiom"
+                        [options]="idioms"
+                        formControlName="idiom"
                         [filter]="true"
-                        filterBy="name"
+                        filterBy="idiom"
                         placeholder="Seleccione">
               <ng-template pTemplate="selectedItem">
-                <div class="country-item country-item-value" *ngIf="spokenLevelField.value">
-                  <div>{{spokenLevelField.value?.name}}</div>
+                <div class="country-item country-item-value" *ngIf="idiomField.value">
+                  <div>{{idiomField.value?.name}}</div>
                 </div>
               </ng-template>
               <ng-template let-item pTemplate="item">
@@ -102,27 +41,27 @@
               </ng-template>
             </p-dropdown>
             <small appErrorMessage
-                   [errors]="spokenLevelField.errors"
-                   [touched]="spokenLevelField.touched"
-                   [dirty]="spokenLevelField.dirty">
+                   [errors]="idiomField.errors"
+                   [touched]="idiomField.touched"
+                   [dirty]="idiomField.dirty">
             </small>
           </div>
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-            <label for="readLevel" appLabel label="Nivel de escrito:"
+            <label for="writtenLevel" appLabel label="Nivel de escrito:"
                    [required]="true"
-                   [valid]="readLevelField.valid"
-                   [touched]="readLevelField.touched"
-                   [dirty]="readLevelField.dirty">
+                   [valid]="writtenLevelField.valid"
+                   [touched]="writtenLevelField.touched"
+                   [dirty]="writtenLevelField.dirty">
             </label>
-            <p-dropdown id="readLevel"
-                        [options]="readLevels"
-                        formControlName="readLevel"
+            <p-dropdown id="writtenLevel"
+                        [options]="writtenLevels"
+                        formControlName="writtenLevel"
                         [filter]="true"
                         filterBy="name"
                         placeholder="Seleccione">
               <ng-template pTemplate="selectedItem">
-                <div class="country-item country-item-value" *ngIf="readLevelField.value">
-                  <div>{{readLevelField.value?.name}}</div>
+                <div class="country-item country-item-value" *ngIf="writtenLevelField.value">
+                  <div>{{writtenLevelField.value?.name}}</div>
                 </div>
               </ng-template>
               <ng-template let-item pTemplate="item">
@@ -132,23 +71,83 @@
               </ng-template>
             </p-dropdown>
             <small appErrorMessage
-                   [errors]="readLevelField.errors"
-                   [touched]="readLevelField.touched"
-                   [dirty]="readLevelField.dirty">
+                   [errors]="writtenLevelField.errors"
+                   [touched]="writtenLevelField.touched"
+                   [dirty]="writtenLevelField.dirty">
             </small>
           </div>
-        </div> 
-          <p-divider></p-divider>
-          <div class="formgrid grid">
-            <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-              <button pButton pRipple [label]="buttonTitle" class="p-button-rounded" icon="pi pi-save"></button>
-            </div>
-            <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12" *ngIf="progressBar">
-              <p-progressBar mode="indeterminate"></p-progressBar>
-              <small>Procesando...</small>
-            </div>
+        </div>
+        <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+          <label for="spokenLevel" appLabel label="Nivel de escrito:"
+                 [required]="true"
+                 [valid]="spokenLevelField.valid"
+                 [touched]="spokenLevelField.touched"
+                 [dirty]="spokenLevelField.dirty">
+          </label>
+          <p-dropdown id="spokenLevel"
+                      [options]="spokenLevels"
+                      formControlName="spokenLevel"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Seleccione">
+            <ng-template pTemplate="selectedItem">
+              <div class="country-item country-item-value" *ngIf="spokenLevelField.value">
+                <div>{{spokenLevelField.value?.name}}</div>
+              </div>
+            </ng-template>
+            <ng-template let-item pTemplate="item">
+              <div class="country-item">
+                <div>{{item.name}}</div>
+              </div>
+            </ng-template>
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="spokenLevelField.errors"
+                 [touched]="spokenLevelField.touched"
+                 [dirty]="spokenLevelField.dirty">
+          </small>
+        </div>
+        <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+          <label for="readLevel" appLabel label="Nivel de escrito:"
+                 [required]="true"
+                 [valid]="readLevelField.valid"
+                 [touched]="readLevelField.touched"
+                 [dirty]="readLevelField.dirty">
+          </label>
+          <p-dropdown id="readLevel"
+                      [options]="readLevels"
+                      formControlName="readLevel"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Seleccione">
+            <ng-template pTemplate="selectedItem">
+              <div class="country-item country-item-value" *ngIf="readLevelField.value">
+                <div>{{readLevelField.value?.name}}</div>
+              </div>
+            </ng-template>
+            <ng-template let-item pTemplate="item">
+              <div class="country-item">
+                <div>{{item.name}}</div>
+              </div>
+            </ng-template>
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="readLevelField.errors"
+                 [touched]="readLevelField.touched"
+                 [dirty]="readLevelField.dirty">
+          </small>
+        </div>
+        <p-divider></p-divider>
+        <div class="formgrid grid">
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <button pButton pRipple [label]="buttonTitle" class="p-button-rounded" icon="pi pi-save"></button>
           </div>
-        </form>
-      </div>
-    </p-card>
-  </div>
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12" *ngIf="progressBar">
+            <p-progressBar mode="indeterminate"></p-progressBar>
+            <small>Procesando...</small>
+          </div>
+        </div>
+      </form>
+    </div>
+  </p-card>
+</div>

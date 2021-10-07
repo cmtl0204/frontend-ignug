@@ -87,9 +87,9 @@ export class SkillFormComponent implements OnInit , OnDestroy, OnExitInterface {
 
   newForm(): FormGroup {
     return this.formBuilder.group({
-      id: [null, [Validators.required]],
+      id: [null],
       type: [null, [Validators.required]],
-      description: [null, [Validators.minLength(10)]]
+      description: [null, [Validators.required,Validators.minLength(10)]]
     });
   }
 

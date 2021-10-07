@@ -1,6 +1,4 @@
-<p>language-list works!</p>
 <div class="container">
-
     <p-toolbar>
       <div class="p-toolbar-group-left">
         <button pButton pRipple type="button" label="Crear idioma"
@@ -8,7 +6,7 @@
                 (click)="createLanguage()"></button>
         <button pButton pRipple type="button" label="Refrescar"
                 class="p-button-rounded ml-2" icon="pi pi-refresh"
-                (click)="getLanguages()"></button>
+                (click)="loadLanguages()"></button>
         <button *ngIf="selectedLanguages?.length" pButton pRipple type="button" label="Eliminar idiomas"
                 class="p-button-danger p-button-rounded ml-2" icon="pi pi-trash"
                 (click)="deleteLanguages()"></button>
@@ -69,4 +67,3 @@
       </p-table>
     </p-card>
   </div>
-  
