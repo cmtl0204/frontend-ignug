@@ -31,7 +31,7 @@
                           placeholder="Seleccione">
                 <ng-template pTemplate="selectedItem">
                   <div class="country-item country-item-value" *ngIf="idiomField.value">
-                    <div>{{areaField.value?.name}}</div>
+                    <div>{{idiomField.value?.name}}</div>
                   </div>
                 </ng-template>
                 <ng-template let-item pTemplate="item">
@@ -61,7 +61,7 @@
                           placeholder="Seleccione">
                 <ng-template pTemplate="selectedItem">
                   <div class="country-item country-item-value" *ngIf="writtenLevelField.value">
-                    <div>{{areaField.value?.name}}</div>
+                    <div>{{writtenLevelField.value?.name}}</div>
                   </div>
                 </ng-template>
                 <ng-template let-item pTemplate="item">
@@ -92,7 +92,7 @@
                         placeholder="Seleccione">
               <ng-template pTemplate="selectedItem">
                 <div class="country-item country-item-value" *ngIf="spokenLevelField.value">
-                  <div>{{areaField.value?.name}}</div>
+                  <div>{{spokenLevelField.value?.name}}</div>
                 </div>
               </ng-template>
               <ng-template let-item pTemplate="item">
@@ -122,7 +122,7 @@
                         placeholder="Seleccione">
               <ng-template pTemplate="selectedItem">
                 <div class="country-item country-item-value" *ngIf="readLevelField.value">
-                  <div>{{areaField.value?.name}}</div>
+                  <div>{{readLevelField.value?.name}}</div>
                 </div>
               </ng-template>
               <ng-template let-item pTemplate="item">
