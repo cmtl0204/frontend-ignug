@@ -182,7 +182,7 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
   }
 
   get reasonLeaveField() {
-    return this.form.controls['reason_Leave'];
+    return this.form.controls['reasonLeave'];
   }
 
   get startedAtField() {
