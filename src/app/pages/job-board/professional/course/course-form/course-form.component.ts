@@ -1,15 +1,14 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {BreadcrumbService} from '@services/core/breadcrumb.service';
-import {CatalogueModel} from '@models/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MessageService} from '@services/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {JobBoardHttpService, JobBoardService} from '@services/job-board';
-import {CourseModel} from '@models/job-board';
-import {CoreService} from '@services/core/core.service';
 import {Subscription} from 'rxjs';
+import {BreadcrumbService} from '@services/core/breadcrumb.service';
+import {MessageService} from '@services/core';
 import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
-import {CoreHttpService} from '@services/core/core-http.service';
+import {CoreHttpService} from '@services/core';
+import {JobBoardHttpService, JobBoardService} from '@services/job-board';
+import {CatalogueModel} from '@models/core';
+import {CourseModel} from '@models/job-board';
 
 @Component({
   selector: 'app-course-form',
@@ -34,15 +33,14 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
     private activatedRoute: ActivatedRoute,
     private breadcrumbService: BreadcrumbService,
     private coreHttpService: CoreHttpService,
-    private jobBardHttpService: JobBoardHttpService,
-    private jobBardService: JobBoardService,
-    private appService: CoreService,
+    private jobBoardHttpService: JobBoardHttpService,
+    private jobBoardService: JobBoardService,
     public messageService: MessageService
     ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
-      {label: 'Cursos y Capacitaciones', routerLink: ['/job-board/professional/course']},
+      {label: 'Curso Profesional', routerLink: ['/job-board/professional/course']},
       {label: 'Formulario', disabled: true},
     ]);
     this.form = this.newForm();
@@ -52,7 +50,7 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
     if (this.activatedRoute.snapshot.params.id != 'new') {
       this.title = 'Actualizar curso';
       this.buttonTitle = 'Actualizar curso';
-      this.getCourse();
+      this.loadCourse();
       this.form.markAllAsTouched();
     }
     this.loadCertificationTypes();
@@ -73,15 +71,14 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
     return true;
   }
 
-  getCourse() {
+  loadCourse() {
     this.skeletonLoading = true;
     this.subscriptions.push(
-      this.jobBardHttpService.getCourse(this.jobBardService.professional.id!, this.activatedRoute.snapshot.params.id)
+      this.jobBoardHttpService
+          .getCourse(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
         .subscribe(
       response => {
-        response.data.startedAt = new Date('2021-08-22');
         response.data.startedAt.setDate(response.data.startedAt.getDate() + 1);
-        response.data.EndedAt = new Date(response.data.EndedAt);
         response.data.EndedAt.setDate(response.data.EndedAt.getDate() + 1);
 
         this.form.patchValue(response.data);
@@ -153,7 +150,7 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
 
   store(course: CourseModel): void {
     this.progressBar = true;
-    this.jobBardHttpService.storeCourse(course, this.jobBardService.professional.id!).subscribe(
+    this.jobBoardHttpService.storeCourse(course, this.jobBoardService.professional.id!).subscribe(
       response => {
         this.messageService.success(response);
         this.form.reset();
@@ -170,7 +167,7 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
 
   update(course: CourseModel): void {
     this.progressBar = true;
-    this.jobBardHttpService.updateCourse(course.id!, course, this.jobBardService.professional.id!).subscribe(
+    this.jobBoardHttpService.updateCourse(course.id!, course, this.jobBoardService.professional.id!).subscribe(
       response => {
         this.messageService.success(response);
         this.form.reset();
