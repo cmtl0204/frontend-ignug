@@ -61,6 +61,14 @@ export class MessageService {
     });
   }
 
+  errorRequired() {
+    return Swal.fire({
+      title: 'No se puede eliminar',
+      text: 'El campo es requerido',
+      icon: 'info'
+    });
+  }
+
   questionDelete({title = '¿Está seguro de eliminar?', text = 'No podrá recuperar esta información!'}) {
     return Swal.fire({
       title,

@@ -56,15 +56,43 @@
                    [dirty]="employerField.dirty">
             </small>
           </div>
-          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-            <label for="activities" appLabel [required]="true" label="Ocupaciones:" [valid]="activitiesField.valid"
-                   [touched]="activitiesField.touched" [dirty]="activitiesField.dirty"></label>
-            <input pInputText id="activities" formControlName="activities">
-            <small appErrorMessage
-                   [errors]="activitiesField.errors"
+        </div>
+
+        <div class="formgrid grid">
+          <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
+            <label appLabel label="Actividades:"
+                   [required]="true"
+                   [valid]="activitiesField.valid"
                    [touched]="activitiesField.touched"
                    [dirty]="activitiesField.dirty">
-            </small>
+            </label>
+          </div>
+          <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
+            <button pButton pRipple type="button" label="Añadir" class="p-button-secondary p-button-rounded"
+                    icon="pi pi-plus"
+                    (click)="addActivity()"></button>
+          </div>
+        </div>
+
+        <div formArrayName="activities">
+          <div *ngFor="let activity of activitiesField.controls; let i = index;">
+            <div class="formgrid grid">
+              <div class="field xl:col-1 lg:col-1 md:col-12 sm:col-12">
+                <label [for]="'activity'+i">Actividad {{i+1}}:</label>
+              </div>
+              <div class="field xl:col-10 lg:col-10 md:col-12 sm:col-12">
+                <input pInputText [id]="'activity'+i" [formControlName]="i">
+                <small appErrorMessage
+                       [errors]="activitiesField.controls[i].errors"
+                       [touched]="activitiesField.controls[i].touched"
+                       [dirty]="activitiesField.controls[i].dirty">
+                </small>
+              </div>
+              <div class="field xl:col-1 lg:col-1 md:col-12 sm:col-12">
+                <button pButton pRipple type="button" (click)="removeActivity(i)" iconPos="right" icon="pi pi-trash"
+                        class="p-button-danger p-button-rounded"></button>
+              </div>
+            </div>
           </div>
         </div>
         <div class="field">
@@ -74,7 +102,7 @@
                  [touched]="positionField.touched"
                  [dirty]="positionField.dirty">
           </label>
-          <input pInputText id="position" formControlPosition="position">
+          <input pInputText id="position" formControlName="position">
           <small appErrorMessage
                  [errors]="positionField.errors"
                  [touched]="positionField.touched"

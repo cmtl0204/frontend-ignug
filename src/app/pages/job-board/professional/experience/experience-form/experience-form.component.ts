@@ -9,6 +9,7 @@ import {CoreHttpService} from '@services/core';
 import {JobBoardHttpService, JobBoardService} from '@services/job-board';
 import {CatalogueModel} from '@models/core';
 import {ExperienceModel} from '@models/job-board';
+import {PhoneModel} from "@models/core/phone.model";
 
 @Component({
   selector: 'app-experience-form',
@@ -34,7 +35,7 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
     private coreHttpService: CoreHttpService,
     private jobBoardHttpService: JobBoardHttpService,
     private jobBoardService: JobBoardService
-    ) {
+  ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
@@ -63,36 +64,37 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
     if (this.form.touched || this.form.dirty) {
       return await this.messageService.questionOnExit({})
         .then((result) => {
-        return result.isConfirmed;
-      });
+          return result.isConfirmed;
+        });
     }
     return true;
   }
 
-  loadExperience():void {
+  loadExperience(): void {
     this.skeletonLoading = true;
     this.subscriptions.push(
       this.jobBoardHttpService
         .getExperience(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
-      .subscribe(
-      response => {
-        response.data.startedAt.setDate(response.data.startedAt.getDate() + 1);
-        response.data.endedAt.setDate(response.data.endedAt.getDate() + 1);
+        .subscribe(
+          response => {
+            response.data.startedAt.setDate(response.data.startedAt.getDate() + 1);
+            response.data.endedAt.setDate(response.data.endedAt.getDate() + 1);
 
-        this.form.patchValue(response.data);
-        this.skeletonLoading = false;
-      }, error => {
-        this.skeletonLoading = false;
-        this.messageService.error(error);
-      }
-    ));
+            this.form.patchValue(response.data);
+            this.skeletonLoading = false;
+          }, error => {
+            this.skeletonLoading = false;
+            this.messageService.error(error);
+          }
+        ));
   }
 
   newForm(): FormGroup {
     return this.formBuilder.group({
       id: [null],
       area: [null, [Validators.required]],
-      activities: [this.formBuilder.array([]), [Validators.required]],
+      activities: this.formBuilder.array(
+        [this.formBuilder.control(null, Validators.required)]),
       employer: [null, [Validators.required]],
       endedAt: [null, [Validators.required]],
       position: [null, [Validators.required]],
@@ -102,7 +104,7 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
     });
   }
 
-  loadAreas():void {
+  loadAreas(): void {
     this.coreHttpService.getCatalogues('EXPERIENCE_AREA').subscribe(
       response => {
         this.areas = response.data;
@@ -112,7 +114,7 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
     );
   }
 
-  onSubmit():void {
+  onSubmit(): void {
     if (this.form.valid) {
       if (this.idField.value) {
         this.update(this.form.value);
@@ -144,17 +146,17 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
     this.progressBar = true;
     this.jobBoardHttpService.updateExperience(experience.id!, experience, this.jobBoardService.professional.id!)
       .subscribe(
-      response => {
-        this.messageService.success(response);
-        this.progressBar = false;
-        this.form.reset();
-        this.router.navigate(['/job-board/professional/experience']);
-      },
-      error => {
-        this.messageService.error(error);
-        this.progressBar = false;
-      }
-    );
+        response => {
+          this.messageService.success(response);
+          this.progressBar = false;
+          this.form.reset();
+          this.router.navigate(['/job-board/professional/experience']);
+        },
+        error => {
+          this.messageService.error(error);
+          this.progressBar = false;
+        }
+      );
   }
 
   get idField() {
@@ -165,7 +167,7 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
     return this.form.controls['area'];
   }
 
-  get activitiesField():FormArray {
+  get activitiesField(): FormArray {
     return this.form.controls['activities'] as FormArray;
   }
 
@@ -192,6 +194,17 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
 
   get workedField() {
     return this.form.controls['worked'];
+  }
+
+  addActivity() {
+    this.activitiesField.push(this.formBuilder.control(null, Validators.required));
+  }
+
+  removeActivity(index: number) {
+    if (this.activitiesField.length > 1)
+      this.activitiesField.removeAt(index);
+    else
+      this.messageService.errorRequired();
   }
 }
 
