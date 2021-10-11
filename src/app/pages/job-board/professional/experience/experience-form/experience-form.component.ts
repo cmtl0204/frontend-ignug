@@ -50,7 +50,6 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
       this.title = 'Actualizar experiencia';
       this.buttonTitle = 'Actualizar experiencia';
       this.loadExperience();
-      this.form.markAllAsTouched();
     }
 
     this.loadAreas();

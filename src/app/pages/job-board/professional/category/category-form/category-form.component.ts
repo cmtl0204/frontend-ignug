@@ -20,7 +20,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy, OnExitInterface
   progressBar: boolean = false;
   skeletonLoading: boolean = false;
   title: string = 'Crear Título profesional';
-  buttonTitle: string = 'Crear Título profesional';
+  buttonTitle: string = 'Crear evento';
   areas: CategoryModel[] = [];
   professionalDegrees: CategoryModel[] = [];
   
@@ -45,7 +45,6 @@ export class CategoryFormComponent implements OnInit, OnDestroy, OnExitInterface
       this.title = 'Actualizar Título Profesional';
       this.buttonTitle = 'Actualizar Título Profesional';
       this.loadCategory();
-      this.form.markAllAsTouched();
     }
     this.loadAreas();
     this.loadProfessionalDegrees();
