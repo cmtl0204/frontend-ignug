@@ -5,8 +5,8 @@ import {CourseComponent} from './course/course.component';
 import {CourseFormComponent} from './course/course-form/course-form.component';
 import {ExitGuard} from '@shared/guards/exit.guard';
 import {ExperienceComponent} from './experience/experience.component';
-import {ExperienceFormComponent} from './Experience/experience-form/experience-form.component';
-import {LanguageFormComponent} from './Language/language-form/language-form.component';
+import {ExperienceFormComponent} from './experience/experience-form/experience-form.component';
+import {LanguageFormComponent} from './language/language-form/language-form.component';
 import {LanguageComponent} from './language/language.component';
 import {ReferenceComponent} from "./reference/reference.component";
 import {ReferenceFormComponent} from "./reference/reference-form/reference-form.component";
@@ -14,7 +14,12 @@ import {SkillComponent} from "./skill/skill.component";
 import {SkillFormComponent} from "./skill/skill-form/skill-form.component";
 import {AcademicFormationComponent} from "./academic-formation/academic-formation.component";
 import {AcademicFormationFormComponent} from "./academic-formation/academic-formation-form/academic-formation-form.component";
+<<<<<<< HEAD
 import {ProfileComponent} from "./profile/profile.component";
+=======
+import {CategoryComponent} from "./category/category.component";
+import {CategoryFormComponent} from "./category/category-form/category-form.component";
+>>>>>>> c2864cca23fc55886ea40a2aeb6c775db653fba4
 
 const routes: Routes = [
   {
@@ -84,6 +89,19 @@ const routes: Routes = [
     component: SkillFormComponent,
     canDeactivate: [ExitGuard]
   },
+<<<<<<< HEAD
+=======
+  {
+    path: 'category',
+    component: CategoryComponent,
+  },
+  {
+    path: 'category/:id',
+    component: CategoryFormComponent,
+    canDeactivate: [ExitGuard]
+  },
+
+>>>>>>> c2864cca23fc55886ea40a2aeb6c775db653fba4
 ];
 
 @NgModule({

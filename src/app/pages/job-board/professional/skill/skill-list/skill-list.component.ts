@@ -88,7 +88,7 @@ export class SkillListComponent implements OnInit, OnDestroy {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
-          this.subscriptions.push(this.jobBoardHttpService.deleteSkill(this.jobBoardService.professional?.id!, skill.id!).subscribe(
+          this.subscriptions.push(this.jobBoardHttpService.deleteSkill(skill.id!,this.jobBoardService.professional?.id!).subscribe(
             response => {
               this.removeSkill(skill);
               this.messageService.success(response);

@@ -19,8 +19,8 @@ export class CategoryFormComponent implements OnInit, OnDestroy, OnExitInterface
   form: FormGroup;
   progressBar: boolean = false;
   skeletonLoading: boolean = false;
-  title: string = 'Crear evento';
-  buttonTitle: string = 'Crear evento';
+  title: string = 'Crear Título profesional';
+  buttonTitle: string = 'Crear Título profesional';
   areas: CategoryModel[] = [];
   professionalDegrees: CategoryModel[] = [];
   
@@ -34,7 +34,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy, OnExitInterface
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
-      {label: 'Categorías', routerLink: ['/job-board/professional/category']},
+      {label: 'Títulos Profesionales', routerLink: ['/job-board/professional/category']},
       {label: 'Formulario', disabled: true},
     ]);
     this.form = this.newForm();
@@ -42,8 +42,8 @@ export class CategoryFormComponent implements OnInit, OnDestroy, OnExitInterface
 
   ngOnInit(): void {
     if (this.activatedRoute.snapshot.params.id != 'new') {
-      this.title = 'Actualizar categoría';
-      this.buttonTitle = 'Actualizar categoría';
+      this.title = 'Actualizar Título Profesional';
+      this.buttonTitle = 'Actualizar Título Profesional';
       this.loadCategory();
       this.form.markAllAsTouched();
     }
@@ -88,7 +88,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy, OnExitInterface
       parent: [null],
       code: [null, [Validators.required]],
       name: [null, [Validators.required]],
-      icon: [null, [Validators.required]],
+      icon: [null],
     });
   }
 
@@ -134,7 +134,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy, OnExitInterface
         this.messageService.success(response);
         this.form.reset();
         this.progressBar = false;
-        this.router.navigate(['/job-board/category']);
+        this.router.navigate(['/job-board/professional/category']);
       },
       error => {
         this.messageService.error(error);
@@ -151,7 +151,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy, OnExitInterface
         this.messageService.success(response);
         this.progressBar = false;
         this.form.reset();
-        this.router.navigate(['/job-board/category']);
+        this.router.navigate(['/job-board/professional/category']);
       },
       error => {
         this.messageService.error(error);

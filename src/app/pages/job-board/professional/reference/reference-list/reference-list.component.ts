@@ -88,7 +88,7 @@ export class ReferenceListComponent implements OnInit, OnDestroy {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
-          this.subscriptions.push(this.jobBoardHttpService.deleteReference(this.jobBoardService.professional?.id!, reference.id!).subscribe(
+          this.subscriptions.push(this.jobBoardHttpService.deleteReference(reference.id!,this.jobBoardService.professional?.id!).subscribe(
             response => {
               this.removeReference(reference);
               this.messageService.success(response);
