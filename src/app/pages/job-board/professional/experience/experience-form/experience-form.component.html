@@ -57,7 +57,20 @@
             </small>
           </div>
         </div>
-
+        <div class="field">
+          <label for="position" appLabel label="Cargo laboral"
+                 [required]="true"
+                 [valid]="positionField.valid"
+                 [touched]="positionField.touched"
+                 [dirty]="positionField.dirty">
+          </label>
+          <input pInputText id="position" formControlName="position">
+          <small appErrorMessage
+                 [errors]="positionField.errors"
+                 [touched]="positionField.touched"
+                 [dirty]="positionField.dirty">
+          </small>
+        </div>
         <div class="formgrid grid">
           <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
             <label appLabel label="Actividades:"
@@ -73,7 +86,6 @@
                     (click)="addActivity()"></button>
           </div>
         </div>
-
         <div formArrayName="activities">
           <div *ngFor="let activity of activitiesField.controls; let i = index;">
             <div class="formgrid grid">
@@ -96,17 +108,16 @@
           </div>
         </div>
         <div class="field">
-          <label for="position" appLabel label="Posicion"
-                 [required]="true"
-                 [valid]="positionField.valid"
-                 [touched]="positionField.touched"
-                 [dirty]="positionField.dirty">
+          <label for="worked" appLabel label="Trabajó:"
+                 [valid]="workedField.valid"
+                 [touched]="workedField.touched"
+                 [dirty]="workedField.dirty">
           </label>
-          <input pInputText id="position" formControlName="position">
+          <p-inputSwitch id="worked" formControlName="reasonLeave"></p-inputSwitch>
           <small appErrorMessage
-                 [errors]="positionField.errors"
-                 [touched]="positionField.touched"
-                 [dirty]="positionField.dirty">
+                 [errors]="reasonLeaveField.errors"
+                 [touched]="reasonLeaveField.touched"
+                 [dirty]="reasonLeaveField.dirty">
           </small>
         </div>
         <div class="field">
@@ -116,19 +127,6 @@
                  [dirty]="reasonLeaveField.dirty">
           </label>
           <input pInputText id="reasonLeave" formControlName="reasonLeave">
-          <small appErrorMessage
-                 [errors]="reasonLeaveField.errors"
-                 [touched]="reasonLeaveField.touched"
-                 [dirty]="reasonLeaveField.dirty">
-          </small>
-        </div>
-        <div class="field">
-          <label for="worked" appLabel label="Trabajó:"
-                 [valid]="workedField.valid"
-                 [touched]="workedField.touched"
-                 [dirty]="workedField.dirty">
-          </label>
-          <input pInputText id="worked" formControlName="reasonLeave">
           <small appErrorMessage
                  [errors]="reasonLeaveField.errors"
                  [touched]="reasonLeaveField.touched"
