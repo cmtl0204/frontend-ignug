@@ -56,7 +56,12 @@
               {{rowIndex + 1}}
             </td>
             <td *ngFor="let col of columns">
-              {{rowData[col.field]}}
+              <span *ngIf="rowData[col.field].id">
+                {{rowData[col.field].name}}
+              </span>
+              <span *ngIf="!rowData[col.field].id">
+                {{rowData[col.field].type}}
+              </span>
             </td>
             <td style="text-align: center">
               <p-splitButton label="Más" styleClass="p-button-secondary" (onDropdownClick)="selectLanguage(rowData)"

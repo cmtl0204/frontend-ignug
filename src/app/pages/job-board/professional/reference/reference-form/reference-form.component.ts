@@ -46,7 +46,6 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
       this.title = 'Actualizar referencias';
       this.buttonTitle = 'Actualizar referencias';
       this.loadReference();
-      this.form.markAllAsTouched();
     }
   }
 
@@ -82,7 +81,7 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
   newForm(): FormGroup {
     return this.formBuilder.group({
       id: [null],
-      position: [null, [Validators.required]],
+      position: [null],
       contactName: [null, [Validators.required]],
       contactPhone: [null, [Validators.required]],
       contactEmail: [null, [Validators.required]],
