@@ -137,25 +137,6 @@
         </div>
         <div class="formgrid grid">
           <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
-            <label for="endedAt" appLabel label="Fecha de Fin:"
-                   [valid]="endedAtField.valid"
-                   [touched]="endedAtField.touched"
-                   [dirty]="endedAtField.dirty">
-            </label>
-            <p-calendar id="endedAt" formControlName="endedAt" dateFormat="yy-mm-dd"
-                        [yearRange]="'1900:2021'"
-                        [showIcon]="true"
-                        [minDate]="startedAtField.value"
-                        [monthNavigator]="true"
-                        [yearNavigator]="true"
-                        [readonlyInput]="true"></p-calendar>
-            <small appErrorMessage
-                   [errors]="endedAtField.errors"
-                   [touched]="endedAtField.touched"
-                   [dirty]="endedAtField.dirty">
-            </small>
-          </div>
-          <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
             <label for="startedAt" appLabel label="Fecha de Inicio:"
                    [required]="true"
                    [valid]="startedAtField.valid"
@@ -172,6 +153,25 @@
                    [errors]="startedAtField.errors"
                    [touched]="startedAtField.touched"
                    [dirty]="startedAtField.dirty">
+            </small>
+          </div>
+          <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
+            <label for="endedAt" appLabel label="Fecha de Fin:"
+                   [valid]="endedAtField.valid"
+                   [touched]="endedAtField.touched"
+                   [dirty]="endedAtField.dirty">
+            </label>
+            <p-calendar id="endedAt" formControlName="endedAt" dateFormat="yy-mm-dd"
+                        [yearRange]="'1900:2021'"
+                        [showIcon]="true"
+                        [minDate]="startedAtField.value"
+                        [monthNavigator]="true"
+                        [yearNavigator]="true"
+                        [readonlyInput]="true"></p-calendar>
+            <small appErrorMessage
+                   [errors]="endedAtField.errors"
+                   [touched]="endedAtField.touched"
+                   [dirty]="endedAtField.dirty">
             </small>
           </div>
         </div>
