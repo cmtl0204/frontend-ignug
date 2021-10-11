@@ -14,8 +14,10 @@ import {SkillComponent} from "./skill/skill.component";
 import {SkillFormComponent} from "./skill/skill-form/skill-form.component";
 import {AcademicFormationComponent} from "./academic-formation/academic-formation.component";
 import {AcademicFormationFormComponent} from "./academic-formation/academic-formation-form/academic-formation-form.component";
+import {ProfileComponent} from "./profile/profile.component";
 import {CategoryComponent} from "./category/category.component";
 import {CategoryFormComponent} from "./category/category-form/category-form.component";
+
 
 const routes: Routes = [
   {
@@ -25,6 +27,11 @@ const routes: Routes = [
     // data: {
     //   roles: [RolesEnum.ADMIN, RolesEnum.GUEST]
     // },
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    canDeactivate: [ExitGuard]
   },
   {
     path: 'course',
@@ -89,7 +96,6 @@ const routes: Routes = [
     component: CategoryFormComponent,
     canDeactivate: [ExitGuard]
   },
-
 ];
 
 @NgModule({

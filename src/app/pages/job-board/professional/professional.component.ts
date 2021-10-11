@@ -16,8 +16,11 @@ export class ProfessionalComponent implements OnInit {
     this.options = [
       {label: 'Perfil', route: 'profile', img: 'route1.png'},
       {label: 'Cursos', route: 'course', img: 'route2.png'},
-      {label: 'Formación Académica', route: '', img: 'route3.png'},
-      {label: 'Experiencia Profesional', route: '', img: 'route4.png'}
+      {label: 'Formación Académica', route: 'academic-formation', img: 'route3.png'},
+      {label: 'Experiencia Profesional', route: 'experience', img: 'route4.png'},
+      {label: 'Referencias Personales', route: 'reference', img: 'route4.png'},
+      {label: 'Habilidades', route: 'skill', img: 'route4.png'},
+      {label: 'Idiomas', route: 'language', img: 'route4.png'},
     ];
   }
 
