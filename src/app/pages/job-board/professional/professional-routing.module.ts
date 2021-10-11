@@ -14,12 +14,10 @@ import {SkillComponent} from "./skill/skill.component";
 import {SkillFormComponent} from "./skill/skill-form/skill-form.component";
 import {AcademicFormationComponent} from "./academic-formation/academic-formation.component";
 import {AcademicFormationFormComponent} from "./academic-formation/academic-formation-form/academic-formation-form.component";
-<<<<<<< HEAD
 import {ProfileComponent} from "./profile/profile.component";
-=======
 import {CategoryComponent} from "./category/category.component";
 import {CategoryFormComponent} from "./category/category-form/category-form.component";
->>>>>>> c2864cca23fc55886ea40a2aeb6c775db653fba4
+
 
 const routes: Routes = [
   {
@@ -89,8 +87,6 @@ const routes: Routes = [
     component: SkillFormComponent,
     canDeactivate: [ExitGuard]
   },
-<<<<<<< HEAD
-=======
   {
     path: 'category',
     component: CategoryComponent,
@@ -100,8 +96,6 @@ const routes: Routes = [
     component: CategoryFormComponent,
     canDeactivate: [ExitGuard]
   },
-
->>>>>>> c2864cca23fc55886ea40a2aeb6c775db653fba4
 ];
 
 @NgModule({
