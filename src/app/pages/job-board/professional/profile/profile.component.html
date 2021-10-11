@@ -1,1 +1,370 @@
-<p>profile works!</p>
+<div class="container-fluid">
+  <p-toolbar *ngIf="!skeletonLoading" styleClass="bg-primary">
+    <div class="p-toolbar-group-left">
+      <h3 class="ml-2">{{title}}</h3>
+    </div>
+    <div class="p-toolbar-group-right">
+      <i class="pi pi-times p-button p-button-text" [routerLink]="['/job-board/professional']"
+         style="font-size: 2rem; color: #fff"></i>
+    </div>
+  </p-toolbar>
+</div>
+<div class="container-fluid">
+  <app-skeleton *ngIf="skeletonLoading" [type]="'card'"></app-skeleton>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="!skeletonLoading" class="p-fluid">
+    <div class="formgrid grid">
+      <p-card class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+        <div formGroupName="user">
+          <div class="formgrid grid">
+            <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+              <label for="identificationTypeUser" appLabel label="Tipo de documento:"
+                     [required]="true"
+                     [valid]="identificationTypeUserField.valid"
+                     [touched]="identificationTypeUserField.touched"
+                     [dirty]="identificationTypeUserField.dirty">
+              </label>
+              <p-dropdown id="identificationTypeUser"
+                          [options]="identificationTypes"
+                          formControlName="identificationType"
+                          [filter]="true"
+                          filterBy="name"
+                          placeholder="Seleccione">
+                <ng-template pTemplate="selectedItem">
+                  <div class="country-item country-item-value" *ngIf="identificationTypeUserField.value">
+                    <div>{{identificationTypeUserField.value?.name}}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-item pTemplate="item">
+                  <div class="country-item">
+                    <div>{{item.name}}</div>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+              <small appErrorMessage
+                     [errors]="identificationTypeUserField.errors"
+                     [touched]="identificationTypeUserField.touched"
+                     [dirty]="identificationTypeUserField.dirty">
+              </small>
+            </div>
+            <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+              <label for="username" appLabel [required]="true" label="Número de documento:"
+                     [valid]="usernameUserField.valid"
+                     [touched]="usernameUserField.touched" [dirty]="usernameUserField.dirty"></label>
+              <input pInputText id="username" formControlName="username" pKeyFilter="pnum">
+              <small appErrorMessage
+                     [errors]="usernameUserField.errors"
+                     [touched]="usernameUserField.touched"
+                     [dirty]="usernameUserField.dirty">
+              </small>
+            </div>
+          </div>
+          <div class="formgrid grid">
+            <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+              <label for="name" appLabel [required]="true" label="Nombres:"
+                     [valid]="nameUserField.valid"
+                     [touched]="nameUserField.touched" [dirty]="nameUserField.dirty"></label>
+              <input pInputText id="name" formControlName="name" pKeyFilter="alpha">
+              <small appErrorMessage
+                     [errors]="nameUserField.errors"
+                     [touched]="nameUserField.touched"
+                     [dirty]="nameUserField.dirty">
+              </small>
+            </div>
+            <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+              <label for="lastname" appLabel [required]="true" label="Apellidos:"
+                     [valid]="lastnameUserField.valid"
+                     [touched]="lastnameUserField.touched" [dirty]="lastnameUserField.dirty"></label>
+              <input pInputText id="lastname" formControlName="lastname" pKeyFilter="alpha">
+              <small appErrorMessage
+                     [errors]="lastnameUserField.errors"
+                     [touched]="lastnameUserField.touched"
+                     [dirty]="lastnameUserField.dirty">
+              </small>
+            </div>
+          </div>
+          <div class="formgrid grid">
+            <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+              <label for="email" appLabel [required]="true" label="Correo Electrónico:"
+                     [valid]="emailUserField.valid"
+                     [touched]="emailUserField.touched" [dirty]="emailUserField.dirty"></label>
+              <input pInputText id="email" formControlName="email" pKeyFilter="email">
+              <small appErrorMessage
+                     [errors]="emailUserField.errors"
+                     [touched]="emailUserField.touched"
+                     [dirty]="emailUserField.dirty">
+              </small>
+            </div>
+            <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+              <label for="phone" appLabel label="Teléfono:"
+                     [valid]="phoneUserField.valid"
+                     [touched]="phoneUserField.touched" [dirty]="phoneUserField.dirty"></label>
+              <input pInputText id="phone" formControlName="phone" pKeyFilter="pnum">
+              <small appErrorMessage
+                     [errors]="phoneUserField.errors"
+                     [touched]="phoneUserField.touched"
+                     [dirty]="phoneUserField.dirty">
+              </small>
+            </div>
+          </div>
+          <div class="formgrid grid">
+            <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+              <label for="sexUser" appLabel label="Sexo:"
+                     [required]="true"
+                     [valid]="sexUserField.valid"
+                     [touched]="sexUserField.touched"
+                     [dirty]="sexUserField.dirty">
+              </label>
+              <p-dropdown id="sexUser"
+                          [options]="sexes"
+                          formControlName="sex"
+                          [filter]="true"
+                          filterBy="name"
+                          placeholder="Seleccione">
+                <ng-template pTemplate="selectedItem">
+                  <div class="country-item country-item-value" *ngIf="sexUserField.value">
+                    <div>{{sexUserField.value?.name}}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-item pTemplate="item">
+                  <div class="country-item">
+                    <div>{{item.name}}</div>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+              <small appErrorMessage
+                     [errors]="sexUserField.errors"
+                     [touched]="sexUserField.touched"
+                     [dirty]="sexUserField.dirty">
+              </small>
+            </div>
+            <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+              <label for="genderUser" appLabel label="Género:"
+                     [required]="true"
+                     [valid]="genderUserField.valid"
+                     [touched]="genderUserField.touched"
+                     [dirty]="genderUserField.dirty">
+              </label>
+              <p-dropdown id="genderUser"
+                          [options]="genders"
+                          formControlName="gender"
+                          [filter]="true"
+                          filterBy="name"
+                          placeholder="Seleccione">
+                <ng-template pTemplate="selectedItem">
+                  <div class="country-item country-item-value" *ngIf="genderUserField.value">
+                    <div>{{genderUserField.value?.name}}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-item pTemplate="item">
+                  <div class="country-item">
+                    <div>{{item.name}}</div>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+              <small appErrorMessage
+                     [errors]="genderUserField.errors"
+                     [touched]="genderUserField.touched"
+                     [dirty]="genderUserField.dirty">
+              </small>
+            </div>
+          </div>
+          <div class="formgrid grid">
+            <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+              <label for="bloodTypeUser" appLabel label="Tipo de Sangre:"
+                     [required]="true"
+                     [valid]="bloodTypeUserField.valid"
+                     [touched]="bloodTypeUserField.touched"
+                     [dirty]="bloodTypeUserField.dirty">
+              </label>
+              <p-dropdown id="bloodTypeUser"
+                          [options]="bloodTypes"
+                          formControlName="bloodType"
+                          [filter]="true"
+                          filterBy="name"
+                          placeholder="Seleccione">
+                <ng-template pTemplate="selectedItem">
+                  <div class="country-item country-item-value" *ngIf="bloodTypeUserField.value">
+                    <div>{{bloodTypeUserField.value?.name}}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-item pTemplate="item">
+                  <div class="country-item">
+                    <div>{{item.name}}</div>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+              <small appErrorMessage
+                     [errors]="bloodTypeUserField.errors"
+                     [touched]="bloodTypeUserField.touched"
+                     [dirty]="bloodTypeUserField.dirty">
+              </small>
+            </div>
+            <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+              <label for="ethnicOriginUser" appLabel label="Etnia:"
+                     [required]="true"
+                     [valid]="ethnicOriginUserField.valid"
+                     [touched]="ethnicOriginUserField.touched"
+                     [dirty]="ethnicOriginUserField.dirty">
+              </label>
+              <p-dropdown id="ethnicOriginUser"
+                          [options]="ethnicOrigins"
+                          formControlName="ethnicOrigin"
+                          [filter]="true"
+                          filterBy="name"
+                          placeholder="Seleccione">
+                <ng-template pTemplate="selectedItem">
+                  <div class="country-item country-item-value" *ngIf="ethnicOriginUserField.value">
+                    <div>{{ethnicOriginUserField.value?.name}}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-item pTemplate="item">
+                  <div class="country-item">
+                    <div>{{item.name}}</div>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+              <small appErrorMessage
+                     [errors]="ethnicOriginUserField.errors"
+                     [touched]="ethnicOriginUserField.touched"
+                     [dirty]="ethnicOriginUserField.dirty">
+              </small>
+            </div>
+          </div>
+          <div class="formgrid grid">
+            <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+              <label for="birthdadteUser" appLabel label="Fecha de Nacimiento:"
+                     [required]="true"
+                     [valid]="birthdateUserField.valid"
+                     [touched]="birthdateUserField.touched"
+                     [dirty]="birthdateUserField.dirty">
+              </label>
+              <p-calendar id="birthdadteUser" formControlName="birthdate" dateFormat="yy-mm-dd"
+                          [yearRange]="'1900:2021'"
+                          [showIcon]="true"
+                          [monthNavigator]="true"
+                          [yearNavigator]="true"
+                          [readonlyInput]="true"></p-calendar>
+              <small appErrorMessage
+                     [errors]="birthdateUserField.errors"
+                     [touched]="birthdateUserField.touched"
+                     [dirty]="birthdateUserField.dirty">
+              </small>
+            </div>
+            <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            </div>
+          </div>
+        </div>
+      </p-card>
+      <p-card class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+        <div class="formgrid grid">
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <label for="traveled" appLabel label="¿Disponibidad para viajar?"
+                   [valid]="traveledField.valid"
+                   [touched]="traveledField.touched"
+                   [dirty]="traveledField.dirty">
+            </label>
+            <p-inputSwitch id="traveled" formControlName="traveled"></p-inputSwitch>
+            <small appErrorMessage
+                   [errors]="traveledField.errors"
+                   [touched]="traveledField.touched"
+                   [dirty]="traveledField.dirty">
+            </small>
+          </div>
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <label for="disabled" appLabel label="¿Tiene alguna discapacidad?"
+                   [valid]="disabledField.valid"
+                   [touched]="disabledField.touched"
+                   [dirty]="disabledField.dirty"></label>
+            <p-inputSwitch id="disabled" formControlName="disabled"></p-inputSwitch>
+            <small appErrorMessage
+                   [errors]="disabledField.errors"
+                   [touched]="disabledField.touched"
+                   [dirty]="disabledField.dirty">
+            </small>
+          </div>
+        </div>
+        <div class="formgrid grid">
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <label for="familiarDisabled" appLabel label="¿Algún familiar tiene discapacidad?"
+                   [valid]="traveledField.valid"
+                   [touched]="traveledField.touched"
+                   [dirty]="traveledField.dirty">
+            </label>
+            <p-inputSwitch id="familiarDisabled" formControlName="familiarDisabled"></p-inputSwitch>
+            <small appErrorMessage
+                   [errors]="traveledField.errors"
+                   [touched]="traveledField.touched"
+                   [dirty]="traveledField.dirty">
+            </small>
+          </div>
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <label for="identificationFamiliarDisabled" appLabel [required]="true" label="Número de documento:"
+                   [valid]="identificationFamiliarDisabledField.valid"
+                   [touched]="identificationFamiliarDisabledField.touched"
+                   [dirty]="identificationFamiliarDisabledField.dirty"></label>
+            <input pInputText id="identificationFamiliarDisabled" formControlName="identificationFamiliarDisabled"
+                   pKeyFilter="alphanum">
+            <small appErrorMessage
+                   [errors]="identificationFamiliarDisabledField.errors"
+                   [touched]="identificationFamiliarDisabledField.touched"
+                   [dirty]="identificationFamiliarDisabledField.dirty">
+            </small>
+          </div>
+        </div>
+        <div class="formgrid grid">
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <label for="catastrophicDiseased" appLabel label="¿Tiene alguna enfermedad catastrófica?"
+                   [valid]="catastrophicDiseasedField.valid"
+                   [touched]="catastrophicDiseasedField.touched"
+                   [dirty]="catastrophicDiseasedField.dirty">
+            </label>
+            <p-inputSwitch id="catastrophicDiseased" formControlName="catastrophicDiseased"></p-inputSwitch>
+            <small appErrorMessage
+                   [errors]="catastrophicDiseasedField.errors"
+                   [touched]="catastrophicDiseasedField.touched"
+                   [dirty]="catastrophicDiseasedField.dirty">
+            </small>
+          </div>
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <label for="familiarCatastrophicDiseased" appLabel
+                   label="¿Algún familiar tiene alguna enfermedad catastrófica?"
+                   [valid]="familiarCatastrophicDiseasedField.valid"
+                   [touched]="familiarCatastrophicDiseasedField.touched"
+                   [dirty]="familiarCatastrophicDiseasedField.dirty"></label>
+            <p-inputSwitch id="familiarCatastrophicDiseased"
+                           formControlName="familiarCatastrophicDiseased"></p-inputSwitch>
+            <small appErrorMessage
+                   [errors]="familiarCatastrophicDiseasedField.errors"
+                   [touched]="familiarCatastrophicDiseasedField.touched"
+                   [dirty]="familiarCatastrophicDiseasedField.dirty">
+            </small>
+          </div>
+        </div>
+        <div class="field">
+          <label for="catastrophicDiseased" appLabel label="Acerca de Mí:"
+                 [required]="true"
+                 [valid]="aboutMeField.valid"
+                 [touched]="aboutMeField.touched"
+                 [dirty]="aboutMeField.dirty">
+          </label> {{aboutMeField.value?.length ? aboutMeField.value?.length : 0}}/300
+          <textarea pInputTextarea id="aboutMe" formControlName="aboutMe" rows="3" maxlength="300"></textarea>
+          <small appErrorMessage
+                 [errors]="aboutMeField.errors"
+                 [touched]="aboutMeField.touched"
+                 [dirty]="aboutMeField.dirty">
+          </small>
+        </div>
+        <p-divider></p-divider>
+        <div class="formgrid grid">
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <button pButton pRipple [label]="buttonTitle" class="p-button-rounded" icon="pi pi-save"></button>
+          </div>
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12" *ngIf="progressBar">
+            <p-progressBar mode="indeterminate"></p-progressBar>
+            <small>Procesando...</small>
+          </div>
+        </div>
+      </p-card>
+    </div>
+  </form>
+</div>

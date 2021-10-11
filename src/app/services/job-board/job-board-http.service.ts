@@ -3,7 +3,16 @@ import {environment} from '@env/environment';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {PaginatorModel, ServerResponse} from '@models/core';
-import {AcademicFormationModel, CategoryModel, CourseModel, ExperienceModel, LanguageModel, ReferenceModel, SkillModel} from '@models/job-board';
+import {
+  AcademicFormationModel,
+  CategoryModel,
+  CourseModel,
+  ExperienceModel,
+  LanguageModel,
+  ProfessionalModel,
+  ReferenceModel,
+  SkillModel
+} from '@models/job-board';
 import {catchError, map} from 'rxjs/operators';
 import {Handler} from '../../exceptions/handler';
 
@@ -16,6 +25,24 @@ export class JobBoardHttpService {
   API_URL: string = environment.API_URL;
 
   constructor(private httpClient: HttpClient) {
+  }
+
+  getProfile(id: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/professional/profile/${id}`;
+    return this.httpClient.get<ServerResponse>(url)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  updateProfile(id: number, professional: ProfessionalModel): Observable<ServerResponse> {
+    const url = `${this.API_URL}/professional/profile/${id}`;
+    return this.httpClient.put<ServerResponse>(url, professional)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
   }
 
   getCourses(professionalId: number, paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
@@ -200,7 +227,7 @@ export class JobBoardHttpService {
         catchError(Handler.render)
       );
   }
-  
+
   getLanguages(professionalId: number, paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
     const url = `${this.API_URL}/professionals/${professionalId}/languages`;
     const params = new HttpParams()

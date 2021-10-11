@@ -43,6 +43,8 @@ import { AcademicFormationListComponent } from './academic-formation/academic-fo
 import { CategoryComponent } from './category/category.component';
 import { CategoryFormComponent } from './category/category-form/category-form.component';
 import { CategoryListComponent } from './category/category-list/category-list.component';
+import {KeyFilterModule} from "primeng/keyfilter";
+import {InputTextareaModule} from "primeng/inputtextarea";
 
 @NgModule({
   declarations: [
@@ -70,27 +72,29 @@ import { CategoryListComponent } from './category/category-list/category-list.co
     CategoryFormComponent,
     CategoryListComponent
   ],
-    imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        ProfessionalRoutingModule,
-        SharedModule,
-        TabViewModule,
-        TableModule,
-        ButtonModule,
-        RippleModule,
-        SplitButtonModule,
-        DialogModule,
-        CardModule,
-        PaginatorModule,
-        DividerModule,
-        ProgressBarModule,
-        InputSwitchModule,
-        InputTextModule,
-        CalendarModule,
-        InputNumberModule,
-        ToolbarModule,
-    ]
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    ProfessionalRoutingModule,
+    SharedModule,
+    TabViewModule,
+    TableModule,
+    ButtonModule,
+    RippleModule,
+    SplitButtonModule,
+    DialogModule,
+    CardModule,
+    PaginatorModule,
+    DividerModule,
+    ProgressBarModule,
+    InputSwitchModule,
+    InputTextModule,
+    CalendarModule,
+    InputNumberModule,
+    ToolbarModule,
+    KeyFilterModule,
+    InputTextareaModule,
+  ]
 })
 export class ProfessionalModule {
 }

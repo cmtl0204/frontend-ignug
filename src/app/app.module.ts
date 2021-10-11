@@ -3,7 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
-import {httpInterceptorProviders} from './interceptors';
+import {HttpInterceptorProviders} from './interceptors';
 import {HttpClientModule} from '@angular/common/http';
 
 import {AppRoutingModule} from './app-routing.module';
@@ -72,7 +72,7 @@ import {BreadcrumbModule} from 'primeng/breadcrumb';
       provide: LocationStrategy,
       useClass: PathLocationStrategy
     },
-    httpInterceptorProviders
+    HttpInterceptorProviders
   ],
   bootstrap: [AppComponent]
 })
