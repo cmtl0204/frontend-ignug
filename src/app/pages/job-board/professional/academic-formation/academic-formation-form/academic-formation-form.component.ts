@@ -47,14 +47,14 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
       if (value) {
         console.log('entro if');
         this.senescytCodeField.setValidators(Validators.required);
-        console.log(this.senescytCodeField);
         this.registeredAtField.setValidators(Validators.required);
       } else {
         console.log('entro else');
         this.senescytCodeField.clearValidators();
-        console.log(this.senescytCodeField);
         this.registeredAtField.clearValidators();
       }
+      console.log(this.senescytCodeField);
+      console.log(this.registeredAtField);
     });
 
   }
@@ -90,9 +90,6 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
         .getAcademicFormation(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
         .subscribe(
           response => {
-            response.data.registeredAt = new Date('2021-08-22');
-            response.data.registeredAt.setDate(response.data.registeredAt.getDate() + 1);
-
             this.form.patchValue(response.data);
             this.skeletonLoading = false;
           }, error => {
@@ -107,8 +104,8 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
       id: [null],
       professionalDegree: [null, [Validators.required]],
       registeredAt: [null],
-      senescytCode: [null, [Validators.required]],
-      certificated: [null, [Validators.required]],
+      senescytCode: [null],
+      certificated: [false, [Validators.required]],
     });
   }
 
@@ -122,7 +119,6 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
         }
       );
   }
-
 
   onSubmit(): void {
     if (this.form.valid) {
