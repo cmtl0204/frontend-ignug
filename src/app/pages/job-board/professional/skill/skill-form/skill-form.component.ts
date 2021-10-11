@@ -49,7 +49,6 @@ export class SkillFormComponent implements OnInit , OnDestroy, OnExitInterface {
       this.title = 'Actualizar habilidades';
       this.buttonTitle = 'Actualizar habilidades';
       this.loadSkill();
-      this.form.markAllAsTouched();
     }
 
     this.loadTypes();
