@@ -51,7 +51,6 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
       this.title = 'Actualizar curso';
       this.buttonTitle = 'Actualizar curso';
       this.loadCourse();
-      this.form.markAllAsTouched();
     }
     this.loadCertificationTypes();
     this.loadTypes();
@@ -78,10 +77,10 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
           .getCourse(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
         .subscribe(
       response => {
-        response.data.startedAt.setDate(response.data.startedAt.getDate() + 1);
-        response.data.EndedAt.setDate(response.data.EndedAt.getDate() + 1);
-
+        // response.data.startedAt.setDate(response.data.startedAt.getDate() + 1);
+        // response.data.EndedAt.setDate(response.data.EndedAt.getDate() + 1);
         this.form.patchValue(response.data);
+
         this.skeletonLoading = false;
       }, error => {
         this.skeletonLoading = false;

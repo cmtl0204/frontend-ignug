@@ -46,6 +46,22 @@
             </small>
           </div>
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <label for="certificated" appLabel label="¿Está Titulado:"
+                   [required]="true"
+                   [valid]="certificatedField.valid"
+                   [touched]="certificatedField.touched"
+                   [dirty]="certificatedField.dirty">
+            </label>
+            <p-inputSwitch id="certificated" formControlName="certificated"></p-inputSwitch>
+            <small appErrorMessage
+                   [errors]="certificatedField.errors"
+                   [touched]="certificatedField.touched"
+                   [dirty]="certificatedField.dirty">
+            </small>
+          </div>
+        </div>
+        <div *ngIf="flagCertificated" class="formgrid grid">
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
             <label for="senescytCode" appLabel [required]="true" label="Código Senescyt:"
                    [valid]="senescytCodeField.valid"
                    [touched]="senescytCodeField.touched" [dirty]="senescytCodeField.dirty"></label>
@@ -56,23 +72,7 @@
                    [dirty]="senescytCodeField.dirty">
             </small>
           </div>
-        </div>
-        <div class="field">
-          <label for="certificated" appLabel label="¿Está Titulado:"
-                 [required]="true"
-                 [valid]="certificatedField.valid"
-                 [touched]="certificatedField.touched"
-                 [dirty]="certificatedField.dirty">
-          </label>
-          <p-inputSwitch id="certificated" formControlName="certificated"></p-inputSwitch>
-          <small appErrorMessage
-                 [errors]="certificatedField.errors"
-                 [touched]="certificatedField.touched"
-                 [dirty]="certificatedField.dirty">
-          </small>
-        </div>
-        <div class="formgrid grid">
-          <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
           <label for="registeredAt" appLabel label="Fecha de Registro:"
                  [required]="true"
                  [valid]="registeredAtField.valid"

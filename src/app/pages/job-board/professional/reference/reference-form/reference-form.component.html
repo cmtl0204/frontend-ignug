@@ -1,4 +1,3 @@
-<h1>asdasdas</h1>
 <div class="container-fluid">
   <p-toolbar *ngIf="!skeletonLoading" styleClass="bg-primary">
     <div class="p-toolbar-group-left">
@@ -37,7 +36,7 @@
                  [touched]="contactPhoneField.touched"
                  [dirty]="contactPhoneField.dirty">
           </label>
-          <input pInputText id="contactPhone" formControlName="contactPhone">
+          <input pInputText id="contactPhone" formControlName="contactPhone" pKeyFilter="pint">
           <small appErrorMessage
                  [errors]="contactPhoneField.errors"
                  [touched]="contactPhoneField.touched"
@@ -52,7 +51,7 @@
                  [touched]="contactEmailField.touched"
                  [dirty]="contactEmailField.dirty">
           </label>
-          <input pInputText id="contactEmail" formControlName="contactEmail">
+          <input pInputText id="contactEmail" formControlName="contactEmail" pKeyFilter="email">
           <small appErrorMessage
                  [errors]="contactEmailField.errors"
                  [touched]="contactEmailField.touched"

@@ -6,7 +6,7 @@ import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {MessageService} from '@services/core';
 import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
 import {JobBoardHttpService, JobBoardService} from '@services/job-board';
-import {AcademicFormationModel, CategoryModel, } from '@models/job-board';
+import {AcademicFormationModel, CategoryModel,} from '@models/job-board';
 
 @Component({
   selector: 'app-academic-formation-form',
@@ -22,6 +22,7 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
   skeletonLoading: boolean = false;
   title: string = 'Crear formación';
   buttonTitle: string = 'Crear formación';
+  flagCertificated: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -31,14 +32,31 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
     public messageService: MessageService,
     private jobBoardHttpService: JobBoardHttpService,
     private jobBoardService: JobBoardService
-    ) {
+  ) {
     this.breadcrumbService.setItems([
-      { label: 'Dashboard', routerLink: ['/dashboard'] },
-      { label: 'Profesional', routerLink: ['/job-board/professional'] },
-      { label: 'Formación Académica', routerLink: ['/job-board/professional/academic-formation'] },
-      { label: 'Formulario', disabled: true },
+      {label: 'Dashboard', routerLink: ['/dashboard']},
+      {label: 'Profesional', routerLink: ['/job-board/professional']},
+      {label: 'Formación Académica', routerLink: ['/job-board/professional/academic-formation']},
+      {label: 'Formulario', disabled: true},
     ]);
     this.form = this.newForm();
+    console.log(this.senescytCodeField);
+
+    this.certificatedField.valueChanges.subscribe(value => {
+      this.flagCertificated = value;
+      if (value) {
+        console.log('entro if');
+        this.senescytCodeField.setValidators(Validators.required);
+        console.log(this.senescytCodeField);
+        this.registeredAtField.setValidators(Validators.required);
+      } else {
+        console.log('entro else');
+        this.senescytCodeField.clearValidators();
+        console.log(this.senescytCodeField);
+        this.registeredAtField.clearValidators();
+      }
+    });
+
   }
 
   ngOnInit(): void {
@@ -59,8 +77,8 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
     if (this.form.touched || this.form.dirty) {
       return await this.messageService.questionOnExit({})
         .then((result) => {
-        return result.isConfirmed;
-      });
+          return result.isConfirmed;
+        });
     }
     return true;
   }
@@ -70,25 +88,25 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
     this.subscriptions.push(
       this.jobBoardHttpService
         .getAcademicFormation(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
-      .subscribe(
-      response => {
-        response.data.registeredAt = new Date('2021-08-22');
-        response.data.registeredAt.setDate(response.data.registeredAt.getDate() + 1);
+        .subscribe(
+          response => {
+            response.data.registeredAt = new Date('2021-08-22');
+            response.data.registeredAt.setDate(response.data.registeredAt.getDate() + 1);
 
-        this.form.patchValue(response.data);
-        this.skeletonLoading = false;
-      }, error => {
-        this.skeletonLoading = false;
-        this.messageService.error(error);
-      }
-    ));
+            this.form.patchValue(response.data);
+            this.skeletonLoading = false;
+          }, error => {
+            this.skeletonLoading = false;
+            this.messageService.error(error);
+          }
+        ));
   }
 
   newForm(): FormGroup {
     return this.formBuilder.group({
       id: [null],
       professionalDegree: [null, [Validators.required]],
-      registeredAt: [null, [Validators.required]],
+      registeredAt: [null],
       senescytCode: [null, [Validators.required]],
       certificated: [null, [Validators.required]],
     });

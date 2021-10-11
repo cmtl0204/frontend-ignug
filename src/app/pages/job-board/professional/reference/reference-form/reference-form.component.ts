@@ -69,6 +69,7 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
     this.subscriptions.push(this.jobBoardHttpService.getReference(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
       .subscribe(
       response => {
+        console.log(response.data);
         this.form.patchValue(response.data);
         this.skeletonLoading = false;
       }, error => {
@@ -152,7 +153,7 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
   }
 
   get contactEmailField() {
-    return this.form.controls[' contactEmail'];
+    return this.form.controls['contactEmail'];
   }
 
   get institutionField() {
