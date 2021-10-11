@@ -7,10 +7,11 @@ import {SkeletonComponent} from '@shared/components/skeleton/skeleton.component'
 import {SkeletonModule} from 'primeng/skeleton';
 import {TableModule} from 'primeng/table';
 import {LabelDirective} from './directives/label.directive';
+import { CertificatedPipe } from './pipes/academic-formation/certificated.pipe';
 
 @NgModule({
-  declarations: [TokenDirective, RolesPermissionsDirective, ErrorMessageDirective, SkeletonComponent, LabelDirective,],
-  exports: [RolesPermissionsDirective, ErrorMessageDirective, TokenDirective, SkeletonComponent, LabelDirective,],
+  declarations: [TokenDirective, RolesPermissionsDirective, ErrorMessageDirective, SkeletonComponent, LabelDirective, CertificatedPipe,],
+    exports: [RolesPermissionsDirective, ErrorMessageDirective, TokenDirective, SkeletonComponent, LabelDirective, CertificatedPipe,],
   imports: [
     CommonModule,
     SkeletonModule,

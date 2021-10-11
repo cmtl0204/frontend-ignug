@@ -142,7 +142,7 @@ export class AcademicFormationListComponent implements OnInit {
       {field: 'professionalDegree', header: 'Títulos'},
       {field: 'registeredAt', header: 'Fecha de resgistro '},
       {field: 'senescytCode', header: 'Código de Senescyt'},
-      {field: 'certificated', header: 'Graduado'},
+      {field: 'certificated', header: '¿Titulado?'},
     ];
 
   }

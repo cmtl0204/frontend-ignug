@@ -81,7 +81,7 @@ export class MessageService {
     });
   }
 
-  questionOnExit({title = '¿Está seguro de salir?', text = 'No podrá recuperar esta información!'}) {
+  questionOnExit({title = '¿Está seguro de salir?', text = 'Se perderá la información que no haya guardado!'}) {
     return Swal.fire({
       title,
       text,

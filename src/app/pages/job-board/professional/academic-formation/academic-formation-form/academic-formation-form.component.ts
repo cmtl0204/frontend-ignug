@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterContentChecked, AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
@@ -20,9 +20,9 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
   progressBar: boolean = false;
   professionalDegrees: CategoryModel[] = [];
   skeletonLoading: boolean = false;
-  title: string = 'Crear formación';
-  buttonTitle: string = 'Crear formación';
-  flagCertificated: boolean = false;
+  title: string = 'Crear Formación Académica';
+  buttonTitle: string = 'Crear Formación Académica';
+  yearRange: string = '1900' + ':' + (new Date()).getFullYear();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -40,31 +40,22 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
       {label: 'Formulario', disabled: true},
     ]);
     this.form = this.newForm();
-    console.log(this.senescytCodeField);
-
     this.certificatedField.valueChanges.subscribe(value => {
-      this.flagCertificated = value;
       if (value) {
-        console.log('entro if');
-        this.senescytCodeField.setValidators(Validators.required);
-        this.registeredAtField.setValidators(Validators.required);
+        this.senescytCodeField.setValidators([Validators.required]);
+        this.registeredAtField.setValidators([Validators.required]);
       } else {
-        console.log('entro else');
-        this.senescytCodeField.clearValidators();
-        this.registeredAtField.clearValidators();
+        this.senescytCodeField.setErrors(null);
+        this.registeredAtField.setErrors(null);
       }
-      console.log(this.senescytCodeField);
-      console.log(this.registeredAtField);
     });
-
   }
 
   ngOnInit(): void {
     if (this.activatedRoute.snapshot.params.id != 'new') {
-      this.title = 'Actualizar formación';
-      this.buttonTitle = 'Actualizar formación';
+      this.title = 'Actualizar Formación Académica';
+      this.buttonTitle = 'Actualizar Formación Académica';
       this.loadAcademicFormation();
-      this.form.markAllAsTouched();
     }
     this.loadProfessionalDegrees();
   }
@@ -103,9 +94,9 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
     return this.formBuilder.group({
       id: [null],
       professionalDegree: [null, [Validators.required]],
-      registeredAt: [null],
-      senescytCode: [null],
       certificated: [false, [Validators.required]],
+      senescytCode: [null],
+      registeredAt: [null],
     });
   }
 

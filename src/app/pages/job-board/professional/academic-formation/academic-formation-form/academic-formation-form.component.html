@@ -46,7 +46,6 @@
             </small>
           </div>
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-            {{certificatedField.value|json}}
             <label for="certificated" appLabel label="¿Está Titulado:"
                    [required]="true"
                    [valid]="certificatedField.valid"
@@ -63,11 +62,13 @@
             </small>
           </div>
         </div>
-        <div *ngIf="flagCertificated" class="formgrid grid">
+        <div *ngIf="certificatedField.value" class="formgrid grid">
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-            <label for="senescytCode" appLabel [required]="true" label="Código Senescyt:"
+            <label for="senescytCode" appLabel label="Código Senescyt:"
+                   [required]="true"
                    [valid]="senescytCodeField.valid"
-                   [touched]="senescytCodeField.touched" [dirty]="senescytCodeField.dirty"></label>
+                   [touched]="senescytCodeField.touched"
+                   [dirty]="senescytCodeField.dirty"></label>
             <input pInputText id="senescytCode" formControlName="senescytCode">
             <small appErrorMessage
                    [errors]="senescytCodeField.errors"
@@ -83,7 +84,7 @@
                    [dirty]="registeredAtField.dirty">
             </label>
             <p-calendar id="registeredAt" formControlName="registeredAt" dateFormat="yy-mm-dd"
-                        [yearRange]="'1900:2021'"
+                        [yearRange]="yearRange"
                         [showIcon]="true"
                         [monthNavigator]="true"
                         [yearNavigator]="true"
