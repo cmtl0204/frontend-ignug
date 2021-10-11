@@ -21,7 +21,7 @@
                  [touched]="nameField.touched"
                  [dirty]="nameField.dirty">
           </label>
-          <input pInputText id="name" formControlName="name">
+          <input pInputText id="name" formControlName="name" pKeyFilter="alpha">
           <small appErrorMessage
                  [errors]="nameField.errors"
                  [touched]="nameField.touched"
@@ -66,7 +66,7 @@
                  [touched]="codeField.touched"
                  [dirty]="codeField.dirty">
           </label>
-          <input pInputText id="code" formControlName="code">
+          <input pInputText id="code" formControlName="code" pKeyFilter="alphanum">
           <small appErrorMessage
                  [errors]="codeField.errors"
                  [touched]="codeField.touched"

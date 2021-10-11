@@ -52,7 +52,7 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
       this.title = 'Actualizar idioma';
       this.buttonTitle = 'Actualizar idioma';
       this.loadLanguage();
-      this.form.markAllAsTouched();
+
     }
     this.loadIdioms();
     this.loadWrittenLevels();
