@@ -64,7 +64,6 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
       this.title = 'Actualizar formación';
       this.buttonTitle = 'Actualizar formación';
       this.loadAcademicFormation();
-      this.form.markAllAsTouched();
     }
     this.loadProfessionalDegrees();
   }
