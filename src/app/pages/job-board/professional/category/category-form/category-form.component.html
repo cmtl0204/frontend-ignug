@@ -16,38 +16,21 @@
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
         <div class="field">
-          <label for="name" appLabel label="Título Profesional:"
-                   [required]="true"
-                   [valid]="nameField.valid"
-                   [touched]="nameField.touched"
-                   [dirty]="nameField.dirty">
-            </label>
-            <p-dropdown id="name"
-                        [options]="professionalDegrees"
-                        formControlName="name"
-                        [filter]="true"
-                        filterBy="name"
-                        placeholder="Seleccione">
-              <ng-template pTemplate="selectedItem">
-                <div class="country-item country-item-value" *ngIf="nameField.value">
-                  <div>{{nameField.value?.name}}</div>
-                </div>
-              </ng-template>
-              <ng-template let-item pTemplate="item">
-                <div class="country-item">
-                  <div>{{item.name}}</div>
-                </div>
-              </ng-template>
-            </p-dropdown>
-            <small appErrorMessage
-                   [errors]="nameField.errors"
-                   [touched]="nameField.touched"
-                   [dirty]="nameField.dirty">
-            </small>
+          <label for="name" appLabel label="Título:"
+                 [valid]="nameField.valid"
+                 [touched]="nameField.touched"
+                 [dirty]="nameField.dirty">
+          </label>
+          <input pInputText id="name" formControlName="name">
+          <small appErrorMessage
+                 [errors]="nameField.errors"
+                 [touched]="nameField.touched"
+                 [dirty]="nameField.dirty">
+          </small>
         </div>
 
         <div class="field">
-         <label for="parent" appLabel label="Area de Estudios:"
+         <label for="parent" appLabel label="Área de Estudios:"
                    [required]="true"
                    [valid]="parentField.valid"
                    [touched]="parentField.touched"

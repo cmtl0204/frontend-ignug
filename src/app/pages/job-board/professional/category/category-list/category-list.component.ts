@@ -141,7 +141,6 @@ export class CategoryListComponent implements OnInit, OnDestroy {
       {field: 'parent', header: 'Área'},
       {field: 'code', header: 'Código'},
       {field: 'icon', header: 'Ícono'},
-      {field: 'children', header: 'Títulos profesionales'},
     ];
 
   }
