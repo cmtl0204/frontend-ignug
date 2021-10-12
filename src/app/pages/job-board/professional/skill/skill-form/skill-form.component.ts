@@ -21,8 +21,8 @@ export class SkillFormComponent implements OnInit , OnDestroy, OnExitInterface {
   form: FormGroup;
   progressBar: boolean = false;
   skeletonLoading: boolean = false;
-  title: string = 'Crear habilidades';
-  buttonTitle: string = 'Crear habilidades';
+  title: string = 'Crear Habilidad';
+  buttonTitle: string = 'Crear Habilidad';
   types: CatalogueModel[] = [];
 
   constructor(
@@ -46,8 +46,8 @@ export class SkillFormComponent implements OnInit , OnDestroy, OnExitInterface {
 
   ngOnInit(): void {
     if (this.activatedRoute.snapshot.params.id != 'new') {
-      this.title = 'Actualizar habilidades';
-      this.buttonTitle = 'Actualizar habilidades';
+      this.title = 'Actualizar Habilidad';
+      this.buttonTitle = 'Actualizar Habilidad';
       this.loadSkill();
     }
 

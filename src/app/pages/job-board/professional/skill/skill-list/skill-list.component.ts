@@ -140,7 +140,7 @@ export class SkillListComponent implements OnInit, OnDestroy {
     this.cols = [
       {field: 'type', header: 'Tipo'},
       {field: 'description', header: 'Descripción'},
-      {field: 'updatedAt', header: 'Actualizado'},
+      {field: 'updatedAt', header: 'Última Actualización'},
     ];
   }
 

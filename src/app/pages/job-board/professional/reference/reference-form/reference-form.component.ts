@@ -43,8 +43,8 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
 
   ngOnInit(): void {
     if (this.activatedRoute.snapshot.params.id != 'new') {
-      this.title = 'Actualizar referencias';
-      this.buttonTitle = 'Actualizar referencias';
+      this.title = 'Actualizar Referencia';
+      this.buttonTitle = 'Actualizar Referencia';
       this.loadReference();
     }
   }

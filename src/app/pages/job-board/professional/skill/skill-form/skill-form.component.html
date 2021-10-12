@@ -9,58 +9,61 @@
     </div>
   </p-toolbar>
 </div>
-<div class="container">
+<<div class="container">
   <app-skeleton *ngIf="skeletonLoading" [type]="'card'"></app-skeleton>
   <p-card>
     <div class="p-fluid" *ngIf="!skeletonLoading">
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <div class="formgrid grid">
-          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-            <label for="type" appLabel label="Tipo de Evento:"
-                   [required]="true"
-                   [valid]="typeField.valid"
-                   [touched]="typeField.touched"
-                   [dirty]="typeField.dirty">
-            </label>
-            <p-dropdown id="type"
-                        [options]="types"
-                        formControlName="type"
-                        [filter]="true"
-                        filterBy="name"
-                        placeholder="Seleccione">
-              <ng-template pTemplate="selectedItem">
-                <div class="country-item country-item-value" *ngIf="typeField.value">
-                  <div>{{typeField.value?.name}}</div>
-                </div>
-              </ng-template>
-              <ng-template let-item pTemplate="item">
-                <div class="country-item">
-                  <div>{{item.name}}</div>
-                </div>
-              </ng-template>
-            </p-dropdown>
-            <small appErrorMessage
-                   [errors]="typeField.errors"
-                   [touched]="typeField.touched"
-                   [dirty]="typeField.dirty">
-            </small>
+
+        <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+          <label for="type" appLabel label="Tipo de Evento:"
+                 [required]="true"
+                 [valid]="typeField.valid"
+                 [touched]="typeField.touched"
+                 [dirty]="typeField.dirty">
+          </label>
+          <p-dropdown id="type"
+                      [options]="types"
+                      formControlName="type"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Seleccione">
+            <ng-template pTemplate="selectedItem">
+              <div class="country-item country-item-value" *ngIf="typeField.value">
+                <div>{{typeField.value?.name}}</div>
+              </div>
+            </ng-template>
+            <ng-template let-item pTemplate="item">
+              <div class="country-item">
+                <div>{{item.name}}</div>
+              </div>
+            </ng-template>
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="typeField.errors"
+                 [touched]="typeField.touched"
+                 [dirty]="typeField.dirty">
+          </small>
           </div>
+
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-            <label for="description" appLabel label="Descripción:"
+          <label for="description" appLabel label="Descripción:"
                  [required]="true"
                  [valid]="descriptionField.valid"
                  [touched]="descriptionField.touched"
                  [dirty]="descriptionField.dirty">
           </label>
-          <input pInputText id="description" formControlName="description">
+          <textarea pInputTextarea [rows]="4" [cols]="20" 
+          input pInputText id="description" formControlName="description"></textarea>
           <small appErrorMessage
                  [errors]="descriptionField.errors"
                  [touched]="descriptionField.touched"
                  [dirty]="descriptionField.dirty">
           </small>
-          </div>
         </div>
+
         <p-divider></p-divider>
+
         <div class="formgrid grid">
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
             <button pButton pRipple [label]="buttonTitle" class="p-button-rounded" icon="pi pi-save"></button>
@@ -74,4 +77,3 @@
     </div>
   </p-card>
 </div>
-
