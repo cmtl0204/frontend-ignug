@@ -72,7 +72,7 @@ export class SkillFormComponent implements OnInit , OnDestroy, OnExitInterface {
     this.skeletonLoading = true;
     this.subscriptions.push(
       this.jobBoardHttpService
-        .getExperience(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
+        .getSkill(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
       .subscribe(
       response => {
         this.form.patchValue(response.data);
