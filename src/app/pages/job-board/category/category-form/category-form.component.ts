@@ -23,7 +23,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy, OnExitInterface
   buttonTitle: string = 'Crear evento';
   areas: CategoryModel[] = [];
   professionalDegrees: CategoryModel[] = [];
-  
+
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -33,8 +33,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy, OnExitInterface
     private jobBoardHttpService: JobBoardHttpService) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
-      {label: 'Profesional', routerLink: ['/job-board/professional']},
-      {label: 'Títulos Profesionales', routerLink: ['/job-board/professional/category']},
+      {label: 'Títulos Profesionales', routerLink: ['/job-board/category']},
       {label: 'Formulario', disabled: true},
     ]);
     this.form = this.newForm();
@@ -49,8 +48,8 @@ export class CategoryFormComponent implements OnInit, OnDestroy, OnExitInterface
     this.loadAreas();
     this.loadProfessionalDegrees();
   }
-  
-  
+
+
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
@@ -113,7 +112,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy, OnExitInterface
       }
     );
   }
-  
+
   onSubmit():void {
     if (this.form.valid) {
       if (this.idField.value) {
@@ -133,7 +132,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy, OnExitInterface
         this.messageService.success(response);
         this.form.reset();
         this.progressBar = false;
-        this.router.navigate(['/job-board/professional/category']);
+        this.router.navigate(['/job-board/category']);
       },
       error => {
         this.messageService.error(error);
@@ -150,7 +149,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy, OnExitInterface
         this.messageService.success(response);
         this.progressBar = false;
         this.form.reset();
-        this.router.navigate(['/job-board/professional/category']);
+        this.router.navigate(['/job-board/category']);
       },
       error => {
         this.messageService.error(error);
