@@ -127,7 +127,7 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
 
   store(experience: ExperienceModel): void {
     this.progressBar = true;
-    this.jobBoardHttpService.storeCourse(experience, this.jobBoardService.professional.id!).subscribe(
+    this.jobBoardHttpService.storeExperience(experience, this.jobBoardService.professional.id!).subscribe(
       response => {
         this.messageService.success(response);
         this.progressBar = false;

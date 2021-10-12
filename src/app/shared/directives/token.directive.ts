@@ -17,8 +17,6 @@ export class TokenDirective implements OnInit {
 
   @Input()
   set appToken(val: string) {
-    console.log(this.authService.token);
-    console.log(!this.authService.token);
     this.viewContainerRef.clear();
     switch (val) {
       case 'authenticated': {

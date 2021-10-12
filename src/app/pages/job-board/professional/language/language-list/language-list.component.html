@@ -57,10 +57,10 @@
             </td>
             <td *ngFor="let col of columns">
               <span *ngIf="rowData[col.field].id">
-                {{rowData[col.field].name}}
+                {{rowData[col.field]?.name}}
               </span>
               <span *ngIf="!rowData[col.field].id">
-                {{rowData[col.field].type}}
+                {{rowData[col.field]?}}
               </span>
             </td>
             <td style="text-align: center">

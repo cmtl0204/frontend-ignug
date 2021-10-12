@@ -60,8 +60,9 @@
               <span *ngIf="rowData[col.field]?.id">
                 {{rowData[col.field].name}}
               </span>
-              <span *ngIf="!rowData[col.field]?.id">
-                {{rowData[col.field]}}
+            <span *ngIf="!rowData[col.field]?.id">
+                <span *ngIf="col.field==='certificated'">{{rowData[col.field]|certificated}}</span>
+                <span *ngIf="col.field!=='certificated'">{{rowData[col.field]}}</span>
               </span>
           </td>
           <td style="text-align: center">
