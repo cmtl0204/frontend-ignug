@@ -138,13 +138,11 @@ export class LanguageListComponent implements OnInit, OnDestroy {
 
   setCols() {
     this.cols = [
-      {field: 'id', header: 'id'},
       {field: 'idiom', header: 'Idioma'},
-      {field: 'writtenLevel', header: 'Nivel escrito'},
-      {field: 'spokenLevel', header: 'Nivel de hablado'},
-      {field: 'readLevel', header: 'Nivel de lectura'},
-      {field: 'createdAt', header: 'Fin'},
-      {field: 'updatedAt', header: 'Fin'},
+      {field: 'writtenLevel', header: 'Nivel Escrito'},
+      {field: 'spokenLevel', header: 'Nivel Hablado'},
+      {field: 'readLevel', header: 'Nivel Lectura'},
+      {field: 'updatedAt', header: 'Última de actualización'},
     ];
 
   }
