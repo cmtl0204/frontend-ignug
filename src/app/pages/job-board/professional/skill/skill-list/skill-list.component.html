@@ -57,10 +57,10 @@
               {{rowIndex + 1}}
             </td>
             <td *ngFor="let col of columns">
-              <span *ngIf="rowData[col.field].id">
-                {{rowData[col.field].type}}
+              <span *ngIf="rowData[col.field]?.id">
+                {{rowData[col.field].name}}
               </span>
-              <span *ngIf="!rowData[col.field].id">
+              <span *ngIf="!rowData[col.field]?.id">
                 {{rowData[col.field]}}
               </span>
           </td>
@@ -73,4 +73,4 @@
       </p-table>
     </p-card>
   </div>
-  
+

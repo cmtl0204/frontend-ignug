@@ -5,7 +5,7 @@ import {MenuItem} from 'primeng/api';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {JobBoardHttpService, JobBoardService} from '@services/job-board';
 import {MessageService} from '@services/core';
-import {AcademicFormationModel, } from '@models/job-board';
+import {AcademicFormationModel,} from '@models/job-board';
 import {ColModel, PaginatorModel} from '@models/core';
 import {FormControl} from '@angular/forms';
 
@@ -24,15 +24,15 @@ export class AcademicFormationListComponent implements OnInit {
   filter: FormControl;
 
   academicFormations: AcademicFormationModel[] = [];
-  selectedAcademicFormation: AcademicFormationModel= {};
+  selectedAcademicFormation: AcademicFormationModel = {};
   selectedAcademicFormations: AcademicFormationModel[] = [];
 
   constructor(private router: Router,
-             private breadcrumbService: BreadcrumbService,
-             public messageService: MessageService,
-             private jobBoardHttpService: JobBoardHttpService,
-             private jobBoardService: JobBoardService,
-             ) {
+              private breadcrumbService: BreadcrumbService,
+              public messageService: MessageService,
+              private jobBoardHttpService: JobBoardHttpService,
+              private jobBoardService: JobBoardService,
+  ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
@@ -89,7 +89,7 @@ export class AcademicFormationListComponent implements OnInit {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
-          this.subscriptions.push(this.jobBoardHttpService.deleteAcademicFormation(this.jobBoardService.professional?.id!, academicFormation.id!).subscribe(
+          this.subscriptions.push(this.jobBoardHttpService.deleteAcademicFormation(academicFormation.id!, this.jobBoardService.professional?.id!).subscribe(
             response => {
               this.removeAcademicFormation(academicFormation);
               this.messageService.success(response);

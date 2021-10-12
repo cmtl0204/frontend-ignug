@@ -31,7 +31,7 @@ export class CourseListComponent implements OnInit, OnDestroy {
               public messageService: MessageService,
               private jobBoardHttpService: JobBoardHttpService,
               private jobBoardService: JobBoardService,
-              ) {
+  ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
@@ -88,7 +88,7 @@ export class CourseListComponent implements OnInit, OnDestroy {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
-          this.subscriptions.push(this.jobBoardHttpService.deleteCourse(this.jobBoardService.professional?.id!, course.id!).subscribe(
+          this.subscriptions.push(this.jobBoardHttpService.deleteCourse(course.id!, this.jobBoardService.professional?.id!).subscribe(
             response => {
               this.removeCourse(course);
               this.messageService.success(response);

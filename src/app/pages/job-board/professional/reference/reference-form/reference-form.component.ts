@@ -31,7 +31,7 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
     public messageService: MessageService,
     private jobBoardHttpService: JobBoardHttpService,
     private jobBoardService: JobBoardService
-    ) {
+  ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
@@ -57,8 +57,8 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
     if (this.form.touched || this.form.dirty) {
       return await this.messageService.questionOnExit({})
         .then((result) => {
-        return result.isConfirmed;
-      });
+          return result.isConfirmed;
+        });
     }
     return true;
   }
@@ -67,15 +67,15 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
     this.skeletonLoading = true;
     this.subscriptions.push(this.jobBoardHttpService.getReference(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
       .subscribe(
-      response => {
-        console.log(response.data);
-        this.form.patchValue(response.data);
-        this.skeletonLoading = false;
-      }, error => {
-        this.skeletonLoading = false;
-        this.messageService.error(error);
-      }
-    ));
+        response => {
+          console.log(response.data);
+          this.form.patchValue(response.data);
+          this.skeletonLoading = false;
+        }, error => {
+          this.skeletonLoading = false;
+          this.messageService.error(error);
+        }
+      ));
   }
 
   newForm(): FormGroup {
@@ -84,12 +84,12 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
       position: [null],
       contactName: [null, [Validators.required]],
       contactPhone: [null, [Validators.required]],
-      contactEmail: [null, [Validators.required]],
+      contactEmail: [null, [Validators.required, Validators.email]],
       institution: [null, [Validators.required]],
     });
   }
 
-  onSubmit():void {
+  onSubmit(): void {
     if (this.form.valid) {
       if (this.idField.value) {
         this.update(this.form.value);
@@ -105,34 +105,34 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
     this.progressBar = true;
     this.jobBoardHttpService.storeReference(reference, this.jobBoardService.professional.id!)
       .subscribe(
-      response => {
-        this.messageService.success(response);
-        this.progressBar = false;
-        this.form.reset();
-        this.router.navigate(['/job-board/professional/reference']);
-      },
-      error => {
-        this.messageService.error(error);
-        this.progressBar = false;
-      }
-    );
+        response => {
+          this.messageService.success(response);
+          this.progressBar = false;
+          this.form.reset();
+          this.router.navigate(['/job-board/professional/reference']);
+        },
+        error => {
+          this.messageService.error(error);
+          this.progressBar = false;
+        }
+      );
   }
 
   update(reference: ReferenceModel): void {
     this.progressBar = true;
     this.jobBoardHttpService.updateReference(reference.id!, reference, this.jobBoardService.professional.id!)
       .subscribe(
-      response => {
-        this.messageService.success(response);
-        this.progressBar = false;
-        this.form.reset();
-        this.router.navigate(['/job-board/professional/reference']);
-      },
-      error => {
-        this.messageService.error(error);
-        this.progressBar = false;
-      }
-    );
+        response => {
+          this.messageService.success(response);
+          this.progressBar = false;
+          this.form.reset();
+          this.router.navigate(['/job-board/professional/reference']);
+        },
+        error => {
+          this.messageService.error(error);
+          this.progressBar = false;
+        }
+      );
   }
 
   get idField() {

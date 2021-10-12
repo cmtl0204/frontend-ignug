@@ -113,11 +113,11 @@
                  [touched]="workedField.touched"
                  [dirty]="workedField.dirty">
           </label>
-          <p-inputSwitch id="worked" formControlName="reasonLeave"></p-inputSwitch>
+          <p-inputSwitch id="worked" formControlName="worked"></p-inputSwitch>
           <small appErrorMessage
-                 [errors]="reasonLeaveField.errors"
-                 [touched]="reasonLeaveField.touched"
-                 [dirty]="reasonLeaveField.dirty">
+                 [errors]="workedField.errors"
+                 [touched]="workedField.touched"
+                 [dirty]="workedField.dirty">
           </small>
         </div>
         <div class="field">
@@ -162,7 +162,6 @@
             <p-calendar id="endedAt" formControlName="endedAt" dateFormat="yy-mm-dd"
                         [yearRange]="'1900:2021'"
                         [showIcon]="true"
-                        [minDate]="startedAtField.value"
                         [monthNavigator]="true"
                         [yearNavigator]="true"
                         [readonlyInput]="true"></p-calendar>

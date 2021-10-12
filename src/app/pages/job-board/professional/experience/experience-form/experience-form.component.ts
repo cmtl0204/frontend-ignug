@@ -69,25 +69,6 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
     return true;
   }
 
-  loadExperience(): void {
-    this.skeletonLoading = true;
-    this.subscriptions.push(
-      this.jobBoardHttpService
-        .getExperience(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
-        .subscribe(
-          response => {
-            response.data.startedAt.setDate(response.data.startedAt.getDate() + 1);
-            response.data.endedAt.setDate(response.data.endedAt.getDate() + 1);
-
-            this.form.patchValue(response.data);
-            this.skeletonLoading = false;
-          }, error => {
-            this.skeletonLoading = false;
-            this.messageService.error(error);
-          }
-        ));
-  }
-
   newForm(): FormGroup {
     return this.formBuilder.group({
       id: [null],
@@ -101,6 +82,26 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
       startedAt: [null, [Validators.required]],
       worked: [false, [Validators.required]],
     });
+  }
+
+  loadExperience(): void {
+    this.skeletonLoading = true;
+    this.subscriptions.push(
+      this.jobBoardHttpService
+        .getExperience(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
+        .subscribe(
+          response => {
+            this.form.patchValue(response.data);
+            this.activitiesField.clear();
+            response.data.activities.forEach((value: string) => {
+              this.addActivity(value);
+            });
+            this.skeletonLoading = false;
+          }, error => {
+            this.skeletonLoading = false;
+            this.messageService.error(error);
+          }
+        ));
   }
 
   loadAreas(): void {
@@ -195,8 +196,8 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
     return this.form.controls['worked'];
   }
 
-  addActivity() {
-    this.activitiesField.push(this.formBuilder.control(null, Validators.required));
+  addActivity(data: string = '') {
+    this.activitiesField.push(this.formBuilder.control(data, Validators.required));
   }
 
   removeActivity(index: number) {

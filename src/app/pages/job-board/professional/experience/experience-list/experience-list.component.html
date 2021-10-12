@@ -56,15 +56,21 @@
             {{rowIndex + 1}}
           </td>
           <td *ngFor="let col of columns">
-            <span *ngIf="rowData[col.field].id">
+            <span *ngIf="rowData[col.field]?.id">
               {{rowData[col.field].name}}
             </span>
-            <span *ngIf="!rowData[col.field].id">
-              {{rowData[col.field].type}}
+            <span *ngIf="!rowData[col.field]?.id">
+              <span *ngIf="col.field=='updatedAt'">
+                {{rowData[col.field]|date}}
+              </span>
+              <span *ngIf="col.field!='updatedAt'">
+                {{rowData[col.field]}}
+              </span>
             </span>
           </td>
           <td style="text-align: center">
-            <p-splitButton label="Más" styleClass="p-button-secondary" (onDropdownClick)="selectExperience(rowData)"
+            <p-splitButton label="Más" styleClass="p-button-secondary"
+                           (onDropdownClick)="selectExperience(rowData)"
                            [model]="items"></p-splitButton>
           </td>
         </tr>

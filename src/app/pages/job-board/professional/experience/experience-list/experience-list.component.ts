@@ -7,7 +7,7 @@ import {JobBoardHttpService, JobBoardService} from '@services/job-board';
 import {MessageService} from '@services/core';
 import {ExperienceModel} from '@models/job-board';
 import {ColModel, PaginatorModel} from '@models/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormControl} from '@angular/forms';
 
 
 @Component({
@@ -28,11 +28,11 @@ export class ExperienceListComponent implements OnInit, OnDestroy {
   selectedExperiences: ExperienceModel[] = [];
 
   constructor(private router: Router,
-    private breadcrumbService: BreadcrumbService,
-    public messageService: MessageService,
-    private jobBoardHttpService: JobBoardHttpService,
-    private jobBoardService: JobBoardService,
-    ) {
+              private breadcrumbService: BreadcrumbService,
+              public messageService: MessageService,
+              private jobBoardHttpService: JobBoardHttpService,
+              private jobBoardService: JobBoardService,
+  ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
@@ -89,7 +89,7 @@ export class ExperienceListComponent implements OnInit, OnDestroy {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
-          this.subscriptions.push(this.jobBoardHttpService.deleteCourse(this.jobBoardService.professional?.id!, experience.id!).subscribe(
+          this.subscriptions.push(this.jobBoardHttpService.deleteExperience(experience.id!, this.jobBoardService.professional?.id!).subscribe(
             response => {
               this.removeExperience(experience);
               this.messageService.success(response);
@@ -139,18 +139,13 @@ export class ExperienceListComponent implements OnInit, OnDestroy {
 
   setCols() {
     this.cols = [
-      {field: 'id', header: 'ID'},
-      {field: 'area', header: 'Area'},
-      {field: 'activities', header: 'Actividades'},
-      {field: 'endedAt', header: 'Fecha final'},
-      {field: 'position', header: 'Posicion'},
-      {field: 'reasonLeave', header: 'Posicion'},
+      {field: 'area', header: 'Área'},
+      {field: 'position', header: 'Cargo'},
       {field: 'startedAt', header: 'Fecha de inicio'},
-      {field: 'worked', header: 'Posicion'},
-      {field: 'createdAt', header: 'crated'},
-      {field: 'updatedAt', header: 'update'},
+      {field: 'endedAt', header: 'Fecha final'},
+      {field: 'worked', header: '¿Trabaja?'},
+      {field: 'updatedAt', header: 'Última de actualización'},
     ];
-
   }
 
   setItems() {

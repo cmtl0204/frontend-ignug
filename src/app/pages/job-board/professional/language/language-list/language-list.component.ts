@@ -27,11 +27,11 @@ export class LanguageListComponent implements OnInit, OnDestroy {
   selectedLanguages: LanguageModel[] = [];
 
   constructor(private router: Router,
-    private breadcrumbService: BreadcrumbService,
-    public messageService: MessageService,
-    private jobBoardHttpService: JobBoardHttpService,
-    private jobBoardService: JobBoardService,
-    ) {
+              private breadcrumbService: BreadcrumbService,
+              public messageService: MessageService,
+              private jobBoardHttpService: JobBoardHttpService,
+              private jobBoardService: JobBoardService,
+  ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
@@ -88,7 +88,7 @@ export class LanguageListComponent implements OnInit, OnDestroy {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
-          this.subscriptions.push(this.jobBoardHttpService.deleteLanguage(this.jobBoardService.professional?.id!, language.id!).subscribe(
+          this.subscriptions.push(this.jobBoardHttpService.deleteLanguage(language.id!, this.jobBoardService.professional?.id!).subscribe(
             response => {
               this.removeLanguage(language);
               this.messageService.success(response);
