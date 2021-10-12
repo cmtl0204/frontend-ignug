@@ -21,8 +21,8 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
   form: FormGroup;
   progressBar: boolean = false;
   skeletonLoading: boolean = false;
-  title: string = 'Crear idioma';
-  buttonTitle: string = 'Crear idioma';
+  title: string = 'Crear Idioma';
+  buttonTitle: string = 'Crear Idioma';
   idioms: CatalogueModel[] = [];
   writtenLevels: CatalogueModel[] = [];
   spokenLevels: CatalogueModel[] = [];
@@ -49,8 +49,8 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
 
   ngOnInit(): void {
     if (this.activatedRoute.snapshot.params.id != 'new') {
-      this.title = 'Actualizar idioma';
-      this.buttonTitle = 'Actualizar idioma';
+      this.title = 'Actualizar Idioma';
+      this.buttonTitle = 'Actualizar Idioma';
       this.loadLanguage();
 
     }
