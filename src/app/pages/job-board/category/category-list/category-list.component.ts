@@ -21,7 +21,7 @@ export class CategoryListComponent implements OnInit, OnDestroy {
   loading: boolean = false;
   paginator: PaginatorModel = {current_page: 1, per_page: 5, total: 0};
   filter: FormControl;
-  
+
   categories: CategoryModel[] = [];
   selectedCategory: CategoryModel = {};
   selectedCategories: CategoryModel[] = [];
@@ -33,7 +33,6 @@ export class CategoryListComponent implements OnInit, OnDestroy {
               ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
-      {label: 'Profesional', routerLink: ['/job-board/professional']},
       {label: 'Títulos profesionales', disabled: true},
     ]);
 
@@ -72,11 +71,11 @@ export class CategoryListComponent implements OnInit, OnDestroy {
   }
 
   editCategory(category: CategoryModel) {
-    this.router.navigate(['/job-board/professional/category/', category.id]);
+    this.router.navigate(['/job-board/category/', category.id]);
   }
 
   createCategory() {
-    this.router.navigate(['/job-board/professional/category/', 'new']);
+    this.router.navigate(['/job-board/category/', 'new']);
   }
 
   selectCategory(category: CategoryModel) {

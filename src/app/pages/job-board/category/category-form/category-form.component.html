@@ -17,6 +17,7 @@
 
         <div class="field">
           <label for="name" appLabel label="Título:"
+                 [required]="true"
                  [valid]="nameField.valid"
                  [touched]="nameField.touched"
                  [dirty]="nameField.dirty">

@@ -40,9 +40,6 @@ import { LanguageListComponent } from './language/language-list/language-list.co
 import { AcademicFormationComponent } from './academic-formation/academic-formation.component';
 import { AcademicFormationFormComponent } from './academic-formation/academic-formation-form/academic-formation-form.component';
 import { AcademicFormationListComponent } from './academic-formation/academic-formation-list/academic-formation-list.component';
-import { CategoryComponent } from './category/category.component';
-import { CategoryFormComponent } from './category/category-form/category-form.component';
-import { CategoryListComponent } from './category/category-list/category-list.component';
 import {KeyFilterModule} from "primeng/keyfilter";
 import {InputTextareaModule} from "primeng/inputtextarea";
 
@@ -68,9 +65,6 @@ import {InputTextareaModule} from "primeng/inputtextarea";
     AcademicFormationComponent,
     AcademicFormationFormComponent,
     AcademicFormationListComponent,
-    CategoryComponent,
-    CategoryFormComponent,
-    CategoryListComponent
   ],
   imports: [
     CommonModule,
