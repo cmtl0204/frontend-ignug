@@ -21,8 +21,8 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
   form: FormGroup;
   progressBar: boolean = false;
   skeletonLoading: boolean = false;
-  title: string = 'Crear curso';
-  buttonTitle: string = 'Crear curso';
+  title: string = 'Crear Evento';
+  buttonTitle: string = 'Crear Evento';
   types: CatalogueModel[] = [];
   certificationTypes: CatalogueModel[] = [];
   areas: CatalogueModel[] = [];
@@ -40,7 +40,7 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
-      {label: 'Curso Profesional', routerLink: ['/job-board/professional/course']},
+      {label: 'Cursos y Capacitaciones', routerLink: ['/job-board/professional/course']},
       {label: 'Formulario', disabled: true},
     ]);
     this.form = this.newForm();
@@ -48,8 +48,8 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
 
   ngOnInit(): void {
     if (this.activatedRoute.snapshot.params.id != 'new') {
-      this.title = 'Actualizar curso';
-      this.buttonTitle = 'Actualizar curso';
+      this.title = 'Actualizar Evento';
+      this.buttonTitle = 'Actualizar Evento';
       this.loadCourse();
     }
     this.loadCertificationTypes();

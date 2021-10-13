@@ -14,7 +14,8 @@
   <p-card>
     <div class="p-fluid" *ngIf="!skeletonLoading">
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <div class="field">
+        <div class="formgrid grid">
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
           <label for="contactName" appLabel label="Nombre de contacto:"
                  [required]="true"
                  [valid]="contactNameField.valid"
@@ -28,8 +29,7 @@
                  [dirty]="contactNameField.dirty">
           </small>
         </div>
-
-        <div class="field">
+        <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
           <label for="contactPhone" appLabel label="Telefono de contacto:"
                  [required]="true"
                  [valid]="contactPhoneField.valid"
@@ -42,6 +42,7 @@
                  [touched]="contactPhoneField.touched"
                  [dirty]="contactPhoneField.dirty">
           </small>
+        </div>
         </div>
 
         <div class="field">
@@ -61,20 +62,6 @@
 
         <div class="formgrid grid">
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-            <label for="position" appLabel label="Posición:"
-                 [required]="true"
-                 [valid]="positionField.valid"
-                 [touched]="positionField.touched"
-                 [dirty]="positionField.dirty">
-          </label>
-          <input pInputText id="position" formControlName="position">
-          <small appErrorMessage
-                 [errors]="positionField.errors"
-                 [touched]="positionField.touched"
-                 [dirty]="positionField.dirty">
-          </small>
-          </div>
-          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
             <label for="institution" appLabel label="Institución:"
                  [required]="true"
                  [valid]="institutionField.valid"
@@ -87,6 +74,22 @@
                  [touched]="institutionField.touched"
                  [dirty]="institutionField.dirty">
           </small>
+          </div>
+
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <label for="position" appLabel label="Cargo:"
+                 [required]="true"
+                 [valid]="positionField.valid"
+                 [touched]="positionField.touched"
+                 [dirty]="positionField.dirty">
+          </label>
+          <input pInputText id="position" formControlName="position">
+          <small appErrorMessage
+                 [errors]="positionField.errors"
+                 [touched]="positionField.touched"
+                 [dirty]="positionField.dirty">
+          </small>
+          
           </div>
         </div>
         <p-divider></p-divider>
