@@ -4,12 +4,12 @@
         <button pButton pRipple type="button" label="Crear Título Profesional"
                 class="p-button-success p-button-rounded" icon="pi pi-plus"
                 (click)="createProfessionalDegree()"></button>
+        <button pButton pRipple type="button" label="Crear Área"
+                class="p-button-success p-button-rounded ml-2" icon="pi pi-plus"
+                (click)="createArea()"></button>
         <button pButton pRipple type="button" label="Refrescar"
                 class="p-button-rounded ml-2" icon="pi pi-refresh"
                 (click)="loadCategories()"></button>
-        <button pButton pRipple type="button" label="Crear Área"
-                class="p-button-success p-button-rounded" icon="pi pi-plus"
-                (click)="createArea()"></button>
         <button *ngIf="selectedCategories?.length" pButton pRipple type="button" label="Eliminar Títulos Profesionales"
                 class="p-button-danger p-button-rounded ml-2" icon="pi pi-trash"
                 (click)="deleteCategories()"></button>

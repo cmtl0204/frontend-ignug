@@ -88,8 +88,6 @@ export class CategoryListComponent implements OnInit, OnDestroy {
 
   selectCategory(category: CategoryModel) {
     this.selectedCategory = category;
-    console.log(this.selectedCategory);
-    console.log(this.selectedCategory.parent);
   }
 
   deleteCategory(category: CategoryModel): void {
@@ -154,7 +152,8 @@ export class CategoryListComponent implements OnInit, OnDestroy {
   }
 
   setItems() {
-    let isArea:boolean = this.selectedCategory.parent ? true : false;
+    let isArea = this.selectedCategory.parent ? false : true;
+    console.log(isArea);
     this.items = [
       {
         label: 'Modificar',
