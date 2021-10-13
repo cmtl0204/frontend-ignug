@@ -3,10 +3,13 @@
       <div class="p-toolbar-group-left">
         <button pButton pRipple type="button" label="Crear Título Profesional"
                 class="p-button-success p-button-rounded" icon="pi pi-plus"
-                (click)="createCategory()"></button>
+                (click)="createProfessionalDegree()"></button>
         <button pButton pRipple type="button" label="Refrescar"
                 class="p-button-rounded ml-2" icon="pi pi-refresh"
                 (click)="loadCategories()"></button>
+        <button pButton pRipple type="button" label="Crear Área"
+                class="p-button-success p-button-rounded" icon="pi pi-plus"
+                (click)="createArea()"></button>
         <button *ngIf="selectedCategories?.length" pButton pRipple type="button" label="Eliminar Títulos Profesionales"
                 class="p-button-danger p-button-rounded ml-2" icon="pi pi-trash"
                 (click)="deleteCategories()"></button>
@@ -60,7 +63,12 @@
                 {{rowData[col.field].name}}
               </span>
               <span *ngIf="!rowData[col.field]?.id">
-                {{rowData[col.field]}}
+                <span *ngIf="col.field=='updatedAt'">
+                  {{rowData[col.field]|date}}
+                </span>
+                <span *ngIf="col.field!='updatedAt'">
+                  {{rowData[col.field]}}
+                </span>
               </span>
             </td>
             <td style="text-align: center">

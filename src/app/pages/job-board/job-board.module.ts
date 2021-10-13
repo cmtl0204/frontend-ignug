@@ -18,6 +18,7 @@ import {KeyFilterModule} from "primeng/keyfilter";
 import {RippleModule} from "primeng/ripple";
 import {DividerModule} from "primeng/divider";
 import {ProgressBarModule} from "primeng/progressbar";
+import { AreaFormComponent } from './category/area-form/area-form.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import {ProgressBarModule} from "primeng/progressbar";
     JobBoardComponent,
     CategoryComponent,
     CategoryFormComponent,
-    CategoryListComponent
+    CategoryListComponent,
+    AreaFormComponent
   ],
   imports: [
     CommonModule,

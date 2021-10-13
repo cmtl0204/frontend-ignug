@@ -420,9 +420,45 @@ export class JobBoardHttpService {
       );
   }
 
+  storeProfessionalDegree(category: CategoryModel): Observable<ServerResponse> {
+    const url = `${this.API_URL}/category/professional-degrees`;
+    return this.httpClient.post<ServerResponse>(url, category)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }  
+
+  updateProfessionalDegree(id: number, category: CategoryModel): Observable<ServerResponse> {
+    const url = `${this.API_URL}/category/professional-degrees/${id}`;
+    return this.httpClient.put<ServerResponse>(url, category)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
   getAreas(): Observable<ServerResponse> {
     const url = `${this.API_URL}/category/areas`;
     return this.httpClient.get<ServerResponse>(url)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  storeArea(category: CategoryModel): Observable<ServerResponse> {
+    const url = `${this.API_URL}/category/areas`;
+    return this.httpClient.post<ServerResponse>(url, category)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }  
+
+  updateArea(id: number, category: CategoryModel): Observable<ServerResponse> {
+    const url = `${this.API_URL}/category/areas/${id}`;
+    return this.httpClient.put<ServerResponse>(url, category)
       .pipe(
         map(response => response),
         catchError(Handler.render)

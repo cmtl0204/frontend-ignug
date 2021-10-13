@@ -6,6 +6,7 @@ import {RolesEnum} from '@shared/enums/roles.enum';
 import {CategoryComponent} from "./category/category.component";
 import {CategoryFormComponent} from "./category/category-form/category-form.component";
 import {ExitGuard} from "@shared/guards/exit.guard";
+import { AreaFormComponent } from './category/area-form/area-form.component';
 
 const routes: Routes = [
   {
@@ -21,7 +22,16 @@ const routes: Routes = [
         component: CategoryComponent,
       },
       {
-        path: 'category/:id',
+        path: 'category/area/:id',
+        component: AreaFormComponent,
+        canDeactivate: [ExitGuard]
+      },
+      {
+        path: 'category/professional-degree',
+        component: CategoryComponent,
+      },
+      {
+        path: 'category/professional-degree/:id',
         component: CategoryFormComponent,
         canDeactivate: [ExitGuard]
       }

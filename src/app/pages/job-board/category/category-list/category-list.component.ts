@@ -33,7 +33,7 @@ export class CategoryListComponent implements OnInit, OnDestroy {
               ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
-      {label: 'Títulos profesionales', disabled: true},
+      {label: 'Títulos Profesionales', disabled: true},
     ]);
 
     this.filter = new FormControl('');
@@ -71,15 +71,25 @@ export class CategoryListComponent implements OnInit, OnDestroy {
   }
 
   editCategory(category: CategoryModel) {
-    this.router.navigate(['/job-board/category/', category.id]);
+    this.router.navigate(['/job-board/category/professional-degree/', category.id]);
   }
 
-  createCategory() {
-    this.router.navigate(['/job-board/category/', 'new']);
+  editArea(category: CategoryModel) {
+    this.router.navigate(['/job-board/category/area/', category.id]);
+  }
+
+  createArea() {
+    this.router.navigate(['/job-board/category/area/', 'new']);
+  }
+
+  createProfessionalDegree() {
+    this.router.navigate(['/job-board/category/professional-degree/', 'new']);
   }
 
   selectCategory(category: CategoryModel) {
     this.selectedCategory = category;
+    console.log(this.selectedCategory);
+    console.log(this.selectedCategory.parent);
   }
 
   deleteCategory(category: CategoryModel): void {
@@ -136,25 +146,34 @@ export class CategoryListComponent implements OnInit, OnDestroy {
 
   setCols() {
     this.cols = [
-      {field: 'name', header: 'Nombre'},
       {field: 'parent', header: 'Área'},
-      {field: 'code', header: 'Código'},
-      {field: 'icon', header: 'Ícono'},
+      {field: 'name', header: 'Título'},
+      {field: 'updatedAt', header: 'Actualizado en'},
     ];
 
   }
 
   setItems() {
+    let isArea:boolean = this.selectedCategory.parent ? true : false;
     this.items = [
       {
-        label: 'Modificar', icon: 'pi pi-pencil', command: () => {
-          this.editCategory(this.selectedCategory);
+        label: 'Modificar',
+        icon: 'pi pi-pencil',
+        command: isArea
+        ? () => {
+          this.editArea(this.selectedCategory);
         }
+        : () => {
+          this.editCategory(this.selectedCategory);
+        } 
       },
+      
       {
         label: 'Eliminar', icon: 'pi pi-trash', command: () => {
           this.deleteCategory(this.selectedCategory);
-        }
+        } 
+         
+        
       }
     ];
   }

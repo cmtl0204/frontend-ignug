@@ -9,19 +9,18 @@ import {JobBoardHttpService} from '@services/job-board';
 import {CategoryModel} from '@models/job-board';
 
 @Component({
-  selector: 'app-category-form',
-  templateUrl: './category-form.component.html',
-  styleUrls: ['./category-form.component.scss']
+  selector: 'app-area-form',
+  templateUrl: './area-form.component.html',
+  styleUrls: ['./area-form.component.scss']
 })
-export class CategoryFormComponent implements OnInit, OnDestroy, OnExitInterface {
+export class AreaFormComponent implements OnInit, OnDestroy, OnExitInterface {
 
   private subscriptions: Subscription[] = [];
   form: FormGroup;
   progressBar: boolean = false;
   skeletonLoading: boolean = false;
-  title: string = 'Crear Título Profesional';
-  buttonTitle: string = 'Crear Título Profesional';
-  areas: CategoryModel[] = [];
+  title: string = 'Crear Área';
+  buttonTitle: string = 'Crear Área';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -40,11 +39,10 @@ export class CategoryFormComponent implements OnInit, OnDestroy, OnExitInterface
 
   ngOnInit(): void {
     if (this.activatedRoute.snapshot.params.id != 'new') {
-      this.title = 'Actualizar Título Profesional';
-      this.buttonTitle = 'Actualizar Título Profesional';
+      this.title = 'Actualizar Área';
+      this.buttonTitle = 'Actualizar Área';
       this.loadCategory();
     }
-    this.loadAreas();
   }
 
 
@@ -81,24 +79,13 @@ export class CategoryFormComponent implements OnInit, OnDestroy, OnExitInterface
   newForm(): FormGroup {
     return this.formBuilder.group({
       id: [null],
-      parent: [null,[Validators.required] ],
       name: [null, [Validators.required] ],
+      parent: [null],
       code: [null],
       icon: [null],
     });
   }
 
-  // ForeignKeys
-  loadAreas() {
-    this.jobBoardHttpService.getAreas()
-      .subscribe(
-      response => {
-        this.areas = response.data;
-      }, error => {
-        this.messageService.error(error);
-      }
-    );
-  }
 
   onSubmit():void {
     if (this.form.valid) {
@@ -114,7 +101,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy, OnExitInterface
 
   store(category: CategoryModel): void {
     this.progressBar = true;
-    this.jobBoardHttpService.storeProfessionalDegree(category).subscribe(
+    this.jobBoardHttpService.storeArea(category).subscribe(
       response => {
         this.messageService.success(response);
         this.form.reset();
@@ -130,7 +117,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy, OnExitInterface
 
   update(category: CategoryModel): void {
     this.progressBar = true;
-    this.jobBoardHttpService.updateProfessionalDegree(category.id!, category)
+    this.jobBoardHttpService.updateArea(category.id!, category)
       .subscribe(
       response => {
         this.messageService.success(response);
@@ -148,7 +135,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy, OnExitInterface
   get idField() {
     return this.form.controls['id'];
   }
-
+  
   get parentField() {
     return this.form.controls['parent'];
   }

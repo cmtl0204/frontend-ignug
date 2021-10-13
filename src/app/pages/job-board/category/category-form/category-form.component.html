@@ -4,7 +4,7 @@
       <h3 class="ml-2">{{title}}</h3>
     </div>
     <div class="p-toolbar-group-right">
-      <i class="pi pi-times p-button p-button-text" [routerLink]="['/job-board/professional/category']"
+      <i class="pi pi-times p-button p-button-text" [routerLink]="['/job-board/category']"
          style="font-size: 2rem; color: #fff"></i>
     </div>
   </p-toolbar>
@@ -14,21 +14,6 @@
   <p-card>
     <div class="p-fluid" *ngIf="!skeletonLoading">
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
-
-        <div class="field">
-          <label for="name" appLabel label="Título:"
-                 [required]="true"
-                 [valid]="nameField.valid"
-                 [touched]="nameField.touched"
-                 [dirty]="nameField.dirty">
-          </label>
-          <input pInputText id="name" formControlName="name" pKeyFilter="alpha">
-          <small appErrorMessage
-                 [errors]="nameField.errors"
-                 [touched]="nameField.touched"
-                 [dirty]="nameField.dirty">
-          </small>
-        </div>
 
         <div class="field">
          <label for="parent" appLabel label="Área de Estudios:"
@@ -62,16 +47,17 @@
         </div>
 
         <div class="field">
-          <label for="code" appLabel label="Código:"
-                 [valid]="codeField.valid"
-                 [touched]="codeField.touched"
-                 [dirty]="codeField.dirty">
+          <label for="name" appLabel label="Título:" placeholder="Ej. Título en Medicina General"
+                 [required]="true"
+                 [valid]="nameField.valid"
+                 [touched]="nameField.touched"
+                 [dirty]="nameField.dirty">
           </label>
-          <input pInputText id="code" formControlName="code" pKeyFilter="alphanum">
+          <input pInputText id="name" formControlName="name" pKeyFilter="alpha">
           <small appErrorMessage
-                 [errors]="codeField.errors"
-                 [touched]="codeField.touched"
-                 [dirty]="codeField.dirty">
+                 [errors]="nameField.errors"
+                 [touched]="nameField.touched"
+                 [dirty]="nameField.dirty">
           </small>
         </div>
 
