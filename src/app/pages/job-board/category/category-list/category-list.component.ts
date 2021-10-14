@@ -88,6 +88,8 @@ export class CategoryListComponent implements OnInit, OnDestroy {
 
   selectCategory(category: CategoryModel) {
     this.selectedCategory = category;
+    console.log('estoy en selectCategory', this.selectedCategory);
+    this.setItems();
   }
 
   deleteCategory(category: CategoryModel): void {
