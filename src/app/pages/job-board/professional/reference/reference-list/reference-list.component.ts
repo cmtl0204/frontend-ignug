@@ -1,19 +1,20 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
+import {FormControl} from '@angular/forms';
 import {MenuItem} from 'primeng/api';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
-import {JobBoardHttpService, JobBoardService} from '@services/job-board';
 import {MessageService} from '@services/core';
-import {ReferenceModel} from '@models/job-board';
+import {JobBoardHttpService, JobBoardService} from '@services/job-board';
 import {ColModel, PaginatorModel} from '@models/core';
-import {FormControl} from '@angular/forms';
+import {ReferenceModel} from '@models/job-board';
 
 @Component({
   selector: 'app-reference-list',
   templateUrl: './reference-list.component.html',
   styleUrls: ['./reference-list.component.scss']
 })
+
 export class ReferenceListComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   cols: ColModel[] = [];
@@ -21,21 +22,21 @@ export class ReferenceListComponent implements OnInit, OnDestroy {
   loading: boolean = false;
   paginator: PaginatorModel = {current_page: 1, per_page: 5, total: 0};
   filter: FormControl;
-
   references: ReferenceModel[] = [];
   selectedReference: ReferenceModel = {};
   selectedReferences: ReferenceModel[] = [];
+  progressBarDelete: boolean = false;
 
   constructor(private router: Router,
-    private breadcrumbService: BreadcrumbService,
-    public messageService: MessageService,
-    private jobBoardHttpService: JobBoardHttpService,
-    private jobBoardService: JobBoardService,
-    ) {
+              private breadcrumbService: BreadcrumbService,
+              public messageService: MessageService,
+              private jobBoardHttpService: JobBoardHttpService,
+              private jobBoardService: JobBoardService,
+  ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
-      {label: 'Referencias', disabled: true},
+      {label: 'Referencias Profesionales', disabled: true},
     ]);
 
     this.filter = new FormControl('');
@@ -54,16 +55,18 @@ export class ReferenceListComponent implements OnInit, OnDestroy {
   loadReferences() {
     this.loading = true;
     this.subscriptions.push(
-      this.jobBoardHttpService.getReferences(this.jobBoardService.professional.id!, this.paginator, this.filter.value).subscribe(
-        response => {
-          this.loading = false;
-          this.references = response.data;
-          this.paginator = response.meta;
-        }, error => {
-          this.loading = false;
-          this.messageService.error(error);
-        }
-      ));
+      this.jobBoardHttpService.getReferences(
+        this.jobBoardService.professional.id!, this.paginator, this.filter.value)
+        .subscribe(
+          response => {
+            this.loading = false;
+            this.references = response.data;
+            this.paginator = response.meta;
+          }, error => {
+            this.loading = false;
+            this.messageService.error(error);
+          }
+        ));
   }
 
   filterReferences(event: any) {
@@ -88,15 +91,20 @@ export class ReferenceListComponent implements OnInit, OnDestroy {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
-          this.subscriptions.push(this.jobBoardHttpService.deleteReference(reference.id!,this.jobBoardService.professional?.id!).subscribe(
-            response => {
-              this.removeReference(reference);
-              this.messageService.success(response);
-            },
-            error => {
-              this.messageService.error(error);
-            }
-          ));
+          this.progressBarDelete = true;
+          this.subscriptions.push(
+            this.jobBoardHttpService.deleteReference(reference.id!, this.jobBoardService.professional?.id!)
+              .subscribe(
+                response => {
+                  this.removeReference(reference);
+                  this.messageService.success(response);
+                  this.progressBarDelete = false;
+                },
+                error => {
+                  this.messageService.error(error);
+                  this.progressBarDelete = false;
+                }
+              ));
         }
       });
   }
@@ -105,28 +113,33 @@ export class ReferenceListComponent implements OnInit, OnDestroy {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
+          this.progressBarDelete = true;
           const ids = this.selectedReferences.map(element => element.id);
-          this.subscriptions.push(this.jobBoardHttpService.deleteReferences(ids).subscribe(
-            response => {
-              this.removeReferences(ids!);
-              this.messageService.success(response);
-            },
-            error => {
-              this.messageService.error(error);
-            }
-          ));
+          this.subscriptions.push(this.jobBoardHttpService.deleteReferences(ids)
+            .subscribe(
+              response => {
+                this.removeReferences(ids!);
+                this.messageService.success(response);
+                this.progressBarDelete = false;
+              },
+              error => {
+                this.messageService.error(error);
+                this.progressBarDelete = false;
+              }
+            ));
         }
       });
-
   }
 
   removeReference(reference: ReferenceModel) {
     this.references = this.references.filter(element => element.id !== reference.id);
+    this.paginator.total = this.paginator.total - 1;
   }
 
   removeReferences(ids: (number | undefined)[]) {
     for (const id of ids) {
       this.references = this.references.filter(element => element.id !== id);
+      this.paginator.total = this.paginator.total - 1;
     }
     this.selectedReferences = [];
   }
@@ -140,9 +153,9 @@ export class ReferenceListComponent implements OnInit, OnDestroy {
     this.cols = [
       {field: 'contactName', header: 'Nombre'},
       {field: 'contactPhone', header: 'Celular'},
-      {field: 'contactEmail', header: 'E-mail'},
+      {field: 'contactEmail', header: 'Correo electrónico'},
       {field: 'position', header: 'Cargo'},
-      {field: 'updatedAt', header: 'Última Actualización'},
+      {field: 'updatedAt', header: 'Última actualización'},
     ];
   }
 

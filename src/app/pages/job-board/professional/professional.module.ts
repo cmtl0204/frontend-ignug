@@ -42,6 +42,8 @@ import { AcademicFormationFormComponent } from './academic-formation/academic-fo
 import { AcademicFormationListComponent } from './academic-formation/academic-formation-list/academic-formation-list.component';
 import {KeyFilterModule} from "primeng/keyfilter";
 import {InputTextareaModule} from "primeng/inputtextarea";
+import {TooltipModule} from "primeng/tooltip";
+import {StepsModule} from "primeng/steps";
 
 @NgModule({
   declarations: [
@@ -66,29 +68,31 @@ import {InputTextareaModule} from "primeng/inputtextarea";
     AcademicFormationFormComponent,
     AcademicFormationListComponent,
   ],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    ProfessionalRoutingModule,
-    SharedModule,
-    TabViewModule,
-    TableModule,
-    ButtonModule,
-    RippleModule,
-    SplitButtonModule,
-    DialogModule,
-    CardModule,
-    PaginatorModule,
-    DividerModule,
-    ProgressBarModule,
-    InputSwitchModule,
-    InputTextModule,
-    CalendarModule,
-    InputNumberModule,
-    ToolbarModule,
-    KeyFilterModule,
-    InputTextareaModule,
-  ]
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        ProfessionalRoutingModule,
+        SharedModule,
+        TabViewModule,
+        TableModule,
+        ButtonModule,
+        RippleModule,
+        SplitButtonModule,
+        DialogModule,
+        CardModule,
+        PaginatorModule,
+        DividerModule,
+        ProgressBarModule,
+        InputSwitchModule,
+        InputTextModule,
+        CalendarModule,
+        InputNumberModule,
+        ToolbarModule,
+        KeyFilterModule,
+        InputTextareaModule,
+        TooltipModule,
+        StepsModule,
+    ]
 })
 export class ProfessionalModule {
 }

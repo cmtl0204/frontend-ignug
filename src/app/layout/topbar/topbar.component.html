@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <a href="#" class="navbar-brand">
         <img src="assets/images/topbar/logo-2.png" alt="" width="60" height="60">
-        IGNUG
+        Bolsa de Empleo
       </a>
       <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#topbar">
         <span class="navbar-toggler-icon"></span>
@@ -11,27 +11,33 @@
     </div>
     <div id="topbar" class="collapse navbar-collapse">
       <ul class="navbar-nav ms-3">
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <i class="bi bi-people-fill" style="font-size: 2rem; color: cornflowerblue;"></i>
-            Profesionales
-          </a>
-        </li>
-        <li class="nav-item ml-8">
-          <a class="nav-link" href="#">
-            <i class="bi bi-briefcase-fill" style="font-size: 2rem; color: cornflowerblue;"></i>
-            Ofertas
-          </a>
-        </li>
-        <li class="nav-item ml-8">
-          <a class="nav-link" href="#"><i class="bi bi-building" style="font-size: 2rem; color: cornflowerblue;"></i>
-            Registro Empresas
-          </a>
-        </li>
-        <li class="nav-item ml-8">
+<!--        <li class="nav-item">-->
+<!--          <a class="nav-link" href="#">-->
+<!--            <i class="bi bi-people-fill" style="font-size: 2rem; color: cornflowerblue;"></i>-->
+<!--            Profesionales-->
+<!--          </a>-->
+<!--        </li>-->
+<!--        <li class="nav-item ml-8">-->
+<!--          <a class="nav-link" href="#">-->
+<!--            <i class="bi bi-briefcase-fill" style="font-size: 2rem; color: cornflowerblue;"></i>-->
+<!--            Ofertas-->
+<!--          </a>-->
+<!--        </li>-->
+<!--        <li class="nav-item ml-8">-->
+<!--          <a class="nav-link" href="#"><i class="bi bi-building" style="font-size: 2rem; color: cornflowerblue;"></i>-->
+<!--            Registro Empresas-->
+<!--          </a>-->
+<!--        </li>-->
+        <li *appToken="'unauthenticated'" class="nav-item ml-8">
           <a class="nav-link" href="#">
             <i class="bi bi-person-plus-fill" style="font-size: 2rem; color: cornflowerblue;"></i>
             Registro Profesionales
+          </a>
+        </li>
+        <li *appToken="'authenticated'" class="nav-item ml-8">
+          <a class="nav-link" href="javascript:void(0)" (click)="logout()">
+            <i class="bi bi-power" style="font-size: 2rem; color: cornflowerblue;"></i>
+            Cerrar Sesión
           </a>
         </li>
         <!--        <li class="nav-item dropdown">-->
@@ -51,6 +57,7 @@
           </a>
         </li>
       </ul>
+
       <form *appToken="'authenticated'" class="d-flex">
         <p-avatar image="assets/images/anonymous.png" styleClass="p-mr-2" size="xlarge" shape="circle"
                   [routerLink]="['/job-board/professional']"></p-avatar>

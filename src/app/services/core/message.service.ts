@@ -136,4 +136,28 @@ export class MessageService {
   paginatorTotalRegisters(paginator: PaginatorModel): string {
     return 'En total hay ' + (paginator?.total ? paginator.total : 0) + ' registros.';
   }
+
+  get paginatorNoRecordsFound(): string {
+    return 'No se encontraron registros.';
+  }
+
+  get buttonFormSaveOrUpdate(): string {
+    return `Guardar`;
+  }
+
+  get buttonFormClose(): string {
+    return `Cerrar`;
+  }
+
+  get progressBarSaveOrUpdate(): string {
+    return `Procesando...`;
+  }
+
+  get progressBarLogin(): string {
+    return `Ingresando...`;
+  }
+
+  get progressBarDelete(): string {
+    return `Eliminando...`;
+  }
 }

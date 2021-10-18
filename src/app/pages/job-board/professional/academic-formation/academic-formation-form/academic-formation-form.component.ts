@@ -1,10 +1,10 @@
-import {AfterContentChecked, AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
+import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {MessageService} from '@services/core';
-import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
 import {JobBoardHttpService, JobBoardService} from '@services/job-board';
 import {AcademicFormationModel, CategoryModel,} from '@models/job-board';
 
@@ -22,7 +22,7 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
   skeletonLoading: boolean = false;
   title: string = 'Crear Formación Académica';
   buttonTitle: string = 'Crear Formación Académica';
-  yearRange: string = '1900' + ':' + (new Date()).getFullYear();
+  yearRange: string = `1900:${(new Date()).getFullYear()}`;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -36,18 +36,12 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
-      {label: 'Formación Académica', routerLink: ['/job-board/professional/academic-formation']},
+      {label: 'Formaciones Académicas', routerLink: ['/job-board/professional/academic-formation'], disabled: true},
       {label: 'Formulario', disabled: true},
     ]);
     this.form = this.newForm();
     this.certificatedField.valueChanges.subscribe(value => {
-      if (value) {
-        this.senescytCodeField.setValidators([Validators.required]);
-        this.registeredAtField.setValidators([Validators.required]);
-      } else {
-        this.senescytCodeField.setErrors(null);
-        this.registeredAtField.setErrors(null);
-      }
+      this.verifyCertificatedValidators();
     });
   }
 
@@ -74,6 +68,16 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
     return true;
   }
 
+  newForm(): FormGroup {
+    return this.formBuilder.group({
+      id: [null],
+      professionalDegree: [null, [Validators.required]],
+      certificated: [false, [Validators.required]],
+      senescytCode: [null],
+      registeredAt: [null],
+    });
+  }
+
   loadAcademicFormation() {
     this.skeletonLoading = true;
     this.subscriptions.push(
@@ -90,25 +94,16 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
         ));
   }
 
-  newForm(): FormGroup {
-    return this.formBuilder.group({
-      id: [null],
-      professionalDegree: [null, [Validators.required]],
-      certificated: [false, [Validators.required]],
-      senescytCode: [null],
-      registeredAt: [null],
-    });
-  }
-
   loadProfessionalDegrees() {
-    this.jobBoardHttpService.getProfessionalDegrees()
-      .subscribe(
-        response => {
-          this.professionalDegrees = response.data;
-        }, error => {
-          this.messageService.error(error);
-        }
-      );
+    this.subscriptions.push(
+      this.jobBoardHttpService.getProfessionalDegrees()
+        .subscribe(
+          response => {
+            this.professionalDegrees = response.data;
+          }, error => {
+            this.messageService.error(error);
+          }
+        ));
   }
 
   onSubmit(): void {
@@ -125,34 +120,60 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
 
   store(academicFormation: AcademicFormationModel): void {
     this.progressBar = true;
-    this.jobBoardHttpService.storeAcademicFormation(academicFormation, this.jobBoardService.professional.id!).subscribe(
-      response => {
-        this.messageService.success(response);
-        this.form.reset();
-        this.progressBar = false;
-        this.router.navigate(['/job-board/professional/academic-formation']);
-      },
-      error => {
-        this.messageService.error(error);
-        this.progressBar = false;
-      }
-    );
+    this.subscriptions.push(
+      this.jobBoardHttpService.storeAcademicFormation(academicFormation, this.jobBoardService.professional.id!)
+        .subscribe(
+          response => {
+            this.messageService.success(response);
+            this.form.reset();
+            this.progressBar = false;
+            this.returnList();
+          },
+          error => {
+            this.messageService.error(error);
+            this.progressBar = false;
+          }
+        ));
   }
 
   update(academicFormation: AcademicFormationModel): void {
     this.progressBar = true;
-    this.jobBoardHttpService.updateAcademicFormation(academicFormation.id!, academicFormation, this.jobBoardService.professional.id!).subscribe(
-      response => {
-        this.messageService.success(response);
-        this.form.reset();
-        this.progressBar = false;
-        this.router.navigate(['/job-board/professional/academic-formation']);
-      },
-      error => {
-        this.messageService.error(error);
-        this.progressBar = false;
-      }
-    );
+    this.subscriptions.push(
+      this.jobBoardHttpService.updateAcademicFormation(academicFormation.id!, academicFormation, this.jobBoardService.professional.id!)
+        .subscribe(
+          response => {
+            this.messageService.success(response);
+            this.form.reset();
+            this.progressBar = false;
+            this.returnList();
+          },
+          error => {
+            this.messageService.error(error);
+            this.progressBar = false;
+          }
+        ));
+  }
+
+  verifyCertificatedValidators() {
+    if (this.certificatedField.value) {
+      this.senescytCodeField.setValidators([Validators.required]);
+      this.registeredAtField.setValidators([Validators.required]);
+    } else {
+      this.senescytCodeField.clearValidators();
+      this.senescytCodeField.setValue(null);
+      this.registeredAtField.clearValidators();
+      this.registeredAtField.setValue(null);
+    }
+    this.senescytCodeField.updateValueAndValidity();
+    this.registeredAtField.updateValueAndValidity();
+  }
+
+  isRequired(field: AbstractControl): boolean {
+    return field.hasValidator(Validators.required);
+  }
+
+  returnList() {
+    this.router.navigate(['/job-board/professional', 2]);
   }
 
   get idField() {

@@ -4,8 +4,11 @@
       <h3 class="ml-2">{{title}}</h3>
     </div>
     <div class="p-toolbar-group-right">
+      <app-progress-bar *ngIf="progressBar" [message]="messageService.progressBarSaveOrUpdate"></app-progress-bar>
+      <i *ngIf="form.touched || form.dirty" class="pi pi-check p-button p-button-text" (click)="onSubmit()"
+         style="font-size: 2rem; color: #fff" [pTooltip]="messageService.buttonFormSaveOrUpdate"></i>
       <i class="pi pi-times p-button p-button-text" [routerLink]="['/job-board/professional']"
-         style="font-size: 2rem; color: #fff"></i>
+         style="font-size: 2rem; color: #fff" [pTooltip]="messageService.buttonFormClose"></i>
     </div>
   </p-toolbar>
 </div>
@@ -18,7 +21,7 @@
           <div class="formgrid grid">
             <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
               <label for="identificationTypeUser" appLabel label="Tipo de documento:"
-                     [required]="true"
+                     [required]="isRequired(identificationTypeUserField)"
                      [valid]="identificationTypeUserField.valid"
                      [touched]="identificationTypeUserField.touched"
                      [dirty]="identificationTypeUserField.dirty">
@@ -47,7 +50,8 @@
               </small>
             </div>
             <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-              <label for="username" appLabel [required]="true" label="Número de documento:"
+              <label for="username" appLabel label="Número de documento:"
+                     [required]="isRequired(usernameUserField)"
                      [valid]="usernameUserField.valid"
                      [touched]="usernameUserField.touched" [dirty]="usernameUserField.dirty"></label>
               <input pInputText id="username" formControlName="username" pKeyFilter="pnum">
@@ -60,10 +64,11 @@
           </div>
           <div class="formgrid grid">
             <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-              <label for="name" appLabel [required]="true" label="Nombres:"
+              <label for="name" appLabel label="Nombres:"
+                     [required]="isRequired(nameUserField)"
                      [valid]="nameUserField.valid"
                      [touched]="nameUserField.touched" [dirty]="nameUserField.dirty"></label>
-              <input pInputText id="name" formControlName="name" pKeyFilter="alpha">
+              <input pInputText id="name" formControlName="name" class="text-uppercase">
               <small appErrorMessage
                      [errors]="nameUserField.errors"
                      [touched]="nameUserField.touched"
@@ -71,10 +76,11 @@
               </small>
             </div>
             <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-              <label for="lastname" appLabel [required]="true" label="Apellidos:"
+              <label for="lastname" appLabel label="Apellidos:"
+                     [required]="isRequired(lastnameUserField)"
                      [valid]="lastnameUserField.valid"
                      [touched]="lastnameUserField.touched" [dirty]="lastnameUserField.dirty"></label>
-              <input pInputText id="lastname" formControlName="lastname" pKeyFilter="alpha">
+              <input pInputText id="lastname" formControlName="lastname" class="text-uppercase">
               <small appErrorMessage
                      [errors]="lastnameUserField.errors"
                      [touched]="lastnameUserField.touched"
@@ -84,7 +90,8 @@
           </div>
           <div class="formgrid grid">
             <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-              <label for="email" appLabel [required]="true" label="Correo Electrónico:"
+              <label for="email" appLabel label="Correo electrónico:"
+                     [required]="isRequired(emailUserField)"
                      [valid]="emailUserField.valid"
                      [touched]="emailUserField.touched" [dirty]="emailUserField.dirty"></label>
               <input pInputText id="email" formControlName="email" pKeyFilter="email">
@@ -95,7 +102,8 @@
               </small>
             </div>
             <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-              <label for="phone" appLabel label="Teléfono:"
+              <label for="phone" appLabel label="Teléfono celular:"
+                     [required]="isRequired(phoneUserField)"
                      [valid]="phoneUserField.valid"
                      [touched]="phoneUserField.touched" [dirty]="phoneUserField.dirty"></label>
               <input pInputText id="phone" formControlName="phone" pKeyFilter="pnum">
@@ -109,7 +117,7 @@
           <div class="formgrid grid">
             <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
               <label for="sexUser" appLabel label="Sexo:"
-                     [required]="true"
+                     [required]="isRequired(sexUserField)"
                      [valid]="sexUserField.valid"
                      [touched]="sexUserField.touched"
                      [dirty]="sexUserField.dirty">
@@ -139,7 +147,7 @@
             </div>
             <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
               <label for="genderUser" appLabel label="Género:"
-                     [required]="true"
+                     [required]="isRequired(genderUserField)"
                      [valid]="genderUserField.valid"
                      [touched]="genderUserField.touched"
                      [dirty]="genderUserField.dirty">
@@ -171,7 +179,7 @@
           <div class="formgrid grid">
             <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
               <label for="bloodTypeUser" appLabel label="Tipo de Sangre:"
-                     [required]="true"
+                     [required]="isRequired(bloodTypeUserField)"
                      [valid]="bloodTypeUserField.valid"
                      [touched]="bloodTypeUserField.touched"
                      [dirty]="bloodTypeUserField.dirty">
@@ -201,7 +209,7 @@
             </div>
             <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
               <label for="ethnicOriginUser" appLabel label="Etnia:"
-                     [required]="true"
+                     [required]="isRequired(ethnicOriginUserField)"
                      [valid]="ethnicOriginUserField.valid"
                      [touched]="ethnicOriginUserField.touched"
                      [dirty]="ethnicOriginUserField.dirty">
@@ -233,13 +241,13 @@
           <div class="formgrid grid">
             <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
               <label for="birthdadteUser" appLabel label="Fecha de Nacimiento:"
-                     [required]="true"
+                     [required]="isRequired(birthdateUserField)"
                      [valid]="birthdateUserField.valid"
                      [touched]="birthdateUserField.touched"
                      [dirty]="birthdateUserField.dirty">
               </label>
               <p-calendar id="birthdadteUser" formControlName="birthdate" dateFormat="yy-mm-dd"
-                          [yearRange]="'1900:2021'"
+                          [yearRange]="yearRange"
                           [showIcon]="true"
                           [monthNavigator]="true"
                           [yearNavigator]="true"
@@ -257,8 +265,9 @@
       </p-card>
       <p-card class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
         <div class="formgrid grid">
-          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+          <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
             <label for="traveled" appLabel label="¿Disponibidad para viajar?"
+                   [required]="isRequired(traveledField)"
                    [valid]="traveledField.valid"
                    [touched]="traveledField.touched"
                    [dirty]="traveledField.dirty">
@@ -272,8 +281,9 @@
                    [dirty]="traveledField.dirty">
             </small>
           </div>
-          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+          <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
             <label for="disabled" appLabel label="¿Tiene alguna discapacidad?"
+                   [required]="isRequired(disabledField)"
                    [valid]="disabledField.valid"
                    [touched]="disabledField.touched"
                    [dirty]="disabledField.dirty"></label>
@@ -286,39 +296,7 @@
                    [dirty]="disabledField.dirty">
             </small>
           </div>
-        </div>
-        <div class="formgrid grid">
-          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-            <label for="familiarDisabled" appLabel label="¿Algún familiar tiene discapacidad?"
-                   [valid]="traveledField.valid"
-                   [touched]="traveledField.touched"
-                   [dirty]="traveledField.dirty">
-            </label>
-            <p>
-              <p-inputSwitch id="familiarDisabled" formControlName="familiarDisabled"></p-inputSwitch>
-            </p>
-            <small appErrorMessage
-                   [errors]="traveledField.errors"
-                   [touched]="traveledField.touched"
-                   [dirty]="traveledField.dirty">
-            </small>
-          </div>
-          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-            <label for="identificationFamiliarDisabled" appLabel [required]="true" label="Número de documento:"
-                   [valid]="identificationFamiliarDisabledField.valid"
-                   [touched]="identificationFamiliarDisabledField.touched"
-                   [dirty]="identificationFamiliarDisabledField.dirty"></label>
-            <input pInputText id="identificationFamiliarDisabled" formControlName="identificationFamiliarDisabled"
-                   pKeyFilter="alphanum">
-            <small appErrorMessage
-                   [errors]="identificationFamiliarDisabledField.errors"
-                   [touched]="identificationFamiliarDisabledField.touched"
-                   [dirty]="identificationFamiliarDisabledField.dirty">
-            </small>
-          </div>
-        </div>
-        <div class="formgrid grid">
-          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+          <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
             <label for="catastrophicDiseased" appLabel label="¿Tiene alguna enfermedad catastrófica?"
                    [valid]="catastrophicDiseasedField.valid"
                    [touched]="catastrophicDiseasedField.touched"
@@ -333,14 +311,18 @@
                    [dirty]="catastrophicDiseasedField.dirty">
             </small>
           </div>
-          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+        </div>
+        <div class="formgrid grid">
+          <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
             <label for="familiarCatastrophicDiseased" appLabel
                    label="¿Algún familiar tiene alguna enfermedad catastrófica?"
+                   [required]="isRequired(familiarCatastrophicDiseasedField)"
                    [valid]="familiarCatastrophicDiseasedField.valid"
                    [touched]="familiarCatastrophicDiseasedField.touched"
                    [dirty]="familiarCatastrophicDiseasedField.dirty"></label>
             <p>
-              <p-inputSwitch id="familiarCatastrophicDiseased" formControlName="familiarCatastrophicDiseased"></p-inputSwitch>
+              <p-inputSwitch id="familiarCatastrophicDiseased"
+                             formControlName="familiarCatastrophicDiseased"></p-inputSwitch>
             </p>
             <small appErrorMessage
                    [errors]="familiarCatastrophicDiseasedField.errors"
@@ -348,29 +330,65 @@
                    [dirty]="familiarCatastrophicDiseasedField.dirty">
             </small>
           </div>
+          <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
+            <label for="familiarDisabled" appLabel label="¿Algún familiar tiene discapacidad?"
+                   [required]="isRequired(familiarDisabledField)"
+                   [valid]="familiarDisabledField.valid"
+                   [touched]="familiarDisabledField.touched"
+                   [dirty]="familiarDisabledField.dirty">
+            </label>
+            <p>
+              <p-inputSwitch id="familiarDisabled" formControlName="familiarDisabled"></p-inputSwitch>
+            </p>
+            <small appErrorMessage
+                   [errors]="familiarDisabledField.errors"
+                   [touched]="familiarDisabledField.touched"
+                   [dirty]="familiarDisabledField.dirty">
+            </small>
+          </div>
+          <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
+            <label for="identificationFamiliarDisabled" appLabel label="Número de documento:"
+                   [required]="isRequired(identificationFamiliarDisabledField)"
+                   [valid]="identificationFamiliarDisabledField.valid"
+                   [touched]="identificationFamiliarDisabledField.touched"
+                   [dirty]="identificationFamiliarDisabledField.dirty"></label>
+            <input pInputText id="identificationFamiliarDisabled" formControlName="identificationFamiliarDisabled"
+                   pKeyFilter="alphanum">
+            <small appErrorMessage
+                   [errors]="identificationFamiliarDisabledField.errors"
+                   [touched]="identificationFamiliarDisabledField.touched"
+                   [dirty]="identificationFamiliarDisabledField.dirty">
+            </small>
+          </div>
+        </div>
+        <div class="formgrid grid">
+
         </div>
         <div class="field">
-          <label for="catastrophicDiseased" appLabel label="Acerca de Mí:"
-                 [required]="true"
+          <label for="catastrophicDiseased" appLabel label="Acerca de mí:"
+                 [required]="isRequired(aboutMeField)"
                  [valid]="aboutMeField.valid"
                  [touched]="aboutMeField.touched"
                  [dirty]="aboutMeField.dirty">
           </label> {{aboutMeField.value?.length ? aboutMeField.value?.length : 0}}/300
-          <textarea pInputTextarea id="aboutMe" formControlName="aboutMe" rows="3" maxlength="300"></textarea>
+          <textarea pInputTextarea id="aboutMe" formControlName="aboutMe"
+                    placeholder="Ej. Con años de experiencia en la gestión de sistemas, he sido capaz de adaptarme a los diferentes planes informáticos de las empresas para las que he trabajado."
+                    rows="3" maxlength="300"></textarea>
           <small appErrorMessage
                  [errors]="aboutMeField.errors"
                  [touched]="aboutMeField.touched"
                  [dirty]="aboutMeField.dirty">
           </small>
         </div>
+
         <p-divider></p-divider>
+
         <div class="formgrid grid">
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
             <button pButton pRipple [label]="buttonTitle" class="p-button-rounded" icon="pi pi-save"></button>
           </div>
-          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12" *ngIf="progressBar">
-            <p-progressBar mode="indeterminate"></p-progressBar>
-            <small>Procesando...</small>
+          <div *ngIf="progressBar" class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <app-progress-bar [message]="messageService.progressBarSaveOrUpdate"></app-progress-bar>
           </div>
         </div>
       </p-card>

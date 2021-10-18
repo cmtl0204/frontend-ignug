@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
+import {MenuItem} from "primeng/api";
 
 @Component({
   selector: 'app-professional',
@@ -11,11 +12,13 @@ export class ProfessionalComponent implements OnInit {
   selectedTab = 0;
   showOptions: boolean = false;
   options: any[] = [];
+  items: MenuItem[] = [];
+  activeIndex: number = 0;
 
-  constructor(private router: Router, private breadcrumbService: BreadcrumbService) {
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private breadcrumbService: BreadcrumbService) {
     this.options = [
       {label: 'Perfil', route: 'profile', img: 'route1.png'},
-      {label: 'Cursos', route: 'course', img: 'route2.png'},
+      {label: 'Cursos y Capacitaciones', route: 'course', img: 'route2.png'},
       {label: 'Formación Académica', route: 'academic-formation', img: 'route3.png'},
       {label: 'Experiencia Profesional', route: 'experience', img: 'route4.png'},
       {label: 'Referencias Personales', route: 'reference', img: 'route4.png'},
@@ -29,6 +32,22 @@ export class ProfessionalComponent implements OnInit {
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', disabled: true}
     ]);
+
+    this.items = [
+      {label: 'Perfil'},
+      {label: 'Cursos y Capacitaciones'},
+      {label: 'Formación Académica'},
+      {label: 'Experiencias Profesionales'},
+      {label: 'Referencias Profesionales'},
+      {label: 'Habilidades'},
+      {label: 'Idiomas'},
+    ];
+
+    this.activeIndex = this.activatedRoute.snapshot.params.activeIndex ? this.activatedRoute.snapshot.params.activeIndex : 0;
+  }
+
+  nextPage() {
+
   }
 
   handleChange(event: any) {

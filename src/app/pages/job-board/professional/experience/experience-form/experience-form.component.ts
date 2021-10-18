@@ -1,15 +1,14 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
+import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {MessageService} from '@services/core';
-import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
 import {CoreHttpService} from '@services/core';
 import {JobBoardHttpService, JobBoardService} from '@services/job-board';
 import {CatalogueModel} from '@models/core';
 import {ExperienceModel} from '@models/job-board';
-import {PhoneModel} from "@models/core/phone.model";
 
 @Component({
   selector: 'app-experience-form',
@@ -22,8 +21,8 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
   form: FormGroup;
   progressBar: boolean = false;
   skeletonLoading: boolean = false;
-  title: string = 'Crear experiencia';
-  buttonTitle: string = 'Crear experiencia';
+  title: string = 'Crear Experiencia Profesional';
+  buttonTitle: string = 'Crear Experiencia Profesional';
   areas: CatalogueModel[] = [];
 
   constructor(
@@ -39,16 +38,19 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
-      {label: 'Experiencia Profesional', routerLink: ['/job-board/professional/experience']},
+      {label: 'Experiencias Profesionales', routerLink: ['/job-board/professional/experience'], disabled: true},
       {label: 'Formulario', disabled: true},
     ]);
     this.form = this.newForm();
+    this.workedField.valueChanges.subscribe(value => {
+      this.verifyWorkedValidators();
+    });
   }
 
   ngOnInit(): void {
     if (this.activatedRoute.snapshot.params.id != 'new') {
-      this.title = 'Actualizar experiencia';
-      this.buttonTitle = 'Actualizar experiencia';
+      this.title = 'Actualizar Experiencia Profesional';
+      this.buttonTitle = 'Actualizar Experiencia Profesional';
       this.loadExperience();
     }
 
@@ -73,12 +75,11 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
     return this.formBuilder.group({
       id: [null],
       area: [null, [Validators.required]],
-      activities: this.formBuilder.array(
-        [this.formBuilder.control(null, Validators.required)]),
+      activities: this.formBuilder.array([this.formBuilder.control(null, Validators.required)]),
       employer: [null, [Validators.required]],
-      endedAt: [null, [Validators.required]],
+      endedAt: [null],
       position: [null, [Validators.required]],
-      reasonLeave: [null, [Validators.required]],
+      reasonLeave: [null],
       startedAt: [null, [Validators.required]],
       worked: [false, [Validators.required]],
     });
@@ -105,13 +106,15 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
   }
 
   loadAreas(): void {
-    this.coreHttpService.getCatalogues('EXPERIENCE_AREA').subscribe(
-      response => {
-        this.areas = response.data;
-      }, error => {
-        this.messageService.error(error);
-      }
-    );
+    this.subscriptions.push(
+      this.coreHttpService.getCatalogues('EXPERIENCE_AREA')
+        .subscribe(
+          response => {
+            this.areas = response.data;
+          }, error => {
+            this.messageService.error(error);
+          }
+        ));
   }
 
   onSubmit(): void {
@@ -128,35 +131,71 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
 
   store(experience: ExperienceModel): void {
     this.progressBar = true;
-    this.jobBoardHttpService.storeExperience(experience, this.jobBoardService.professional.id!).subscribe(
-      response => {
-        this.messageService.success(response);
-        this.progressBar = false;
-        this.form.reset();
-        this.router.navigate(['/job-board/professional/experience']);
-      },
-      error => {
-        this.messageService.error(error);
-        this.progressBar = false;
-      }
-    );
+    this.subscriptions.push(
+      this.jobBoardHttpService.storeExperience(experience, this.jobBoardService.professional.id!)
+        .subscribe(
+          response => {
+            this.messageService.success(response);
+            this.progressBar = false;
+            this.form.reset();
+            this.returnList();
+          },
+          error => {
+            this.messageService.error(error);
+            this.progressBar = false;
+          }
+        ));
   }
 
   update(experience: ExperienceModel): void {
     this.progressBar = true;
-    this.jobBoardHttpService.updateExperience(experience.id!, experience, this.jobBoardService.professional.id!)
-      .subscribe(
-        response => {
-          this.messageService.success(response);
-          this.progressBar = false;
-          this.form.reset();
-          this.router.navigate(['/job-board/professional/experience']);
-        },
-        error => {
-          this.messageService.error(error);
-          this.progressBar = false;
-        }
-      );
+    this.subscriptions.push(
+      this.jobBoardHttpService.updateExperience(experience.id!, experience, this.jobBoardService.professional.id!)
+        .subscribe(
+          response => {
+            this.messageService.success(response);
+            this.progressBar = false;
+            this.form.reset();
+            this.returnList();
+          },
+          error => {
+            this.messageService.error(error);
+            this.progressBar = false;
+          }
+        ));
+  }
+
+  addActivity(data: string = '') {
+    this.activitiesField.push(this.formBuilder.control(data, Validators.required));
+  }
+
+  removeActivity(index: number) {
+    if (this.activitiesField.length > 1)
+      this.activitiesField.removeAt(index);
+    else
+      this.messageService.errorRequired();
+  }
+
+  isRequired(field: AbstractControl): boolean {
+    return field.hasValidator(Validators.required);
+  }
+
+  verifyWorkedValidators() {
+    if (this.workedField.value) {
+      this.endedAtField.setValidators([Validators.required]);
+      this.reasonLeaveField.setValidators([Validators.required]);
+    } else {
+      this.endedAtField.clearValidators();
+      this.endedAtField.setValue(null);
+      this.reasonLeaveField.clearValidators();
+      this.reasonLeaveField.setValue(null);
+    }
+    this.endedAtField.updateValueAndValidity();
+    this.reasonLeaveField.updateValueAndValidity();
+  }
+
+  returnList() {
+    this.router.navigate(['/job-board/professional', 3]);
   }
 
   get idField() {
@@ -194,17 +233,6 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
 
   get workedField() {
     return this.form.controls['worked'];
-  }
-
-  addActivity(data: string = '') {
-    this.activitiesField.push(this.formBuilder.control(data, Validators.required));
-  }
-
-  removeActivity(index: number) {
-    if (this.activitiesField.length > 1)
-      this.activitiesField.removeAt(index);
-    else
-      this.messageService.errorRequired();
   }
 }
 

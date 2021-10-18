@@ -1,19 +1,20 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
+import {FormControl} from '@angular/forms';
 import {MenuItem} from 'primeng/api';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
-import {JobBoardHttpService, JobBoardService} from '@services/job-board';
 import {MessageService} from '@services/core';
-import {LanguageModel} from '@models/job-board';
+import {JobBoardHttpService, JobBoardService} from '@services/job-board';
 import {ColModel, PaginatorModel} from '@models/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {LanguageModel} from '@models/job-board';
 
 @Component({
   selector: 'app-language-list',
   templateUrl: './language-list.component.html',
   styleUrls: ['./language-list.component.scss']
 })
+
 export class LanguageListComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   cols: ColModel[] = [];
@@ -21,10 +22,10 @@ export class LanguageListComponent implements OnInit, OnDestroy {
   loading: boolean = false;
   paginator: PaginatorModel = {current_page: 1, per_page: 5, total: 0};
   filter: FormControl;
-
   languages: LanguageModel[] = [];
   selectedLanguage: LanguageModel = {};
   selectedLanguages: LanguageModel[] = [];
+  progressBarDelete: boolean = false;
 
   constructor(private router: Router,
               private breadcrumbService: BreadcrumbService,
@@ -35,7 +36,7 @@ export class LanguageListComponent implements OnInit, OnDestroy {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
-      {label: 'Idioma', disabled: true},
+      {label: 'Idiomas', disabled: true},
     ]);
 
     this.filter = new FormControl('');
@@ -54,16 +55,17 @@ export class LanguageListComponent implements OnInit, OnDestroy {
   loadLanguages() {
     this.loading = true;
     this.subscriptions.push(
-      this.jobBoardHttpService.getLanguages(this.jobBoardService.professional.id!, this.paginator, this.filter.value).subscribe(
-        response => {
-          this.loading = false;
-          this.languages = response.data;
-          this.paginator = response.meta;
-        }, error => {
-          this.loading = false;
-          this.messageService.error(error);
-        }
-      ));
+      this.jobBoardHttpService.getLanguages(this.jobBoardService.professional.id!, this.paginator, this.filter.value)
+        .subscribe(
+          response => {
+            this.loading = false;
+            this.languages = response.data;
+            this.paginator = response.meta;
+          }, error => {
+            this.loading = false;
+            this.messageService.error(error);
+          }
+        ));
   }
 
   filterLanguages(event: any) {
@@ -72,8 +74,8 @@ export class LanguageListComponent implements OnInit, OnDestroy {
     }
   }
 
-  editLanguage(user: LanguageModel) {
-    this.router.navigate(['/job-board/professional/language/', user.id]);
+  editLanguage(language: LanguageModel) {
+    this.router.navigate(['/job-board/professional/language/', language.id]);
   }
 
   createLanguage() {
@@ -88,15 +90,20 @@ export class LanguageListComponent implements OnInit, OnDestroy {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
-          this.subscriptions.push(this.jobBoardHttpService.deleteLanguage(language.id!, this.jobBoardService.professional?.id!).subscribe(
-            response => {
-              this.removeLanguage(language);
-              this.messageService.success(response);
-            },
-            error => {
-              this.messageService.error(error);
-            }
-          ));
+          this.progressBarDelete = true;
+          this.subscriptions.push(
+            this.jobBoardHttpService.deleteLanguage(language.id!, this.jobBoardService.professional?.id!)
+              .subscribe(
+                response => {
+                  this.removeLanguage(language);
+                  this.messageService.success(response);
+                  this.progressBarDelete = false;
+                },
+                error => {
+                  this.messageService.error(error);
+                  this.progressBarDelete = false;
+                }
+              ));
         }
       });
   }
@@ -105,28 +112,34 @@ export class LanguageListComponent implements OnInit, OnDestroy {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
+          this.progressBarDelete = true;
           const ids = this.selectedLanguages.map(element => element.id);
-          this.subscriptions.push(this.jobBoardHttpService.deleteLanguages(ids).subscribe(
-            response => {
-              this.removeLanguages(ids!);
-              this.messageService.success(response);
-            },
-            error => {
-              this.messageService.error(error);
-            }
-          ));
+          this.subscriptions.push(
+            this.jobBoardHttpService.deleteLanguages(ids)
+              .subscribe(
+                response => {
+                  this.removeLanguages(ids!);
+                  this.messageService.success(response);
+                  this.progressBarDelete = false;
+                },
+                error => {
+                  this.messageService.error(error);
+                  this.progressBarDelete = false;
+                }
+              ));
         }
       });
-
   }
 
   removeLanguage(language: LanguageModel) {
     this.languages = this.languages.filter(element => element.id !== language.id);
+    this.paginator.total = this.paginator.total - 1;
   }
 
   removeLanguages(ids: (number | undefined)[]) {
     for (const id of ids) {
       this.languages = this.languages.filter(element => element.id !== id);
+      this.paginator.total = this.paginator.total - 1;
     }
     this.selectedLanguages = [];
   }
@@ -140,11 +153,10 @@ export class LanguageListComponent implements OnInit, OnDestroy {
     this.cols = [
       {field: 'idiom', header: 'Idioma'},
       {field: 'writtenLevel', header: 'Nivel Escrito'},
-      {field: 'spokenLevel', header: 'Nivel Hablado'},
-      {field: 'readLevel', header: 'Nivel Lectura'},
-      {field: 'updatedAt', header: 'Última de actualización'},
+      {field: 'spokenLevel', header: 'Nivel hablado'},
+      {field: 'readLevel', header: 'Nivel lectura'},
+      {field: 'updatedAt', header: 'Última actualización'},
     ];
-
   }
 
   setItems() {
@@ -162,4 +174,3 @@ export class LanguageListComponent implements OnInit, OnDestroy {
     ];
   }
 }
-

@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
+import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {MessageService} from '@services/core';
-import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
 import {CoreHttpService} from '@services/core';
 import {JobBoardHttpService, JobBoardService} from '@services/job-board';
 import {CatalogueModel} from '@models/core';
@@ -37,11 +37,11 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
     private coreHttpService: CoreHttpService,
     private jobBoardHttpService: JobBoardHttpService,
     private jobBoardService: JobBoardService
-    ) {
+  ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
-      {label: 'Idiomas', routerLink: ['/job-board/professional/language']},
+      {label: 'Idiomas', routerLink: ['/job-board/professional/language'], disabled: true},
       {label: 'Formulario', disabled: true},
     ]);
     this.form = this.newForm();
@@ -68,8 +68,8 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
     if (this.form.touched || this.form.dirty) {
       return await this.messageService.questionOnExit({})
         .then((result) => {
-        return result.isConfirmed;
-      });
+          return result.isConfirmed;
+        });
     }
     return true;
   }
@@ -84,61 +84,70 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
     });
   }
 
-  loadLanguage():void {
+  loadLanguage(): void {
     this.skeletonLoading = true;
     this.subscriptions.push(
       this.jobBoardHttpService
         .getLanguage(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
-      .subscribe(
-      response => {
-        this.form.patchValue(response.data);
-        this.skeletonLoading = false;
-      }, error => {
-        this.skeletonLoading = false;
-        this.messageService.error(error);
-      }
-    ));
+        .subscribe(
+          response => {
+            this.form.patchValue(response.data);
+            this.skeletonLoading = false;
+          }, error => {
+            this.skeletonLoading = false;
+            this.messageService.error(error);
+          }
+        ));
   }
 
   loadIdioms() {
-    this.coreHttpService.getCatalogues('LANGUAGE_IDIOM').subscribe(
-      response => {
-        this.idioms = response.data;
-      }, error => {
-        this.messageService.error(error);
-      }
-    );
+    this.subscriptions.push(
+      this.coreHttpService.getCatalogues('LANGUAGE_IDIOM')
+        .subscribe(
+          response => {
+            this.idioms = response.data;
+          }, error => {
+            this.messageService.error(error);
+          }
+        ));
   }
 
   loadWrittenLevels() {
-    this.coreHttpService.getCatalogues('LANGUAGE_WRITTEN_LEVEL').subscribe(
-      response => {
-        this.writtenLevels = response.data;
-      }, error => {
-        this.messageService.error(error);
-      }
-    );
+    this.subscriptions.push(
+      this.coreHttpService.getCatalogues('LANGUAGE_WRITTEN_LEVEL')
+        .subscribe(
+          response => {
+            this.writtenLevels = response.data;
+          }, error => {
+            this.messageService.error(error);
+          }
+        ));
   }
 
   loadSpokenLevels() {
-    this.coreHttpService.getCatalogues('LANGUAGE_SPOKEN_LEVEL').subscribe(
-      response => {
-        this.spokenLevels = response.data;
-      }, error => {
-        this.messageService.error(error);
-      }
-    );
+    this.subscriptions.push(
+      this.coreHttpService.getCatalogues('LANGUAGE_SPOKEN_LEVEL')
+        .subscribe(
+          response => {
+            this.spokenLevels = response.data;
+          }, error => {
+            this.messageService.error(error);
+          }
+        ));
   }
 
   loadReadLevels() {
-    this.coreHttpService.getCatalogues('LANGUAGE_READ_LEVEL').subscribe(
-      response => {
-        this.readLevels = response.data;
-      }, error => {
-        this.messageService.error(error);
-      }
-    );
+    this.subscriptions.push(
+      this.coreHttpService.getCatalogues('LANGUAGE_READ_LEVEL')
+        .subscribe(
+          response => {
+            this.readLevels = response.data;
+          }, error => {
+            this.messageService.error(error);
+          }
+        ));
   }
+
   onSubmit() {
     if (this.form.valid) {
       if (this.idField.value) {
@@ -153,34 +162,46 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
 
   store(language: LanguageModel): void {
     this.progressBar = true;
-    this.jobBoardHttpService.storeLanguage(language, this.jobBoardService.professional.id!).subscribe(
-      response => {
-        this.messageService.success(response);
-        this.progressBar = false;
-        this.form.reset();
-        this.router.navigate(['/job-board/professional/language']);
-      },
-      error => {
-        this.messageService.error(error);
-        this.progressBar = false;
-      }
-    );
+    this.subscriptions.push(
+      this.jobBoardHttpService.storeLanguage(language, this.jobBoardService.professional.id!)
+        .subscribe(
+          response => {
+            this.messageService.success(response);
+            this.progressBar = false;
+            this.form.reset();
+            this.returnList();
+          },
+          error => {
+            this.messageService.error(error);
+            this.progressBar = false;
+          }
+        ));
   }
 
   update(language: LanguageModel): void {
     this.progressBar = true;
-    this.jobBoardHttpService.updateLanguage(language.id!, language, this.jobBoardService.professional.id!).subscribe(
-      response => {
-        this.messageService.success(response);
-        this.form.reset();
-        this.progressBar = false;
-        this.router.navigate(['/job-board/professional/language']);
-      },
-      error => {
-        this.messageService.error(error);
-        this.progressBar = false;
-      }
-    );
+    this.subscriptions.push(
+      this.jobBoardHttpService.updateLanguage(language.id!, language, this.jobBoardService.professional.id!)
+        .subscribe(
+          response => {
+            this.messageService.success(response);
+            this.form.reset();
+            this.progressBar = false;
+            this.returnList();
+          },
+          error => {
+            this.messageService.error(error);
+            this.progressBar = false;
+          }
+        ));
+  }
+
+  isRequired(field: AbstractControl): boolean {
+    return field.hasValidator(Validators.required);
+  }
+
+  returnList() {
+    this.router.navigate(['/job-board/professional', 6]);
   }
 
   get idField() {

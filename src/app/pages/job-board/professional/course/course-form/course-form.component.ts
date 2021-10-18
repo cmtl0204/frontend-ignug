@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
@@ -26,21 +26,22 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
   types: CatalogueModel[] = [];
   certificationTypes: CatalogueModel[] = [];
   areas: CatalogueModel[] = [];
+  yearRange: string = `1900:${(new Date()).getFullYear()}`
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private breadcrumbService: BreadcrumbService,
+    public messageService: MessageService,
     private coreHttpService: CoreHttpService,
     private jobBoardHttpService: JobBoardHttpService,
-    private jobBoardService: JobBoardService,
-    public messageService: MessageService
-    ) {
+    private jobBoardService: JobBoardService
+  ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
-      {label: 'Cursos y Capacitaciones', routerLink: ['/job-board/professional/course']},
+      {label: 'Cursos y Capacitaciones', routerLink: ['/job-board/professional/course'], disabled: true},
       {label: 'Formulario', disabled: true},
     ]);
     this.form = this.newForm();
@@ -63,30 +64,12 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
 
   async onExit() {
     if (this.form.touched || this.form.dirty) {
-      return await this.messageService.questionOnExit({}).then((result) => {
-        return result.isConfirmed;
-      });
+      return await this.messageService.questionOnExit({})
+        .then((result) => {
+          return result.isConfirmed;
+        });
     }
     return true;
-  }
-
-  loadCourse() {
-    this.skeletonLoading = true;
-    this.subscriptions.push(
-      this.jobBoardHttpService
-          .getCourse(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
-        .subscribe(
-      response => {
-        // response.data.startedAt.setDate(response.data.startedAt.getDate() + 1);
-        // response.data.EndedAt.setDate(response.data.EndedAt.getDate() + 1);
-        this.form.patchValue(response.data);
-
-        this.skeletonLoading = false;
-      }, error => {
-        this.skeletonLoading = false;
-        this.messageService.error(error);
-      }
-    ));
   }
 
   newForm(): FormGroup {
@@ -104,35 +87,56 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
     });
   }
 
+  loadCourse() {
+    this.skeletonLoading = true;
+    this.subscriptions.push(
+      this.jobBoardHttpService
+        .getCourse(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
+        .subscribe(
+          response => {
+            this.form.patchValue(response.data);
+            this.skeletonLoading = false;
+          }, error => {
+            this.skeletonLoading = false;
+            this.messageService.error(error);
+          }
+        ));
+  }
+
   loadAreas() {
-    this.coreHttpService.getCatalogues('COURSE_AREA')
-      .subscribe(
-      response => {
-        this.areas = response.data;
-      }, error => {
-        this.messageService.error(error);
-      }
-    );
+    this.subscriptions.push(
+      this.coreHttpService.getCatalogues('COURSE_AREA')
+        .subscribe(
+          response => {
+            this.areas = response.data;
+          }, error => {
+            this.messageService.error(error);
+          }
+        ));
   }
 
   loadCertificationTypes() {
-    this.coreHttpService.getCatalogues('COURSE_CERTIFICATION_TYPE').subscribe(
-      response => {
-        this.certificationTypes = response.data;
-      }, error => {
-        this.messageService.error(error);
-      }
-    );
+    this.subscriptions.push(
+      this.coreHttpService.getCatalogues('COURSE_CERTIFICATION_TYPE')
+        .subscribe(
+          response => {
+            this.certificationTypes = response.data;
+          }, error => {
+            this.messageService.error(error);
+          }
+        ));
   }
 
   loadTypes() {
-    this.coreHttpService.getCatalogues('COURSE_EVENT_TYPE').subscribe(
-      response => {
-        this.types = response.data;
-      }, error => {
-        this.messageService.error(error);
-      }
-    );
+    this.subscriptions.push(
+      this.coreHttpService.getCatalogues('COURSE_EVENT_TYPE')
+        .subscribe(
+          response => {
+            this.types = response.data;
+          }, error => {
+            this.messageService.error(error);
+          }
+        ));
   }
 
   onSubmit() {
@@ -149,36 +153,45 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
 
   store(course: CourseModel): void {
     this.progressBar = true;
-    this.jobBoardHttpService.storeCourse(course, this.jobBoardService.professional.id!).subscribe(
-      response => {
-        this.messageService.success(response);
-        this.form.reset();
-
-        this.progressBar = false;
-        this.router.navigate(['/job-board/professional/course']);
-      },
-      error => {
-        this.messageService.error(error);
-        this.progressBar = false;
-      }
-    );
+    this.subscriptions.push(
+      this.jobBoardHttpService.storeCourse(course, this.jobBoardService.professional.id!)
+        .subscribe(
+          response => {
+            this.messageService.success(response);
+            this.form.reset();
+            this.progressBar = false;
+            this.returnList();
+          },
+          error => {
+            this.messageService.error(error);
+            this.progressBar = false;
+          }
+        ));
   }
 
   update(course: CourseModel): void {
     this.progressBar = true;
-    this.jobBoardHttpService.updateCourse(course.id!, course, this.jobBoardService.professional.id!).subscribe(
-      response => {
-        this.messageService.success(response);
-        this.form.reset();
+    this.subscriptions.push(
+      this.jobBoardHttpService.updateCourse(course.id!, course, this.jobBoardService.professional.id!).subscribe(
+        response => {
+          this.messageService.success(response);
+          this.form.reset();
+          this.progressBar = false;
+          this.returnList();
+        },
+        error => {
+          this.messageService.error(error);
+          this.progressBar = false;
+        }
+      ));
+  }
 
-        this.progressBar = false;
-        this.router.navigate(['/job-board/professional/course']);
-      },
-      error => {
-        this.messageService.error(error);
-        this.progressBar = false;
-      }
-    );
+  isRequired(field: AbstractControl): boolean {
+    return field.hasValidator(Validators.required);
+  }
+
+  returnList() {
+    this.router.navigate(['/job-board/professional', 1]);
   }
 
   get idField() {

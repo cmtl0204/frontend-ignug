@@ -4,20 +4,23 @@
       <h3 class="ml-2">{{title}}</h3>
     </div>
     <div class="p-toolbar-group-right">
-      <i class="pi pi-times p-button p-button-text" [routerLink]="['/job-board/professional/experience']"
-         style="font-size: 2rem; color: #fff"></i>
+      <app-progress-bar *ngIf="progressBar" [message]="messageService.progressBarSaveOrUpdate"></app-progress-bar>
+      <i *ngIf="form.touched || form.dirty" class="pi pi-check p-button p-button-text" (click)="onSubmit()"
+         style="font-size: 2rem; color: #fff" [pTooltip]="messageService.buttonFormSaveOrUpdate"></i>
+      <i class="pi pi-times p-button p-button-text" (click)="returnList()"
+         style="font-size: 2rem; color: #fff" [pTooltip]="messageService.buttonFormSaveOrUpdate"></i>
     </div>
   </p-toolbar>
 </div>
 <div class="container">
   <app-skeleton *ngIf="skeletonLoading" [type]="'card'"></app-skeleton>
   <p-card>
-    <div class="p-fluid" *ngIf="!skeletonLoading">
+    <div *ngIf="!skeletonLoading" class="p-fluid">
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="formgrid grid">
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-            <label for="area" appLabel label="Area de Estudios:"
-                   [required]="true"
+            <label for="area" appLabel label="Area de estudios:"
+                   [required]="isRequired(areaField)"
                    [valid]="areaField.valid"
                    [touched]="areaField.touched"
                    [dirty]="areaField.dirty">
@@ -46,10 +49,12 @@
             </small>
           </div>
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-            <label for="employer" appLabel [required]="true" label="Nombre de empleador/a:"
+            <label for="employer" appLabel label="Nombre del empleador o empresa:"
+                   [required]="isRequired(employerField)"
                    [valid]="employerField.valid"
-                   [touched]="employerField.touched" [dirty]="employerField.dirty"></label>
-            <input pInputText id="employer" formControlName="employer">
+                   [touched]="employerField.touched"
+                   [dirty]="employerField.dirty"></label>
+            <input pInputText id="employer" formControlName="employer" class="text-uppercase">
             <small appErrorMessage
                    [errors]="employerField.errors"
                    [touched]="employerField.touched"
@@ -58,13 +63,13 @@
           </div>
         </div>
         <div class="field">
-          <label for="position" appLabel label="Cargo laboral"
-                 [required]="true"
+          <label for="position" appLabel label="Cargo:"
+                 [required]="isRequired(positionField)"
                  [valid]="positionField.valid"
                  [touched]="positionField.touched"
                  [dirty]="positionField.dirty">
           </label>
-          <input pInputText id="position" formControlName="position">
+          <input pInputText id="position" formControlName="position" class="text-uppercase">
           <small appErrorMessage
                  [errors]="positionField.errors"
                  [touched]="positionField.touched"
@@ -73,8 +78,8 @@
         </div>
         <div class="formgrid grid">
           <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
-            <label appLabel label="Actividades:"
-                   [required]="true"
+            <label appLabel label="Actividades realizadas:"
+                   [required]="isRequired(activitiesField)"
                    [valid]="activitiesField.valid"
                    [touched]="activitiesField.touched"
                    [dirty]="activitiesField.dirty">
@@ -89,11 +94,15 @@
         <div formArrayName="activities">
           <div *ngFor="let activity of activitiesField.controls; let i = index;">
             <div class="formgrid grid">
-              <div class="field xl:col-1 lg:col-1 md:col-12 sm:col-12">
-                <label [for]="'activity'+i">Actividad {{i+1}}:</label>
+              <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
+                <label [for]="'activity'+i" appLabel [label]="'Actividad ' + (i + 1) + ':'"
+                       [required]="isRequired(activitiesField.controls[i])"
+                       [valid]="activitiesField.controls[i].valid"
+                       [touched]="activitiesField.controls[i].touched"
+                       [dirty]="activitiesField.controls[i].dirty"></label>
               </div>
-              <div class="field xl:col-10 lg:col-10 md:col-12 sm:col-12">
-                <input pInputText [id]="'activity'+i" [formControlName]="i">
+              <div class="field xl:col-9 lg:col-9 md:col-12 sm:col-12">
+                <input pInputText [id]="'activity'+i" [formControlName]="i" class="text-uppercase">
                 <small appErrorMessage
                        [errors]="activitiesField.controls[i].errors"
                        [touched]="activitiesField.controls[i].touched"
@@ -108,35 +117,25 @@
           </div>
         </div>
         <div class="field">
-          <label for="worked" appLabel label="Trabajó:"
+          <label for="worked" appLabel label="¿Ya no trabaja actualmente?"
+                 [required]="isRequired(workedField)"
                  [valid]="workedField.valid"
                  [touched]="workedField.touched"
                  [dirty]="workedField.dirty">
           </label>
-          <p-inputSwitch id="worked" formControlName="worked"></p-inputSwitch>
+          <p>
+            <p-inputSwitch id="worked" formControlName="worked"></p-inputSwitch>
+          </p>
           <small appErrorMessage
                  [errors]="workedField.errors"
                  [touched]="workedField.touched"
                  [dirty]="workedField.dirty">
           </small>
         </div>
-        <div class="field">
-          <label for="reasonLeave" appLabel label="Razon por la que se fue del trabajo:"
-                 [valid]="reasonLeaveField.valid"
-                 [touched]="reasonLeaveField.touched"
-                 [dirty]="reasonLeaveField.dirty">
-          </label>
-          <input pInputText id="reasonLeave" formControlName="reasonLeave">
-          <small appErrorMessage
-                 [errors]="reasonLeaveField.errors"
-                 [touched]="reasonLeaveField.touched"
-                 [dirty]="reasonLeaveField.dirty">
-          </small>
-        </div>
         <div class="formgrid grid">
-          <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
-            <label for="startedAt" appLabel label="Fecha de Inicio:"
-                   [required]="true"
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <label for="startedAt" appLabel label="Fecha de inicio:"
+                   [required]="isRequired(startedAtField)"
                    [valid]="startedAtField.valid"
                    [touched]="startedAtField.touched"
                    [dirty]="startedAtField.dirty">
@@ -153,8 +152,9 @@
                    [dirty]="startedAtField.dirty">
             </small>
           </div>
-          <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
-            <label for="endedAt" appLabel label="Fecha de Fin:"
+          <div *ngIf="workedField.value" class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <label for="endedAt" appLabel label="Fecha de fin:"
+                   [required]="isRequired(endedAtField)"
                    [valid]="endedAtField.valid"
                    [touched]="endedAtField.touched"
                    [dirty]="endedAtField.dirty">
@@ -172,14 +172,27 @@
             </small>
           </div>
         </div>
+        <div *ngIf="workedField.value" class="field">
+          <label for="reasonLeave" appLabel label="Razón de la salida:"
+                 [required]="isRequired(reasonLeaveField)"
+                 [valid]="reasonLeaveField.valid"
+                 [touched]="reasonLeaveField.touched"
+                 [dirty]="reasonLeaveField.dirty">
+          </label>
+          <textarea pInputTextarea id="reasonLeave" formControlName="reasonLeave" class="text-uppercase"></textarea>
+          <small appErrorMessage
+                 [errors]="reasonLeaveField.errors"
+                 [touched]="reasonLeaveField.touched"
+                 [dirty]="reasonLeaveField.dirty">
+          </small>
+        </div>
         <p-divider></p-divider>
         <div class="formgrid grid">
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
             <button pButton pRipple [label]="buttonTitle" class="p-button-rounded" icon="pi pi-save"></button>
           </div>
-          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12" *ngIf="progressBar">
-            <p-progressBar mode="indeterminate"></p-progressBar>
-            <small>Procesando...</small>
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <app-progress-bar *ngIf="progressBar" [message]="messageService.progressBarSaveOrUpdate"></app-progress-bar>
           </div>
         </div>
       </form>

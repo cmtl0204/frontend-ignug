@@ -1,17 +1,19 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PrimeIcons} from 'primeng/api';
 import {AuthHttpService, AuthService, MessageService} from '@services/core';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.scss']
 })
+
 export class LoginComponent implements OnInit {
   formLogin: FormGroup;
   primeIcons = PrimeIcons;
+  progressBar: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
               private authHttpService: AuthHttpService,
@@ -33,6 +35,36 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  isRequired(field: AbstractControl): boolean {
+    return field.hasValidator(Validators.required);
+  }
+
+  onSubmit() {
+    if (this.formLogin.valid) {
+      this.login();
+    } else {
+      this.formLogin.markAllAsTouched();
+    }
+  }
+
+  login() {
+    this.progressBar = true;
+    this.authHttpService.login(this.formLogin.value)
+      .subscribe(
+        response => {
+          this.messageService.success(response);
+          this.progressBar=false;
+          this.redirect();
+        }, error => {
+          this.messageService.error(error);
+          this.progressBar=false;
+        });
+  }
+
+  redirect() {
+    this.router.navigate(['/job-board/professional']);
+  }
+
   get usernameField() {
     return this.formLogin.controls['username'];
   }
@@ -45,26 +77,4 @@ export class LoginComponent implements OnInit {
     return this.formLogin.controls['deviceName'];
   }
 
-  onSubmit() {
-    console.log(this.formLogin);
-    if (this.formLogin.valid) {
-      this.login();
-    } else {
-      this.formLogin.markAllAsTouched();
-    }
-  }
-
-  login() {
-    this.authHttpService.login(this.formLogin.value).subscribe(
-      response => {
-        this.messageService.success(response);
-        this.redirect();
-      }, error => {
-        this.messageService.error(error);
-      });
-  }
-
-  redirect() {
-    this.router.navigate(['/user-administration']);
-  }
 }

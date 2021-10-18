@@ -1,17 +1,18 @@
 import {Component, OnInit} from '@angular/core';
-import {Subscription} from "rxjs";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {CategoryModel, ProfessionalModel} from "@models/job-board";
 import {ActivatedRoute, Router} from "@angular/router";
+import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Subscription} from "rxjs";
 import {BreadcrumbService} from "@services/core/breadcrumb.service";
 import {CoreHttpService, MessageService} from "@services/core";
 import {JobBoardHttpService, JobBoardService} from "@services/job-board";
+import {CategoryModel, ProfessionalModel} from "@models/job-board";
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
+
 export class ProfileComponent implements OnInit {
   private subscriptions: Subscription[] = [];
   form: FormGroup;
@@ -19,7 +20,7 @@ export class ProfileComponent implements OnInit {
   skeletonLoading: boolean = false;
   title: string = 'Crear';
   buttonTitle: string = 'Crear';
-
+  yearRange: string = `1900:${(new Date()).getFullYear()}`;
   identificationTypes: CategoryModel[] = [];
   sexes: CategoryModel[] = [];
   genders: CategoryModel[] = [];
@@ -42,11 +43,14 @@ export class ProfileComponent implements OnInit {
       {label: 'Formulario', disabled: true},
     ]);
     this.form = this.newForm();
+    this.familiarDisabledField.valueChanges.subscribe(value => {
+      this.verifyFamiliarDisabledValidators();
+    });
   }
 
   ngOnInit(): void {
-    this.title = 'Actualizar';
-    this.buttonTitle = 'Actualizar';
+    this.title = 'Actualizar Perfil';
+    this.buttonTitle = 'Actualizar Perfil';
     this.loadProfile();
 
     this.loadIdentificationTypes();
@@ -85,12 +89,12 @@ export class ProfileComponent implements OnInit {
         lastname: [null, [Validators.required]],
         birthdate: [null, [Validators.required]],
         email: [null, [Validators.required, Validators.email]],
-        phone: [null]
+        phone: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]]
       }),
       traveled: [null, [Validators.required]],
       disabled: [null, [Validators.required]],
       familiarDisabled: [null, [Validators.required]],
-      identificationFamiliarDisabled: [null, [Validators.required]],
+      identificationFamiliarDisabled: [null],
       catastrophicDiseased: [null, [Validators.required]],
       familiarCatastrophicDiseased: [null, [Validators.required]],
       aboutMe: [null, [Validators.required, Validators.minLength(100), Validators.maxLength(300)]],
@@ -114,58 +118,63 @@ export class ProfileComponent implements OnInit {
   }
 
   loadIdentificationTypes() {
-    this.coreHttpService.getCatalogues('IDENTIFICATION_TYPE')
-      .subscribe(
-        response => {
-          this.identificationTypes = response.data;
-        }, error => {
-          this.messageService.error(error);
-        }
-      );
+    this.subscriptions.push(
+      this.coreHttpService.getCatalogues('IDENTIFICATION_TYPE')
+        .subscribe(
+          response => {
+            this.identificationTypes = response.data;
+          }, error => {
+            this.messageService.error(error);
+          }
+        ));
   }
 
   loadSexes() {
-    this.coreHttpService.getCatalogues('SEX_TYPE')
-      .subscribe(
-        response => {
-          this.sexes = response.data;
-        }, error => {
-          this.messageService.error(error);
-        }
-      );
+    this.subscriptions.push(
+      this.coreHttpService.getCatalogues('SEX_TYPE')
+        .subscribe(
+          response => {
+            this.sexes = response.data;
+          }, error => {
+            this.messageService.error(error);
+          }
+        ));
   }
 
   loadGenders() {
-    this.coreHttpService.getCatalogues('GENDER_TYPE')
-      .subscribe(
-        response => {
-          this.genders = response.data;
-        }, error => {
-          this.messageService.error(error);
-        }
-      );
+    this.subscriptions.push(
+      this.coreHttpService.getCatalogues('GENDER_TYPE')
+        .subscribe(
+          response => {
+            this.genders = response.data;
+          }, error => {
+            this.messageService.error(error);
+          }
+        ));
   }
 
   loadBloodTypes() {
-    this.coreHttpService.getCatalogues('BLOOD_TYPE')
-      .subscribe(
-        response => {
-          this.bloodTypes = response.data;
-        }, error => {
-          this.messageService.error(error);
-        }
-      );
+    this.subscriptions.push(
+      this.coreHttpService.getCatalogues('BLOOD_TYPE')
+        .subscribe(
+          response => {
+            this.bloodTypes = response.data;
+          }, error => {
+            this.messageService.error(error);
+          }
+        ));
   }
 
   loadEthnicOrigins() {
-    this.coreHttpService.getCatalogues('ETHNIC_ORIGIN_TYPE')
-      .subscribe(
-        response => {
-          this.ethnicOrigins = response.data;
-        }, error => {
-          this.messageService.error(error);
-        }
-      );
+    this.subscriptions.push(
+      this.coreHttpService.getCatalogues('ETHNIC_ORIGIN_TYPE')
+        .subscribe(
+          response => {
+            this.ethnicOrigins = response.data;
+          }, error => {
+            this.messageService.error(error);
+          }
+        ));
   }
 
   onSubmit(): void {
@@ -178,17 +187,35 @@ export class ProfileComponent implements OnInit {
 
   update(professional: ProfessionalModel): void {
     this.progressBar = true;
-    this.jobBoardHttpService.updateProfile(professional.id!, professional).subscribe(
-      response => {
-        this.messageService.success(response);
-        this.form.reset();
-        this.progressBar = false;
-      },
-      error => {
-        this.messageService.error(error);
-        this.progressBar = false;
-      }
-    );
+    this.subscriptions.push(
+      this.jobBoardHttpService.updateProfile(professional.id!, professional)
+        .subscribe(
+          response => {
+            this.messageService.success(response);
+            this.form.patchValue(response.data);
+            this.progressBar = false;
+          },
+          error => {
+            this.messageService.error(error);
+            this.progressBar = false;
+          }
+        ));
+  }
+
+  isRequired(field: AbstractControl): boolean {
+    return field.hasValidator(Validators.required);
+  }
+
+  verifyFamiliarDisabledValidators() {
+    if (this.familiarDisabledField.value) {
+      this.identificationFamiliarDisabledField.setValidators([Validators.required]);
+      this.identificationFamiliarDisabledField.enable();
+    } else {
+      this.identificationFamiliarDisabledField.clearValidators();
+      this.identificationFamiliarDisabledField.setValue(null);
+      this.identificationFamiliarDisabledField.disable();
+    }
+    this.identificationFamiliarDisabledField.updateValueAndValidity();
   }
 
   get idField() {
@@ -245,6 +272,10 @@ export class ProfileComponent implements OnInit {
 
   get disabledField() {
     return this.form.controls['disabled'];
+  }
+
+  get familiarDisabledField() {
+    return this.form.controls['familiarDisabled'];
   }
 
   get identificationFamiliarDisabledField() {

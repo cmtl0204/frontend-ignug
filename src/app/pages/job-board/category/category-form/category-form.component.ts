@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
+import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {MessageService} from '@services/core';
-import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
 import {JobBoardHttpService} from '@services/job-board';
 import {CategoryModel} from '@models/job-board';
 
@@ -13,8 +13,8 @@ import {CategoryModel} from '@models/job-board';
   templateUrl: './category-form.component.html',
   styleUrls: ['./category-form.component.scss']
 })
-export class CategoryFormComponent implements OnInit, OnDestroy, OnExitInterface {
 
+export class CategoryFormComponent implements OnInit, OnDestroy, OnExitInterface {
   private subscriptions: Subscription[] = [];
   form: FormGroup;
   progressBar: boolean = false;
@@ -56,51 +56,51 @@ export class CategoryFormComponent implements OnInit, OnDestroy, OnExitInterface
     if (this.form.touched || this.form.dirty) {
       return await this.messageService.questionOnExit({})
         .then((result) => {
-        return result.isConfirmed;
-      });
+          return result.isConfirmed;
+        });
     }
     return true;
-  }
-
-  loadCategory():void {
-    this.skeletonLoading = true;
-    this.subscriptions.push(
-      this.jobBoardHttpService
-        .getCategory(this.activatedRoute.snapshot.params.id)
-      .subscribe(
-      response => {
-        this.form.patchValue(response.data);
-        this.skeletonLoading = false;
-      }, error => {
-        this.skeletonLoading = false;
-        this.messageService.error(error);
-      }
-    ));
   }
 
   newForm(): FormGroup {
     return this.formBuilder.group({
       id: [null],
-      parent: [null,[Validators.required] ],
-      name: [null, [Validators.required] ],
+      parent: [null, [Validators.required]],
+      name: [null, [Validators.required]],
       code: [null],
       icon: [null],
     });
   }
 
-  // ForeignKeys
-  loadAreas() {
-    this.jobBoardHttpService.getAreas()
-      .subscribe(
-      response => {
-        this.areas = response.data;
-      }, error => {
-        this.messageService.error(error);
-      }
-    );
+  loadCategory(): void {
+    this.skeletonLoading = true;
+    this.subscriptions.push(
+      this.jobBoardHttpService
+        .getCategory(this.activatedRoute.snapshot.params.id)
+        .subscribe(
+          response => {
+            this.form.patchValue(response.data);
+            this.skeletonLoading = false;
+          }, error => {
+            this.skeletonLoading = false;
+            this.messageService.error(error);
+          }
+        ));
   }
 
-  onSubmit():void {
+  loadAreas() {
+    this.subscriptions.push(
+      this.jobBoardHttpService.getAreas()
+        .subscribe(
+          response => {
+            this.areas = response.data;
+          }, error => {
+            this.messageService.error(error);
+          }
+        ));
+  }
+
+  onSubmit(): void {
     if (this.form.valid) {
       if (this.idField.value) {
         this.update(this.form.value);
@@ -114,35 +114,42 @@ export class CategoryFormComponent implements OnInit, OnDestroy, OnExitInterface
 
   store(category: CategoryModel): void {
     this.progressBar = true;
-    this.jobBoardHttpService.storeProfessionalDegree(category).subscribe(
-      response => {
-        this.messageService.success(response);
-        this.form.reset();
-        this.progressBar = false;
-        this.router.navigate(['/job-board/category']);
-      },
-      error => {
-        this.messageService.error(error);
-        this.progressBar = false;
-      }
-    );
+    this.subscriptions.push(
+      this.jobBoardHttpService.storeProfessionalDegree(category)
+        .subscribe(
+          response => {
+            this.messageService.success(response);
+            this.form.reset();
+            this.progressBar = false;
+            this.router.navigate(['/job-board/category']);
+          },
+          error => {
+            this.messageService.error(error);
+            this.progressBar = false;
+          }
+        ));
   }
 
   update(category: CategoryModel): void {
     this.progressBar = true;
-    this.jobBoardHttpService.updateProfessionalDegree(category.id!, category)
-      .subscribe(
-      response => {
-        this.messageService.success(response);
-        this.progressBar = false;
-        this.form.reset();
-        this.router.navigate(['/job-board/category']);
-      },
-      error => {
-        this.messageService.error(error);
-        this.progressBar = false;
-      }
-    );
+    this.subscriptions.push(
+      this.jobBoardHttpService.updateProfessionalDegree(category.id!, category)
+        .subscribe(
+          response => {
+            this.messageService.success(response);
+            this.progressBar = false;
+            this.form.reset();
+            this.router.navigate(['/job-board/category']);
+          },
+          error => {
+            this.messageService.error(error);
+            this.progressBar = false;
+          }
+        ));
+  }
+
+  isRequired(field: AbstractControl): boolean {
+    return field.hasValidator(Validators.required);
   }
 
   get idField() {

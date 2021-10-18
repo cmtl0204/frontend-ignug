@@ -1,16 +1,50 @@
-<form [formGroup]="formLogin" (ngSubmit)="onSubmit()">
-  <label for="username">Usuario:</label>
-  <input pInputText id="username" formControlName="username">
-  <div *ngIf="usernameField.invalid && (usernameField.touched || usernameField.dirty)">
-    falta el campo
-  </div>
-  <label for="password">Contraseña:</label>
-  <input pInputText id="password" formControlName="password">
-  <div *ngIf="passwordField.invalid && (passwordField.touched || passwordField.dirty)">
-    falta el campo
-  </div>
-  <div *ngIf="deviceNameField.invalid && (deviceNameField.touched || deviceNameField.dirty)">
-    falta el campo
-  </div>
-  <button pButton type="submit" id="btnSubmit" label="Ingresar" [icon]="primeIcons.ARROW_CIRCLE_RIGHT"></button>
-</form>
+<div class="container loginForm">
+  <p-card>
+    <div class="p-fluid">
+      <form [formGroup]="formLogin" (ngSubmit)="onSubmit()">
+        <div class="field text-center">
+          <h2>Bolsa de Empleo</h2>
+          <img src="assets/images/components/login/logo.png" alt="">
+        </div>
+        <div class="field">
+          <label for="username" appLabel label="Usuario:"
+                 [required]="isRequired(usernameField)"
+                 [valid]="usernameField.valid"
+                 [touched]="usernameField.touched"
+                 [dirty]="usernameField.dirty">
+          </label>
+          <input pInputText id="username" formControlName="username">
+          <small appErrorMessage
+                 [errors]="usernameField.errors"
+                 [touched]="usernameField.touched"
+                 [dirty]="usernameField.dirty">
+          </small>
+        </div>
+        <div class="field">
+          <label for="password" appLabel label="Contraseña:"
+                 [required]="isRequired(passwordField)"
+                 [valid]="passwordField.valid"
+                 [touched]="passwordField.touched"
+                 [dirty]="passwordField.dirty">
+          </label>
+          <p-password id="password" formControlName="password" [feedback]="false" [toggleMask]="true"></p-password>
+
+          <small appErrorMessage
+                 [errors]="passwordField.errors"
+                 [touched]="passwordField.touched"
+                 [dirty]="passwordField.dirty">
+          </small>
+        </div>
+
+        <p-divider></p-divider>
+
+        <div class="field">
+          <button pButton pRipple label="Ingresar" class="p-button-rounded" icon="pi pi-sign-in"></button>
+        </div>
+        <div *ngIf="progressBar" class="field">
+          <app-progress-bar [message]="messageService.progressBarLogin"></app-progress-bar>
+        </div>
+      </form>
+    </div>
+  </p-card>
+</div>

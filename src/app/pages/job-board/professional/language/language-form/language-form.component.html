@@ -4,8 +4,11 @@
       <h3 class="ml-2">{{title}}</h3>
     </div>
     <div class="p-toolbar-group-right">
-      <i class="pi pi-times p-button p-button-text" [routerLink]="['/job-board/professional/language']"
-         style="font-size: 2rem; color: #fff"></i>
+      <app-progress-bar *ngIf="progressBar" [message]="messageService.progressBarSaveOrUpdate"></app-progress-bar>
+      <i *ngIf="form.touched || form.dirty" class="pi pi-check p-button p-button-text" (click)="onSubmit()"
+         style="font-size: 2rem; color: #fff" [pTooltip]="messageService.buttonFormSaveOrUpdate"></i>
+      <i class="pi pi-times p-button p-button-text" (click)="returnList()"
+         style="font-size: 2rem; color: #fff" [pTooltip]="messageService.buttonFormClose"></i>
     </div>
   </p-toolbar>
 </div>
@@ -17,7 +20,7 @@
         <div class="formgrid grid">
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
             <label for="idiom" appLabel label="Idioma:"
-                   [required]="true"
+                   [required]="isRequired(idiomField)"
                    [valid]="idiomField.valid"
                    [touched]="idiomField.touched"
                    [dirty]="idiomField.dirty">
@@ -48,8 +51,8 @@
         </div>
         <div class="formgrid grid">
         <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
-          <label for="writtenLevel" appLabel label="Nivel Escrito:"
-                 [required]="true"
+          <label for="writtenLevel" appLabel label="Nivel escrito:"
+                 [required]="isRequired(writtenLevelField)"
                  [valid]="writtenLevelField.valid"
                  [touched]="writtenLevelField.touched"
                  [dirty]="writtenLevelField.dirty">
@@ -78,8 +81,8 @@
           </small>
         </div>
         <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
-          <label for="spokenLevel" appLabel label="Nivel Hablado:"
-                 [required]="true"
+          <label for="spokenLevel" appLabel label="Nivel hablado:"
+                 [required]="isRequired(spokenLevelField)"
                  [valid]="spokenLevelField.valid"
                  [touched]="spokenLevelField.touched"
                  [dirty]="spokenLevelField.dirty">
@@ -108,8 +111,8 @@
           </small>
         </div>
         <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
-          <label for="readLevel" appLabel label="Nivel Lectura:"
-                 [required]="true"
+          <label for="readLevel" appLabel label="Nivel lectura:"
+                 [required]="isRequired(readLevelField)"
                  [valid]="readLevelField.valid"
                  [touched]="readLevelField.touched"
                  [dirty]="readLevelField.dirty">
@@ -143,9 +146,8 @@
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
             <button pButton pRipple [label]="buttonTitle" class="p-button-rounded" icon="pi pi-save"></button>
           </div>
-          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12" *ngIf="progressBar">
-            <p-progressBar mode="indeterminate"></p-progressBar>
-            <small>Procesando...</small>
+          <div *ngIf="progressBar" class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <app-progress-bar [message]="messageService.progressBarSaveOrUpdate"></app-progress-bar>
           </div>
         </div>
       </form>

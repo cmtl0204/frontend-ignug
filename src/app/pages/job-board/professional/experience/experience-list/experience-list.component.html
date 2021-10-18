@@ -1,7 +1,7 @@
 <div class="container">
   <p-toolbar>
     <div class="p-toolbar-group-left">
-      <button pButton pRipple type="button" label="Crear experiencia"
+      <button pButton pRipple type="button" label="Crear Experiencia"
               class="p-button-success p-button-rounded" icon="pi pi-plus"
               (click)="createExperience()"></button>
       <button pButton pRipple type="button" label="Refrescar"
@@ -10,6 +10,7 @@
       <button *ngIf="selectedExperiences?.length" pButton pRipple type="button" label="Eliminar experiencias"
               class="p-button-danger p-button-rounded ml-2" icon="pi pi-trash"
               (click)="deleteExperiences()"></button>
+      <app-progress-bar *ngIf="progressBarDelete" [message]="messageService.progressBarDelete" class="ml-2"></app-progress-bar>
     </div>
     <div class="p-toolbar-group-right">
       <div class="p-inputgroup">
@@ -59,19 +60,28 @@
             <span *ngIf="rowData[col.field]?.id">
               {{rowData[col.field].name}}
             </span>
-            <span *ngIf="!rowData[col.field]?.id">
-              <span *ngIf="col.field=='updatedAt'">
-                {{rowData[col.field]|date}}
-              </span>
-              <span *ngIf="col.field!='updatedAt'">
-                {{rowData[col.field]}}
-              </span>
+            <span *ngIf="!rowData[col.field]?.id" [ngSwitch]="col.field">
+              <span *ngSwitchCase="'updatedAt'">{{rowData[col.field]|date}}</span>
+              <span *ngSwitchCase="'startedAt'">{{rowData[col.field]|date}}</span>
+              <span *ngSwitchCase="'endedAt'">{{rowData[col.field]|date}}</span>
+              <span *ngSwitchCase="'worked'">{{rowData[col.field]|worked}}</span>
+              <span *ngSwitchDefault>{{rowData[col.field]}}</span>
             </span>
           </td>
           <td style="text-align: center">
             <p-splitButton label="Más" styleClass="p-button-secondary"
                            (onDropdownClick)="selectExperience(rowData)"
                            [model]="items"></p-splitButton>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="summary">
+        {{messageService.paginatorTotalRegisters(paginator)}}
+      </ng-template>
+      <ng-template pTemplate="emptymessage" let-columns>
+        <tr>
+          <td [attr.colspan]="columns.length">
+            {{messageService.paginatorNoRecordsFound}}
           </td>
         </tr>
       </ng-template>

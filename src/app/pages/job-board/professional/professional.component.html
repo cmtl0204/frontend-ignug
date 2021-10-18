@@ -1,22 +1,16 @@
-<div class="container">
+<div class="container-fluid">
   <div class="row">
-    <div class="col-1">
-      <div *ngIf="showOptions">
-        <p-card *ngFor="let option of options" class="xl:col-3">
-          <img [src]="'assets/images/components/job-board/professional/'+option.img" alt="img" height="50px">
-        </p-card>
-      </div>
-    </div>
-    <div class="col-11">
-      <div *ngIf="!showOptions" class="row">
-        <p-card *ngFor="let option of options" class="col-3">
-          <img [src]="'assets/images/components/job-board/professional/'+option.img" alt="img" height="150px">
-          <p-divider></p-divider>
-          <h3>{{option.label}}</h3>
-          <p-divider></p-divider>
-          <button pButton pRipple label="Entrar" icon="pi pi-sign-in" class="align-content-center"
-                  (click)="enter(option.route)"></button>
-        </p-card>
+    <div class="col-12">
+      <p-steps [model]="items" [(activeIndex)]="activeIndex" [readonly]="false"></p-steps>
+
+      <div [ngSwitch]="activeIndex">
+        <app-profile *ngSwitchCase="0"></app-profile>
+        <app-course *ngSwitchCase="1"></app-course>
+        <app-academic-formation *ngSwitchCase="2"></app-academic-formation>
+        <app-experience *ngSwitchCase="3"></app-experience>
+        <app-reference *ngSwitchCase="4"></app-reference>
+        <app-skill *ngSwitchCase="5"></app-skill>
+        <app-language *ngSwitchCase="6"></app-language>
       </div>
     </div>
   </div>

@@ -18,16 +18,19 @@ export class LabelDirective implements OnInit {
   }
 
   @Input() set touched(value: boolean) {
+    // console.log('touched: ' + value);
     this._touched = value;
     this.setIcon();
   }
 
   @Input() set dirty(value: boolean) {
+    // console.log('dirty: ' + value);
     this._dirty = value;
     this.setIcon();
   }
 
   @Input() set valid(value: boolean) {
+    // console.log('valid: ' + value);
     this._valid = value;
     this.setIcon();
   }
@@ -48,7 +51,7 @@ export class LabelDirective implements OnInit {
   setFieldRequired() {
     this.nativeElement.innerText = this.label + ' ';
     const i = this.renderer.createElement('i');
-    i.innerText = ' (*) ';
+    i.innerText = ' * ';
     this.renderer.addClass(i, 'p-error');
     this.renderer.appendChild(this.nativeElement, i);
   }

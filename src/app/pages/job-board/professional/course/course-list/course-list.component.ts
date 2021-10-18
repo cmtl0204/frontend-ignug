@@ -1,13 +1,13 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
+import {FormControl} from '@angular/forms';
 import {MenuItem} from 'primeng/api';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
-import {JobBoardHttpService, JobBoardService} from '@services/job-board';
 import {MessageService} from '@services/core';
-import {CourseModel} from '@models/job-board';
+import {JobBoardHttpService, JobBoardService} from '@services/job-board';
 import {ColModel, PaginatorModel} from '@models/core';
-import {FormControl} from '@angular/forms';
+import {CourseModel} from '@models/job-board';
 
 @Component({
   selector: 'app-course-list',
@@ -25,6 +25,7 @@ export class CourseListComponent implements OnInit, OnDestroy {
   courses: CourseModel[] = [];
   selectedCourse: CourseModel = {};
   selectedCourses: CourseModel[] = [];
+  progressBarDelete: boolean = false;
 
   constructor(private router: Router,
               private breadcrumbService: BreadcrumbService,
@@ -88,13 +89,16 @@ export class CourseListComponent implements OnInit, OnDestroy {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
+          this.progressBarDelete = true;
           this.subscriptions.push(this.jobBoardHttpService.deleteCourse(course.id!, this.jobBoardService.professional?.id!).subscribe(
             response => {
               this.removeCourse(course);
               this.messageService.success(response);
+              this.progressBarDelete = false;
             },
             error => {
               this.messageService.error(error);
+              this.progressBarDelete = false;
             }
           ));
         }
@@ -105,28 +109,32 @@ export class CourseListComponent implements OnInit, OnDestroy {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
+          this.progressBarDelete = true;
           const ids = this.selectedCourses.map(element => element.id);
           this.subscriptions.push(this.jobBoardHttpService.deleteCourses(ids).subscribe(
             response => {
               this.removeCourses(ids!);
               this.messageService.success(response);
+              this.progressBarDelete = false;
             },
             error => {
               this.messageService.error(error);
+              this.progressBarDelete = false;
             }
           ));
         }
       });
-
   }
 
   removeCourse(course: CourseModel) {
     this.courses = this.courses.filter(element => element.id !== course.id);
+    this.paginator.total = this.paginator.total - 1;
   }
 
   removeCourses(ids: (number | undefined)[]) {
     for (const id of ids) {
       this.courses = this.courses.filter(element => element.id !== id);
+      this.paginator.total = this.paginator.total - 1;
     }
     this.selectedCourses = [];
   }
@@ -140,9 +148,10 @@ export class CourseListComponent implements OnInit, OnDestroy {
     this.cols = [
       {field: 'name', header: 'Evento'},
       {field: 'institution', header: 'Tipo de Evento'},
-      {field: 'hours', header: 'Horas'},
       {field: 'startedAt', header: 'Inicio'},
       {field: 'endedAt', header: 'Fin'},
+      {field: 'hours', header: 'Horas'},
+      {field: 'updatedAt', header: 'Última actualización'},
     ];
   }
 

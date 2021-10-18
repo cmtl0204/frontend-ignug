@@ -21,16 +21,16 @@ export class CategoryListComponent implements OnInit, OnDestroy {
   loading: boolean = false;
   paginator: PaginatorModel = {current_page: 1, per_page: 5, total: 0};
   filter: FormControl;
-
   categories: CategoryModel[] = [];
   selectedCategory: CategoryModel = {};
   selectedCategories: CategoryModel[] = [];
+  progressBarDelete: boolean = false;
 
   constructor(private router: Router,
               private breadcrumbService: BreadcrumbService,
               public messageService: MessageService,
               private jobBoardHttpService: JobBoardHttpService,
-              ) {
+  ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Títulos Profesionales', disabled: true},
@@ -96,13 +96,16 @@ export class CategoryListComponent implements OnInit, OnDestroy {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
+          this.progressBarDelete = true;
           this.subscriptions.push(this.jobBoardHttpService.deleteCategory(category.id!).subscribe(
             response => {
               this.removeCategory(category);
               this.messageService.success(response);
+              this.progressBarDelete = false;
             },
             error => {
               this.messageService.error(error);
+              this.progressBarDelete = false;
             }
           ));
         }
@@ -113,14 +116,17 @@ export class CategoryListComponent implements OnInit, OnDestroy {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
+          this.progressBarDelete = true;
           const ids = this.selectedCategories.map(element => element.id);
           this.subscriptions.push(this.jobBoardHttpService.deleteCategories(ids).subscribe(
             response => {
               this.removeCategories(ids!);
               this.messageService.success(response);
+              this.progressBarDelete = false;
             },
             error => {
               this.messageService.error(error);
+              this.progressBarDelete = false;
             }
           ));
         }
@@ -130,11 +136,13 @@ export class CategoryListComponent implements OnInit, OnDestroy {
 
   removeCategory(category: CategoryModel) {
     this.categories = this.categories.filter(element => element.id !== category.id);
+    this.paginator.total = this.paginator.total - 1;
   }
 
   removeCategories(ids: (number | undefined)[]) {
     for (const id of ids) {
       this.categories = this.categories.filter(element => element.id !== id);
+      this.paginator.total = this.paginator.total - 1;
     }
     this.selectedCategories = [];
   }
@@ -148,33 +156,28 @@ export class CategoryListComponent implements OnInit, OnDestroy {
     this.cols = [
       {field: 'parent', header: 'Área'},
       {field: 'name', header: 'Título'},
-      {field: 'updatedAt', header: 'Actualizado en'},
+      {field: 'updatedAt', header: 'Última actualización'},
     ];
 
   }
 
   setItems() {
-    let isArea = this.selectedCategory.parent ? false : true;
-    console.log(isArea);
     this.items = [
       {
         label: 'Modificar',
         icon: 'pi pi-pencil',
-        command: isArea
-        ? () => {
-          this.editArea(this.selectedCategory);
-        }
-        : () => {
-          this.editCategory(this.selectedCategory);
-        } 
+        command: this.selectedCategory.parent
+          ? () => {
+            this.editCategory(this.selectedCategory);
+          }
+          : () => {
+            this.editArea(this.selectedCategory);
+          }
       },
-      
       {
         label: 'Eliminar', icon: 'pi pi-trash', command: () => {
           this.deleteCategory(this.selectedCategory);
-        } 
-         
-        
+        }
       }
     ];
   }

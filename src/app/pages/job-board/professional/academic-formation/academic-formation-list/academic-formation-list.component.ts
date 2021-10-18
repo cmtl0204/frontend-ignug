@@ -22,10 +22,10 @@ export class AcademicFormationListComponent implements OnInit {
   loading: boolean = false;
   paginator: PaginatorModel = {current_page: 1, per_page: 5, total: 0};
   filter: FormControl;
-
   academicFormations: AcademicFormationModel[] = [];
   selectedAcademicFormation: AcademicFormationModel = {};
   selectedAcademicFormations: AcademicFormationModel[] = [];
+  progressBarDelete: boolean = false;
 
   constructor(private router: Router,
               private breadcrumbService: BreadcrumbService,
@@ -89,13 +89,16 @@ export class AcademicFormationListComponent implements OnInit {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
+          this.progressBarDelete = true;
           this.subscriptions.push(this.jobBoardHttpService.deleteAcademicFormation(academicFormation.id!, this.jobBoardService.professional?.id!).subscribe(
             response => {
               this.removeAcademicFormation(academicFormation);
               this.messageService.success(response);
+              this.progressBarDelete = false;
             },
             error => {
               this.messageService.error(error);
+              this.progressBarDelete = false;
             }
           ));
         }
@@ -106,14 +109,17 @@ export class AcademicFormationListComponent implements OnInit {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
+          this.progressBarDelete = true;
           const ids = this.selectedAcademicFormations.map(element => element.id);
           this.subscriptions.push(this.jobBoardHttpService.deleteAcademicFormations(ids).subscribe(
             response => {
               this.removeAcademicFormations(ids!);
               this.messageService.success(response);
+              this.progressBarDelete = false;
             },
             error => {
               this.messageService.error(error);
+              this.progressBarDelete = false;
             }
           ));
         }
@@ -123,11 +129,13 @@ export class AcademicFormationListComponent implements OnInit {
 
   removeAcademicFormation(academicFormation: AcademicFormationModel) {
     this.academicFormations = this.academicFormations.filter(element => element.id !== academicFormation.id);
+    this.paginator.total = this.paginator.total - 1;
   }
 
   removeAcademicFormations(ids: (number | undefined)[]) {
     for (const id of ids) {
       this.academicFormations = this.academicFormations.filter(element => element.id !== id);
+      this.paginator.total = this.paginator.total - 1;
     }
     this.selectedAcademicFormations = [];
   }
@@ -143,6 +151,7 @@ export class AcademicFormationListComponent implements OnInit {
       {field: 'registeredAt', header: 'Fecha de resgistro '},
       {field: 'senescytCode', header: 'Código de Senescyt'},
       {field: 'certificated', header: '¿Titulado?'},
+      {field: 'updatedAt', header: 'Última actualización'},
     ];
 
   }

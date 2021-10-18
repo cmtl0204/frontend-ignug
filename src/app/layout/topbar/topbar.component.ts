@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MenuItem} from 'primeng/api';
 import {MenuHttpService} from '@services/core/menu-http.service';
+import {AuthHttpService} from "@services/core";
 
 @Component({
   selector: 'app-topbar',
@@ -12,7 +13,7 @@ export class TopbarComponent implements OnInit {
   items: MenuItem[] = [];
   showNav: boolean = true;
 
-  constructor(private menuHttpService: MenuHttpService) {
+  constructor( private menuHttpService: MenuHttpService) {
   }
 
   ngOnInit(): void {
@@ -27,5 +28,9 @@ export class TopbarComponent implements OnInit {
         console.log(error);
       }
     )
+  }
+
+  logout() {
+    // this.authHttpService.logout();
   }
 }

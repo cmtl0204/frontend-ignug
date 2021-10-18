@@ -19,6 +19,7 @@ import {RippleModule} from "primeng/ripple";
 import {DividerModule} from "primeng/divider";
 import {ProgressBarModule} from "primeng/progressbar";
 import { AreaFormComponent } from './category/area-form/area-form.component';
+import {TooltipModule} from "primeng/tooltip";
 
 
 @NgModule({
@@ -29,23 +30,24 @@ import { AreaFormComponent } from './category/area-form/area-form.component';
     CategoryListComponent,
     AreaFormComponent
   ],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    FormsModule,
-    JobBoardRoutingModule,
-    SharedModule,
-    ToolbarModule,
-    CardModule,
-    PaginatorModule,
-    TableModule,
-    SplitButtonModule,
-    InputTextModule,
-    KeyFilterModule,
-    RippleModule,
-    DividerModule,
-    ProgressBarModule
-  ]
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        FormsModule,
+        JobBoardRoutingModule,
+        SharedModule,
+        ToolbarModule,
+        CardModule,
+        PaginatorModule,
+        TableModule,
+        SplitButtonModule,
+        InputTextModule,
+        KeyFilterModule,
+        RippleModule,
+        DividerModule,
+        ProgressBarModule,
+        TooltipModule
+    ]
 })
 export class JobBoardModule {
 }

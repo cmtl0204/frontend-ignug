@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
+import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {MessageService} from '@services/core';
-import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
 import {JobBoardHttpService, JobBoardService} from '@services/job-board';
 import {ReferenceModel} from '@models/job-board';
 
@@ -20,8 +20,8 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
   form: FormGroup;
   progressBar: boolean = false;
   skeletonLoading: boolean = false;
-  title: string = 'Crear referencia';
-  buttonTitle: string = 'Crear referencia';
+  title: string = 'Crear Referencia Profesional';
+  buttonTitle: string = 'Crear Referencia Profesional';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -35,7 +35,7 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
-      {label: 'Referencias Profesionales', routerLink: ['/job-board/professional/reference']},
+      {label: 'Referencias Profesionales', routerLink: ['/job-board/professional/reference'], disabled: true},
       {label: 'Formulario', disabled: true},
     ]);
     this.form = this.newForm();
@@ -43,8 +43,8 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
 
   ngOnInit(): void {
     if (this.activatedRoute.snapshot.params.id != 'new') {
-      this.title = 'Actualizar Referencia';
-      this.buttonTitle = 'Actualizar Referencia';
+      this.title = 'Actualizar Referencia Profesional';
+      this.buttonTitle = 'Actualizar Referencia Profesional';
       this.loadReference();
     }
   }
@@ -63,30 +63,31 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
     return true;
   }
 
-  loadReference() {
-    this.skeletonLoading = true;
-    this.subscriptions.push(this.jobBoardHttpService.getReference(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
-      .subscribe(
-        response => {
-          console.log(response.data);
-          this.form.patchValue(response.data);
-          this.skeletonLoading = false;
-        }, error => {
-          this.skeletonLoading = false;
-          this.messageService.error(error);
-        }
-      ));
-  }
-
   newForm(): FormGroup {
     return this.formBuilder.group({
       id: [null],
-      position: [null],
+      position: [null, [Validators.required]],
       contactName: [null, [Validators.required]],
       contactPhone: [null, [Validators.required]],
       contactEmail: [null, [Validators.required, Validators.email]],
       institution: [null, [Validators.required]],
     });
+  }
+
+  loadReference() {
+    this.skeletonLoading = true;
+    this.subscriptions.push(
+      this.jobBoardHttpService.getReference(
+        this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
+        .subscribe(
+          response => {
+            this.skeletonLoading = false;
+            this.form.patchValue(response.data);
+          }, error => {
+            this.skeletonLoading = false;
+            this.messageService.error(error);
+          }
+        ));
   }
 
   onSubmit(): void {
@@ -103,38 +104,46 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
 
   store(reference: ReferenceModel): void {
     this.progressBar = true;
-    this.jobBoardHttpService.storeReference(reference, this.jobBoardService.professional.id!)
-      .subscribe(
-        response => {
-          this.messageService.success(response);
-          this.progressBar = false;
-          this.form.reset();
-          this.router.navigate(['/job-board/professional/reference']);
-        },
-        error => {
-          this.messageService.error(error);
-          this.progressBar = false;
-        }
-      );
+    this.subscriptions.push(
+      this.jobBoardHttpService.storeReference(reference, this.jobBoardService.professional.id!)
+        .subscribe(
+          response => {
+            this.messageService.success(response);
+            this.progressBar = false;
+            this.form.reset();
+            this.returnList();
+          },
+          error => {
+            this.messageService.error(error);
+            this.progressBar = false;
+          }
+        ));
   }
 
   update(reference: ReferenceModel): void {
     this.progressBar = true;
-    this.jobBoardHttpService.updateReference(reference.id!, reference, this.jobBoardService.professional.id!)
-      .subscribe(
-        response => {
-          this.messageService.success(response);
-          this.progressBar = false;
-          this.form.reset();
-          this.router.navigate(['/job-board/professional/reference']);
-        },
-        error => {
-          this.messageService.error(error);
-          this.progressBar = false;
-        }
-      );
+    this.subscriptions.push(
+      this.jobBoardHttpService.updateReference(reference.id!, reference, this.jobBoardService.professional.id!)
+        .subscribe(
+          response => {
+            this.messageService.success(response);
+            this.progressBar = false;
+            this.form.reset();
+            this.returnList();
+          },
+          error => {
+            this.messageService.error(error);
+            this.progressBar = false;
+          }
+        ));
   }
 
+  isRequired(field: AbstractControl): boolean {
+    return field.hasValidator(Validators.required);
+  }
+  returnList() {
+    this.router.navigate(['/job-board/professional', 4]);
+  }
   get idField() {
     return this.form.controls['id'];
   }

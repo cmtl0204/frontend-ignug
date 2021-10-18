@@ -26,6 +26,14 @@ const routes: Routes = [
     // },
   },
   {
+    path: ':activeIndex',
+    component: ProfessionalComponent,
+    // canActivate: [RoleGuard],
+    // data: {
+    //   roles: [RolesEnum.ADMIN, RolesEnum.GUEST]
+    // },
+  },
+  {
     path: 'profile',
     component: ProfileComponent,
     canDeactivate: [ExitGuard]

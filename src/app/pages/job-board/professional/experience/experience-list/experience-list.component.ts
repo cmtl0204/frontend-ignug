@@ -1,13 +1,13 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
+import {FormControl} from '@angular/forms';
 import {MenuItem} from 'primeng/api';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
-import {JobBoardHttpService, JobBoardService} from '@services/job-board';
 import {MessageService} from '@services/core';
-import {ExperienceModel} from '@models/job-board';
+import {JobBoardHttpService, JobBoardService} from '@services/job-board';
 import {ColModel, PaginatorModel} from '@models/core';
-import {FormControl} from '@angular/forms';
+import {ExperienceModel} from '@models/job-board';
 
 
 @Component({
@@ -26,6 +26,7 @@ export class ExperienceListComponent implements OnInit, OnDestroy {
   experiences: ExperienceModel[] = [];
   selectedExperience: ExperienceModel = {};
   selectedExperiences: ExperienceModel[] = [];
+  progressBarDelete: boolean = false;
 
   constructor(private router: Router,
               private breadcrumbService: BreadcrumbService,
@@ -36,7 +37,7 @@ export class ExperienceListComponent implements OnInit, OnDestroy {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/job-board/professional']},
-      {label: 'Experiencia', disabled: true},
+      {label: 'Experiencias Profesionales', disabled: true},
     ]);
 
     this.filter = new FormControl('');
@@ -55,16 +56,17 @@ export class ExperienceListComponent implements OnInit, OnDestroy {
   loadExperiences() {
     this.loading = true;
     this.subscriptions.push(
-      this.jobBoardHttpService.getExperiences(this.jobBoardService.professional.id!, this.paginator, this.filter.value).subscribe(
-        response => {
-          this.loading = false;
-          this.experiences = response.data;
-          this.paginator = response.meta;
-        }, error => {
-          this.loading = false;
-          this.messageService.error(error);
-        }
-      ));
+      this.jobBoardHttpService.getExperiences(this.jobBoardService.professional.id!, this.paginator, this.filter.value)
+        .subscribe(
+          response => {
+            this.loading = false;
+            this.experiences = response.data;
+            this.paginator = response.meta;
+          }, error => {
+            this.loading = false;
+            this.messageService.error(error);
+          }
+        ));
   }
 
   filterExperiences(event: any) {
@@ -89,15 +91,20 @@ export class ExperienceListComponent implements OnInit, OnDestroy {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
-          this.subscriptions.push(this.jobBoardHttpService.deleteExperience(experience.id!, this.jobBoardService.professional?.id!).subscribe(
-            response => {
-              this.removeExperience(experience);
-              this.messageService.success(response);
-            },
-            error => {
-              this.messageService.error(error);
-            }
-          ));
+          this.progressBarDelete = true;
+          this.subscriptions.push(
+            this.jobBoardHttpService.deleteExperience(experience.id!, this.jobBoardService.professional?.id!)
+              .subscribe(
+                response => {
+                  this.removeExperience(experience);
+                  this.messageService.success(response);
+                  this.progressBarDelete = false;
+                },
+                error => {
+                  this.messageService.error(error);
+                  this.progressBarDelete = false;
+                }
+              ));
         }
       });
   }
@@ -106,28 +113,34 @@ export class ExperienceListComponent implements OnInit, OnDestroy {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
+          this.progressBarDelete = true;
           const ids = this.selectedExperiences.map(element => element.id);
-          this.subscriptions.push(this.jobBoardHttpService.deleteExperiences(ids).subscribe(
-            response => {
-              this.removeExperiences(ids!);
-              this.messageService.success(response);
-            },
-            error => {
-              this.messageService.error(error);
-            }
-          ));
+          this.subscriptions.push(
+            this.jobBoardHttpService.deleteExperiences(ids)
+              .subscribe(
+                response => {
+                  this.removeExperiences(ids!);
+                  this.messageService.success(response);
+                  this.progressBarDelete = false;
+                },
+                error => {
+                  this.messageService.error(error);
+                  this.progressBarDelete = false;
+                }
+              ));
         }
       });
-
   }
 
   removeExperience(experience: ExperienceModel) {
     this.experiences = this.experiences.filter(element => element.id !== experience.id);
+    this.paginator.total = this.paginator.total - 1;
   }
 
   removeExperiences(ids: (number | undefined)[]) {
     for (const id of ids) {
       this.experiences = this.experiences.filter(element => element.id !== id);
+      this.paginator.total = this.paginator.total - 1;
     }
     this.selectedExperiences = [];
   }
@@ -139,12 +152,12 @@ export class ExperienceListComponent implements OnInit, OnDestroy {
 
   setCols() {
     this.cols = [
-      {field: 'area', header: 'Área'},
+      {field: 'area', header: 'Área de estudios'},
       {field: 'position', header: 'Cargo'},
       {field: 'startedAt', header: 'Fecha de inicio'},
-      {field: 'endedAt', header: 'Fecha final'},
-      {field: 'worked', header: '¿Trabaja?'},
-      {field: 'updatedAt', header: 'Última de actualización'},
+      {field: 'endedAt', header: 'Fecha de fin'},
+      {field: 'worked', header: '¿Trabaja actualmente?'},
+      {field: 'updatedAt', header: 'Última actualización'},
     ];
   }
 

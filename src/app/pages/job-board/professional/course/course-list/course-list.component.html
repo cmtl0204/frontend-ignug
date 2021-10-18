@@ -10,6 +10,7 @@
       <button *ngIf="selectedCourses?.length" pButton pRipple type="button" label="Eliminar eventos"
               class="p-button-danger p-button-rounded ml-2" icon="pi pi-trash"
               (click)="deleteCourses()"></button>
+      <app-progress-bar *ngIf="progressBarDelete" [message]="messageService.progressBarDelete" class="ml-2"></app-progress-bar>
     </div>
     <div class="p-toolbar-group-right">
       <div class="p-inputgroup">
@@ -56,16 +57,29 @@
             {{rowIndex + 1}}
           </td>
           <td *ngFor="let col of columns">
-            <span *ngIf="rowData[col.field].id">
+           <span *ngIf="rowData[col.field]?.id">
               {{rowData[col.field].name}}
             </span>
-            <span *ngIf="!rowData[col.field].id">
-              {{rowData[col.field]}}
+            <span *ngIf="!rowData[col.field]?.id" [ngSwitch]="col.field">
+              <span *ngSwitchCase="'updatedAt'">{{rowData[col.field]|date}}</span>
+              <span *ngSwitchCase="'startedAt'">{{rowData[col.field]|date}}</span>
+              <span *ngSwitchCase="'endedAt'">{{rowData[col.field]|date}}</span>
+              <span *ngSwitchDefault>{{rowData[col.field]}}</span>
             </span>
           </td>
           <td style="text-align: center">
             <p-splitButton label="Más" styleClass="p-button-secondary" (onDropdownClick)="selectCourse(rowData)"
                            [model]="items"></p-splitButton>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="summary">
+        {{messageService.paginatorTotalRegisters(paginator)}}
+      </ng-template>
+      <ng-template pTemplate="emptymessage" let-columns>
+        <tr>
+          <td [attr.colspan]="columns.length">
+            {{messageService.paginatorNoRecordsFound}}
           </td>
         </tr>
       </ng-template>
