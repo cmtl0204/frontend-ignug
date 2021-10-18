@@ -7,7 +7,6 @@ import {LoginModel} from '@models/core';
 import {LoginResponse} from '@models/core/login.response';
 import {AuthService} from './auth.service';
 import {JobBoardService} from '@services/job-board/job-board.service';
-import {createWebpackLoggingCallback} from "@angular-devkit/build-angular/src/webpack/utils/stats";
 
 @Injectable({
   providedIn: 'root'
