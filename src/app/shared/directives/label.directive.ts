@@ -63,21 +63,21 @@ export class LabelDirective implements OnInit {
   setIcon() {
     if (this._valid != undefined) {
 
-      this.renderer.addClass(this.i, 'pi');
+      // this.renderer.addClass(this.i, 'pi');
 
       if (this._touched || this._dirty) {
         if (this._valid) {
-          this.renderer.removeClass(this.i, 'p-error');
-          this.renderer.removeClass(this.i, 'pi-times');
-          this.renderer.addClass(this.i, 'pi-check');
-          this.renderer.addClass(this.i, 'p-success');
+          // this.renderer.removeClass(this.i, 'p-error');
+          // this.renderer.removeClass(this.i, 'pi-times');
+          // this.renderer.addClass(this.i, 'pi-check');
+          // this.renderer.addClass(this.i, 'p-success');
         } else {
-          this.renderer.removeClass(this.i, 'p-success');
-          this.renderer.removeClass(this.i, 'pi-check');
-          this.renderer.addClass(this.i, 'pi-times');
-          this.renderer.addClass(this.i, 'p-error');
+          // this.renderer.removeClass(this.i, 'p-success');
+          // this.renderer.removeClass(this.i, 'pi-check');
+          // this.renderer.addClass(this.i, 'pi-times');
+          // this.renderer.addClass(this.i, 'p-error');
         }
-        this.renderer.appendChild(this.nativeElement, this.i);
+        // this.renderer.appendChild(this.nativeElement, this.i);
       }
     }
   }

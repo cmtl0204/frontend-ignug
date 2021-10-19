@@ -3,9 +3,10 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Subscription} from "rxjs";
 import {BreadcrumbService} from "@services/core/breadcrumb.service";
-import {CoreHttpService, MessageService} from "@services/core";
+import {CoreHttpService, CoreService, MessageService} from "@services/core";
 import {JobBoardHttpService, JobBoardService} from "@services/job-board";
 import {CategoryModel, ProfessionalModel} from "@models/job-board";
+import {IdentificationValidator} from "@shared/validators/identification-validator";
 
 @Component({
   selector: 'app-profile',
@@ -26,6 +27,7 @@ export class ProfileComponent implements OnInit {
   genders: CategoryModel[] = [];
   bloodTypes: CategoryModel[] = [];
   ethnicOrigins: CategoryModel[] = [];
+  regExpAlpha: RegExp;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -34,6 +36,7 @@ export class ProfileComponent implements OnInit {
     private breadcrumbService: BreadcrumbService,
     public messageService: MessageService,
     private coreHttpService: CoreHttpService,
+    private coreService: CoreService,
     private jobBoardHttpService: JobBoardHttpService,
     private jobBoardService: JobBoardService
   ) {
@@ -43,16 +46,22 @@ export class ProfileComponent implements OnInit {
       {label: 'Formulario', disabled: true},
     ]);
     this.form = this.newForm();
+
     this.familiarDisabledField.valueChanges.subscribe(value => {
       this.verifyFamiliarDisabledValidators();
     });
+
+    this.identificationTypeUserField.valueChanges.subscribe(value => {
+      this.verifyIdentificationTypeUserValidators();
+    });
+
+    this.regExpAlpha = coreService.alpha;
   }
 
   ngOnInit(): void {
     this.title = 'Actualizar Perfil';
     this.buttonTitle = 'Actualizar Perfil';
     this.loadProfile();
-
     this.loadIdentificationTypes();
     this.loadSexes();
     this.loadGenders();
@@ -80,11 +89,11 @@ export class ProfileComponent implements OnInit {
       user: this.formBuilder.group({
         id: [null],
         identificationType: [null, [Validators.required]],
+        username: [null, [Validators.required, Validators.minLength(9), Validators.maxLength(20)]],
         sex: [null, [Validators.required]],
         gender: [null, [Validators.required]],
         ethnicOrigin: [null, [Validators.required]],
         bloodType: [null, [Validators.required]],
-        username: [null, [Validators.required]],
         name: [null, [Validators.required]],
         lastname: [null, [Validators.required]],
         birthdate: [null, [Validators.required]],
@@ -119,7 +128,7 @@ export class ProfileComponent implements OnInit {
 
   loadIdentificationTypes() {
     this.subscriptions.push(
-      this.coreHttpService.getCatalogues('IDENTIFICATION_TYPE')
+      this.coreHttpService.getCatalogues('IDENTIFICATION_PROFESSIONAL_TYPE')
         .subscribe(
           response => {
             this.identificationTypes = response.data;
@@ -209,13 +218,20 @@ export class ProfileComponent implements OnInit {
   verifyFamiliarDisabledValidators() {
     if (this.familiarDisabledField.value) {
       this.identificationFamiliarDisabledField.setValidators([Validators.required]);
-      this.identificationFamiliarDisabledField.enable();
     } else {
       this.identificationFamiliarDisabledField.clearValidators();
       this.identificationFamiliarDisabledField.setValue(null);
-      this.identificationFamiliarDisabledField.disable();
     }
     this.identificationFamiliarDisabledField.updateValueAndValidity();
+  }
+
+  verifyIdentificationTypeUserValidators() {
+    if (this.identificationTypeUserField.value.code === 'CC') {
+      this.usernameUserField.setValidators([IdentificationValidator.valid]);
+    } else {
+      this.usernameUserField.clearValidators();
+    }
+    this.usernameUserField.updateValueAndValidity();
   }
 
   get idField() {
@@ -243,7 +259,7 @@ export class ProfileComponent implements OnInit {
   }
 
   get usernameUserField() {
-    return this.form.controls['user'].get('identificationType')!;
+    return this.form.controls['user'].get('username')!;
   }
 
   get nameUserField() {

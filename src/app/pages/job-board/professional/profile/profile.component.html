@@ -27,6 +27,7 @@
                      [dirty]="identificationTypeUserField.dirty">
               </label>
               <p-dropdown id="identificationTypeUser"
+                          dataKey="id"
                           [options]="identificationTypes"
                           formControlName="identificationType"
                           [filter]="true"
@@ -54,7 +55,7 @@
                      [required]="isRequired(usernameUserField)"
                      [valid]="usernameUserField.valid"
                      [touched]="usernameUserField.touched" [dirty]="usernameUserField.dirty"></label>
-              <input pInputText id="username" formControlName="username" pKeyFilter="pnum">
+              <input pInputText id="username" formControlName="username">
               <small appErrorMessage
                      [errors]="usernameUserField.errors"
                      [touched]="usernameUserField.touched"
@@ -68,7 +69,7 @@
                      [required]="isRequired(nameUserField)"
                      [valid]="nameUserField.valid"
                      [touched]="nameUserField.touched" [dirty]="nameUserField.dirty"></label>
-              <input pInputText id="name" formControlName="name" class="text-uppercase">
+              <input pInputText id="name" formControlName="name" class="text-uppercase" [pKeyFilter]="regExpAlpha">
               <small appErrorMessage
                      [errors]="nameUserField.errors"
                      [touched]="nameUserField.touched"
@@ -80,7 +81,8 @@
                      [required]="isRequired(lastnameUserField)"
                      [valid]="lastnameUserField.valid"
                      [touched]="lastnameUserField.touched" [dirty]="lastnameUserField.dirty"></label>
-              <input pInputText id="lastname" formControlName="lastname" class="text-uppercase">
+              <input pInputText id="lastname" formControlName="lastname" class="text-uppercase"
+                     [pKeyFilter]="regExpAlpha">
               <small appErrorMessage
                      [errors]="lastnameUserField.errors"
                      [touched]="lastnameUserField.touched"
@@ -178,7 +180,7 @@
           </div>
           <div class="formgrid grid">
             <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-              <label for="bloodTypeUser" appLabel label="Tipo de Sangre:"
+              <label for="bloodTypeUser" appLabel label="Tipo de sangre:"
                      [required]="isRequired(bloodTypeUserField)"
                      [valid]="bloodTypeUserField.valid"
                      [touched]="bloodTypeUserField.touched"
@@ -240,13 +242,13 @@
           </div>
           <div class="formgrid grid">
             <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-              <label for="birthdadteUser" appLabel label="Fecha de Nacimiento:"
+              <label for="birthdateUser" appLabel label="Fecha de nacimiento:"
                      [required]="isRequired(birthdateUserField)"
                      [valid]="birthdateUserField.valid"
                      [touched]="birthdateUserField.touched"
                      [dirty]="birthdateUserField.dirty">
               </label>
-              <p-calendar id="birthdadteUser" formControlName="birthdate" dateFormat="yy-mm-dd"
+              <p-calendar id="birthdateUser" formControlName="birthdate" dateFormat="yy-mm-dd"
                           [yearRange]="yearRange"
                           [showIcon]="true"
                           [monthNavigator]="true"
@@ -266,7 +268,7 @@
       <p-card class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
         <div class="formgrid grid">
           <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
-            <label for="traveled" appLabel label="¿Disponibidad para viajar?"
+            <label for="traveled" appLabel label="¿Disponibilidad para viajar?"
                    [required]="isRequired(traveledField)"
                    [valid]="traveledField.valid"
                    [touched]="traveledField.touched"
@@ -346,7 +348,7 @@
                    [dirty]="familiarDisabledField.dirty">
             </small>
           </div>
-          <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
+          <div *ngIf="familiarDisabledField.value" class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
             <label for="identificationFamiliarDisabled" appLabel label="Número de documento:"
                    [required]="isRequired(identificationFamiliarDisabledField)"
                    [valid]="identificationFamiliarDisabledField.valid"
@@ -371,7 +373,7 @@
                  [touched]="aboutMeField.touched"
                  [dirty]="aboutMeField.dirty">
           </label> {{aboutMeField.value?.length ? aboutMeField.value?.length : 0}}/300
-          <textarea pInputTextarea id="aboutMe" formControlName="aboutMe"
+          <textarea pInputTextarea id="aboutMe" formControlName="aboutMe" class="text-uppercase"
                     placeholder="Ej. Con años de experiencia en la gestión de sistemas, he sido capaz de adaptarme a los diferentes planes informáticos de las empresas para las que he trabajado."
                     rows="3" maxlength="300"></textarea>
           <small appErrorMessage

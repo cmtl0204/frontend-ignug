@@ -10,20 +10,21 @@ const routes: Routes = [
     path: '',
     component: MainComponent,
     children: [
-      {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
-      {
-        path: 'dashboard',
-        loadChildren: () => import('./pages/core/dashboard/dashboard.module').then(m => m.DashboardModule),
-        data: {
-          roles: [RolesEnum.ADMIN, RolesEnum.GUEST]
-        },
-        canActivate: [TokenGuard, RoleGuard]
-      },
+      {path: '', redirectTo: '/job-board/professional', pathMatch: 'full'},
+      {path: 'dashboard', redirectTo: '/job-board/professional', pathMatch: 'full'},
+      // {
+      //   path: 'dashboard',
+      //   loadChildren: () => import('./pages/core/dashboard/dashboard.module').then(m => m.DashboardModule),
+      //   data: {
+      //     roles: [RolesEnum.PROFESSIONAL]
+      //   },
+      //   canActivate: [TokenGuard, RoleGuard]
+      // },
       {
         path: 'user-administration',
         loadChildren: () => import('./pages/core/user-administration/user-administration.module').then(m => m.UserAdministrationModule),
         data: {
-          roles: [RolesEnum.ADMIN, RolesEnum.GUEST]
+          roles: [RolesEnum.ADMIN]
         },
         canActivate: [TokenGuard, RoleGuard]
       },
@@ -31,7 +32,7 @@ const routes: Routes = [
         path: 'job-board',
         loadChildren: () => import('./pages/job-board/job-board.module').then(m => m.JobBoardModule),
         data: {
-          roles: [RolesEnum.ADMIN, RolesEnum.GUEST]
+          roles: [RolesEnum.PROFESSIONAL]
         },
       }
     ]
@@ -39,7 +40,7 @@ const routes: Routes = [
   {
     path: 'authentication',
     component: BlankComponent,
-    loadChildren: () => import('./pages/core/authentication/authentication.module').then(m => m.AuthenticationModule)
+    loadChildren: () => import('./pages/authentication/authentication.module').then(m => m.AuthenticationModule)
   },
   {
     path: 'common',

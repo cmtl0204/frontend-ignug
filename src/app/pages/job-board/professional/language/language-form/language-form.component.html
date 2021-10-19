@@ -26,6 +26,7 @@
                    [dirty]="idiomField.dirty">
             </label>
             <p-dropdown id="idiom"
+                        dataKey="id"
                         [options]="idioms"
                         formControlName="idiom"
                         [filter]="true"
@@ -58,6 +59,7 @@
                  [dirty]="writtenLevelField.dirty">
           </label>
           <p-dropdown id="writtenLevel"
+                      dataKey="id"
                       [options]="writtenLevels"
                       formControlName="writtenLevel"
                       [filter]="true"
@@ -88,6 +90,7 @@
                  [dirty]="spokenLevelField.dirty">
           </label>
           <p-dropdown id="spokenLevel"
+                      dataKey="id"
                       [options]="spokenLevels"
                       formControlName="spokenLevel"
                       [filter]="true"
@@ -118,6 +121,7 @@
                  [dirty]="readLevelField.dirty">
           </label>
           <p-dropdown id="readLevel"
+                      dataKey="id"
                       [options]="readLevels"
                       formControlName="readLevel"
                       [filter]="true"

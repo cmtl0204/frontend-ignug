@@ -14,6 +14,7 @@ export class LoginComponent implements OnInit {
   formLogin: FormGroup;
   primeIcons = PrimeIcons;
   progressBar: boolean = false;
+  progressBarRequestPasswordReset: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
               private authHttpService: AuthHttpService,
@@ -53,11 +54,42 @@ export class LoginComponent implements OnInit {
       .subscribe(
         response => {
           this.messageService.success(response);
-          this.progressBar=false;
+          this.progressBar = false;
           this.redirect();
         }, error => {
           this.messageService.error(error);
-          this.progressBar=false;
+          this.progressBar = false;
+        });
+  }
+
+  requestPasswordReset() {
+    if (this.usernameField.valid) {
+      this.progressBarRequestPasswordReset = true;
+      this.authHttpService.requestPasswordReset(this.usernameField.value)
+        .subscribe(
+          response => {
+            this.messageService.success(response);
+            this.progressBarRequestPasswordReset = false;
+          }, error => {
+            this.messageService.error(error);
+            this.progressBarRequestPasswordReset = false;
+          });
+    } else {
+      this.usernameField.markAsTouched();
+    }
+  }
+
+  requestUserUnlock() {
+    this.progressBar = true;
+    this.authHttpService.login(this.usernameField.value)
+      .subscribe(
+        response => {
+          this.messageService.success(response);
+          this.progressBar = false;
+          this.redirect();
+        }, error => {
+          this.messageService.error(error);
+          this.progressBar = false;
         });
   }
 

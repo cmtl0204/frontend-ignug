@@ -55,7 +55,10 @@ export class ErrorMessageDirective {
           this.nativeElement.innerText = this.messageService.fieldMax(this._errors);
         }
         if (this._errors?.pattern) {
-          this.nativeElement.innerText = this.messageService.fieldPattern();
+          this.nativeElement.innerText = this.messageService.fieldPattern;
+        }
+        if (this._errors?.identification) {
+          this.nativeElement.innerText = this.messageService.fieldIdentification;
         }
         this.renderer.addClass(this.nativeElement, 'p-error');
         this.renderer.removeClass(this.nativeElement, 'hidden');

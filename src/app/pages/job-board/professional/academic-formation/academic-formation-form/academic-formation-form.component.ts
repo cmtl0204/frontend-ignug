@@ -18,10 +18,10 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
   private subscriptions: Subscription[] = [];
   form: FormGroup;
   progressBar: boolean = false;
-  professionalDegrees: CategoryModel[] = [];
   skeletonLoading: boolean = false;
   title: string = 'Crear Formación Académica';
   buttonTitle: string = 'Crear Formación Académica';
+  professionalDegrees: CategoryModel[] = [];
   yearRange: string = `1900:${(new Date()).getFullYear()}`;
 
   constructor(

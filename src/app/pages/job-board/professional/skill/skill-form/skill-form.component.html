@@ -21,13 +21,14 @@
 
         <div class="formgrid grid">
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-            <label for="type" appLabel label="Tipo de evento:"
+            <label for="type" appLabel label="Tipo de habilidad:"
                    [required]="isRequired(typeField)"
                    [valid]="typeField.valid"
                    [touched]="typeField.touched"
                    [dirty]="typeField.dirty">
             </label>
             <p-dropdown id="type"
+                        dataKey="id"
                         [options]="types"
                         formControlName="type"
                         [filter]="true"
@@ -59,7 +60,8 @@
                  [touched]="descriptionField.touched"
                  [dirty]="descriptionField.dirty">
           </label>
-          <textarea pInputTextarea id="description" formControlName="description" class="text-uppercase"></textarea>
+          <textarea pInputTextarea id="description" formControlName="description" class="text-uppercase"
+                    placeholder="Habilidades blandas: Comunicación, Flexibilidad | Habilidades duras: Competencia en un idioma extranjero, Habilidad para los negocios"></textarea>
           <small appErrorMessage
                  [errors]="descriptionField.errors"
                  [touched]="descriptionField.touched"

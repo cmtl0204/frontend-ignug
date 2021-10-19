@@ -26,6 +26,7 @@
                    [dirty]="areaField.dirty">
             </label>
             <p-dropdown id="area"
+                        dataKey="id"
                         [options]="areas"
                         formControlName="area"
                         [filter]="true"
@@ -102,6 +103,7 @@
                    [dirty]="typeField.dirty">
             </label>
             <p-dropdown id="type"
+                        dataKey="id"
                         [options]="types"
                         formControlName="type"
                         [filter]="true"
@@ -131,6 +133,7 @@
                    [touched]="certificationTypeField.touched"
                    [dirty]="certificationTypeField.dirty"></label>
             <p-dropdown id="certificationType"
+                        dataKey="id"
                         [options]="certificationTypes"
                         formControlName="certificationType"
                         [filter]="true"

@@ -22,10 +22,10 @@ export class AcademicFormationListComponent implements OnInit {
   loading: boolean = false;
   paginator: PaginatorModel = {current_page: 1, per_page: 5, total: 0};
   filter: FormControl;
+  progressBarDelete: boolean = false;
   academicFormations: AcademicFormationModel[] = [];
   selectedAcademicFormation: AcademicFormationModel = {};
   selectedAcademicFormations: AcademicFormationModel[] = [];
-  progressBarDelete: boolean = false;
 
   constructor(private router: Router,
               private breadcrumbService: BreadcrumbService,
@@ -73,8 +73,8 @@ export class AcademicFormationListComponent implements OnInit {
     }
   }
 
-  editAcademicFormation(user: AcademicFormationModel) {
-    this.router.navigate(['/job-board/professional/academic-formation/', user.id]);
+  editAcademicFormation(academicFormation: AcademicFormationModel) {
+    this.router.navigate(['/job-board/professional/academic-formation/', academicFormation.id]);
   }
 
   createAcademicFormation() {
@@ -147,10 +147,10 @@ export class AcademicFormationListComponent implements OnInit {
 
   setCols() {
     this.cols = [
-      {field: 'professionalDegree', header: 'Títulos'},
-      {field: 'registeredAt', header: 'Fecha de resgistro '},
+      {field: 'professionalDegree', header: 'Título'},
+      {field: 'registeredAt', header: 'Fecha de registro '},
       {field: 'senescytCode', header: 'Código de Senescyt'},
-      {field: 'certificated', header: '¿Titulado?'},
+      {field: 'certificated', header: '¿Está titulado?'},
       {field: 'updatedAt', header: 'Última actualización'},
     ];
 

@@ -34,6 +34,7 @@ import {PanelMenuModule} from 'primeng/panelmenu';
 import {LocationStrategy, PathLocationStrategy} from '@angular/common';
 import {SharedModule} from '@shared/shared.module';
 import {BreadcrumbModule} from 'primeng/breadcrumb';
+import {ProgressSpinnerModule} from "primeng/progressspinner";
 
 @NgModule({
   declarations: [
@@ -45,28 +46,29 @@ import {BreadcrumbModule} from 'primeng/breadcrumb';
     FooterComponent,
     BreadcrumbComponent,
   ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    AppRoutingModule,
-    HttpClientModule,
-    AvatarModule,
-    ButtonModule,
-    CalendarModule,
-    CardModule,
-    DropdownModule,
-    InputSwitchModule,
-    InputTextModule,
-    TableModule,
-    SidebarModule,
-    RippleModule,
-    MenubarModule,
-    PanelMenuModule,
-    SharedModule,
-    BreadcrumbModule,
-  ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AppRoutingModule,
+        HttpClientModule,
+        AvatarModule,
+        ButtonModule,
+        CalendarModule,
+        CardModule,
+        DropdownModule,
+        InputSwitchModule,
+        InputTextModule,
+        TableModule,
+        SidebarModule,
+        RippleModule,
+        MenubarModule,
+        PanelMenuModule,
+        SharedModule,
+        BreadcrumbModule,
+        ProgressSpinnerModule,
+    ],
   providers: [
     {
       provide: LocationStrategy,

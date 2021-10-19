@@ -147,9 +147,9 @@ export class CourseListComponent implements OnInit, OnDestroy {
   setCols() {
     this.cols = [
       {field: 'name', header: 'Evento'},
-      {field: 'institution', header: 'Tipo de Evento'},
-      {field: 'startedAt', header: 'Inicio'},
-      {field: 'endedAt', header: 'Fin'},
+      {field: 'certificationType', header: 'Tipo de Evento'},
+      {field: 'startedAt', header: 'Fecha de inicio'},
+      {field: 'endedAt', header: 'fecha de fin'},
       {field: 'hours', header: 'Horas'},
       {field: 'updatedAt', header: 'Última actualización'},
     ];

@@ -3,10 +3,12 @@ import {HttpClient} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {catchError, map, tap} from 'rxjs/operators';
 import {environment} from '@env/environment';
-import {LoginModel} from '@models/core';
+import {LoginModel, ServerResponse} from '@models/core';
 import {LoginResponse} from '@models/core/login.response';
 import {AuthService} from './auth.service';
 import {JobBoardService} from '@services/job-board/job-board.service';
+import {CourseModel} from "@models/job-board";
+import {Handler} from "../../exceptions/handler";
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +43,31 @@ export class AuthHttpService {
       );
   }
 
+  logout(): Observable<LoginResponse> {
+    const url = `${this.API_URL}/auth/logout`;
+    return this.httpClient.get<LoginResponse>(url)
+      .pipe(
+        map(response => response),
+        tap(
+          response => {
+            console.log(response);
+            this.authService.removeLogin();
+          }
+        ),
+        catchError(error => {
+          this.authService.removeLogin();
+          return throwError(error);
+        })
+      );
+  }
 
+  requestPasswordReset(username: string): Observable<ServerResponse> {
+    const url = `${this.API_URL}/auth/request-password-reset`;
+    return this.httpClient.post<ServerResponse>(url, {username})
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
 
 }

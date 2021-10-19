@@ -20,7 +20,7 @@ export class SkillListComponent implements OnInit, OnDestroy {
   cols: ColModel[] = [];
   items: MenuItem[] = [];
   loading: boolean = false;
-  paginator: PaginatorModel = {current_page: 1, per_page: 2, total: 0};
+  paginator: PaginatorModel = {current_page: 1, per_page: 5, total: 0};
   filter: FormControl;
   skills: SkillModel[] = [];
   selectedSkill: SkillModel = {};
@@ -152,7 +152,7 @@ export class SkillListComponent implements OnInit, OnDestroy {
     this.cols = [
       {field: 'type', header: 'Tipo'},
       {field: 'description', header: 'Descripción'},
-      {field: 'updatedAt', header: 'Última Actualización'},
+      {field: 'updatedAt', header: 'Última actualización'},
     ];
   }
 

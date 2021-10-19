@@ -61,6 +61,14 @@ export class MessageService {
     });
   }
 
+  showLoading() {
+    return Swal.showLoading();
+  }
+
+  hideLoading() {
+    return Swal.hideLoading();
+  }
+
   errorRequired() {
     return Swal.fire({
       title: 'No se puede eliminar',
@@ -125,8 +133,12 @@ export class MessageService {
     return `Numero maximo permitido es ${errors?.max.requiredMax}.`;
   }
 
-  fieldPattern(): string {
+  get fieldPattern() {
     return `No cumple con el formato`;
+  }
+
+  get fieldIdentification() {
+    return `No cumple con el formato de una cédula Ecuatoriana`;
   }
 
   get fieldNoPasswordMatch(): string {
@@ -155,6 +167,10 @@ export class MessageService {
 
   get progressBarLogin(): string {
     return `Ingresando...`;
+  }
+
+  get progressBarRequestPasswordReset(): string {
+    return `Enviando correo...`;
   }
 
   get progressBarDelete(): string {
