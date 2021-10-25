@@ -22,5 +22,4 @@ export class CoreService {
   get alpha(): RegExp {
     return /^[a-zA-Z ]/;
   }
-
 }

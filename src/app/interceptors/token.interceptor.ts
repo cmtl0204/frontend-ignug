@@ -15,10 +15,26 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    const headers = new HttpHeaders()
-      .append('Accept', 'application/json')
-      .append('Content-Type', 'application/json')
-      .append('Authorization', 'Bearer ' + this.authService.token);
+    let flag = false;
+    let headers = new HttpHeaders();
+
+    request.headers.getAll('Content-Type')?.forEach(header => {
+      if (header == 'multipart/form-data') {
+        flag = true;
+      }
+    });
+    console.log(flag);
+    if (flag) {
+      headers = headers
+        .append('Accept', 'application/json')
+        .append('Authorization', 'Bearer ' + this.authService.token);
+    } else {
+      headers = headers
+        .append('Accept', 'application/json')
+        .append('Content-Type', 'application/json')
+        .append('Authorization', 'Bearer ' + this.authService.token);
+    }
+
     return next.handle(request.clone({headers}));
   }
 }

@@ -7,7 +7,7 @@ import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {MessageService} from '@services/core';
 import {CoreHttpService} from '@services/core';
 import {JobBoardHttpService, JobBoardService} from '@services/job-board';
-import {CatalogueModel} from '@models/core';
+import {CatalogueModel, FileModel, PaginatorModel} from '@models/core';
 import {LanguageModel} from '@models/job-board';
 
 @Component({
@@ -27,6 +27,10 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
   writtenLevels: CatalogueModel[] = [];
   spokenLevels: CatalogueModel[] = [];
   readLevels: CatalogueModel[] = [];
+  loadingUploadFiles: boolean = false;
+  files: FileModel[] = [];
+  displayModalFiles: boolean = false;
+  paginatorFiles: PaginatorModel = {current_page: 1, per_page: 5, total: 0};
 
   constructor(
     private formBuilder: FormBuilder,
@@ -95,6 +99,19 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
             this.skeletonLoading = false;
           }, error => {
             this.skeletonLoading = false;
+            this.messageService.error(error);
+          }
+        ));
+  }
+
+  loadFiles() {
+    this.subscriptions.push(
+      this.coreHttpService.getFiles(`/language/${this.idField.value}/file`)
+        .subscribe(
+          response => {
+            this.files = response.data;
+            this.paginatorFiles = response.meta;
+          }, error => {
             this.messageService.error(error);
           }
         ));
@@ -202,6 +219,27 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
 
   returnList() {
     this.router.navigate(['/job-board/professional', 6]);
+  }
+
+  uploadFile(event: any) {
+    const formData = new FormData();
+    for (const file of event) {
+      formData.append('files[]', file);
+    }
+    this.loadingUploadFiles = true;
+    this.coreHttpService.uploadFiles(`/language/${this.idField.value}/file`, formData)
+      .subscribe(response => {
+        this.loadingUploadFiles = false;
+        this.loadFiles();
+      }, error => {
+        this.loadingUploadFiles = false;
+        this.messageService.error(error);
+      });
+  }
+
+  showModalFiles() {
+    this.loadFiles();
+    this.displayModalFiles = true;
   }
 
   get idField() {

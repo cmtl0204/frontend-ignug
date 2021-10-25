@@ -1,12 +1,9 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
-import {JobBoardRoutingModule} from './job-board-routing.module';
-import {JobBoardComponent} from './job-board.component';
+import {RegistrationRoutingModule} from './registration-routing.module';
+import {RegistrationComponent} from './registration.component';
 import {SharedModule} from '@shared/shared.module';
-import {CategoryComponent} from "./category/category.component";
-import {CategoryFormComponent} from "./category/category-form/category-form.component";
-import {CategoryListComponent} from "./category/category-list/category-list.component";
 import {ToolbarModule} from "primeng/toolbar";
 import {CardModule} from "primeng/card";
 import {PaginatorModule} from "primeng/paginator";
@@ -18,25 +15,23 @@ import {KeyFilterModule} from "primeng/keyfilter";
 import {RippleModule} from "primeng/ripple";
 import {DividerModule} from "primeng/divider";
 import {ProgressBarModule} from "primeng/progressbar";
-import {AreaFormComponent} from './category/area-form/area-form.component';
 import {TooltipModule} from "primeng/tooltip";
+import {ProfessionalRegistrationComponent} from "./professional-registration/professional-registration.component";
 import {CalendarModule} from "primeng/calendar";
 import {InputSwitchModule} from "primeng/inputswitch";
-
+import {InputTextareaModule} from "primeng/inputtextarea";
+import {PasswordModule} from "primeng/password";
 
 @NgModule({
   declarations: [
-    JobBoardComponent,
-    CategoryComponent,
-    CategoryFormComponent,
-    CategoryListComponent,
-    AreaFormComponent,
+    RegistrationComponent,
+    ProfessionalRegistrationComponent,
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    JobBoardRoutingModule,
+    RegistrationRoutingModule,
     SharedModule,
     ToolbarModule,
     CardModule,
@@ -50,8 +45,10 @@ import {InputSwitchModule} from "primeng/inputswitch";
     ProgressBarModule,
     TooltipModule,
     CalendarModule,
-    InputSwitchModule
+    InputSwitchModule,
+    InputTextareaModule,
+    PasswordModule
   ]
 })
-export class JobBoardModule {
+export class RegistrationModule {
 }

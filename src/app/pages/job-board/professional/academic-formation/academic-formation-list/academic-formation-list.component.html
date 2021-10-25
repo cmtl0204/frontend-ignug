@@ -7,7 +7,7 @@
       <button pButton pRipple type="button" label="Refrescar"
               class="p-button-rounded ml-2" icon="pi pi-refresh"
               (click)="loadAcademicFormations()"></button>
-      <button *ngIf="selectedAcademicFormations?.length" pButton pRipple type="button" label="Eliminar formaciones"
+      <button *ngIf="selectedAcademicFormations?.length" pButton pRipple type="button" label="Eliminar Formaciones Académicas"
               class="p-button-danger p-button-rounded ml-2" icon="pi pi-trash"
               (click)="deleteAcademicFormations()"></button>
       <app-progress-bar *ngIf="progressBarDelete" [message]="messageService.progressBarDelete" class="ml-2"></app-progress-bar>
@@ -62,9 +62,9 @@
             </span>
             <span *ngIf="!rowData[col.field]?.id" [ngSwitch]="col.field">
               <span *ngSwitchCase="'updatedAt'">{{rowData[col.field]|date}}</span>
+              <span *ngSwitchDefault>{{rowData[col.field]}}</span>
               <span *ngSwitchCase="'registeredAt'">{{rowData[col.field]|date}}</span>
               <span *ngSwitchCase="'certificated'">{{rowData[col.field]|certificated}}</span>
-              <span *ngSwitchDefault>{{rowData[col.field]}}</span>
             </span>
           </td>
           <td style="text-align: center">

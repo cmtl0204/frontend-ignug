@@ -154,7 +154,6 @@ export class ReferenceListComponent implements OnInit, OnDestroy {
       {field: 'contactName', header: 'Nombre'},
       {field: 'contactPhone', header: 'Celular'},
       {field: 'contactEmail', header: 'Correo electrónico'},
-      {field: 'position', header: 'Cargo'},
       {field: 'updatedAt', header: 'Última actualización'},
     ];
   }

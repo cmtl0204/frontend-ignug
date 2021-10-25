@@ -9,3 +9,5 @@ export {PaginatorModel} from './paginator.model';
 export {PermissionModel} from './permission.model';
 export {RoleModel} from './role.model';
 export {StateModel} from './state.model';
+export {FileModel} from './file.model';
+export {ImageModel} from './image.model';

@@ -38,6 +38,11 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'registration',
+    component: BlankComponent,
+    loadChildren: () => import('./pages/job-board/registration/registration.module').then(m => m.RegistrationModule)
+  },
+  {
     path: 'authentication',
     component: BlankComponent,
     loadChildren: () => import('./pages/authentication/authentication.module').then(m => m.AuthenticationModule)

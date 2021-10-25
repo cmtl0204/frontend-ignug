@@ -53,6 +53,7 @@ export class LoginComponent implements OnInit {
     this.authHttpService.login(this.formLogin.value)
       .subscribe(
         response => {
+          console.log(response);
           this.messageService.success(response);
           this.progressBar = false;
           this.redirect();
@@ -95,6 +96,10 @@ export class LoginComponent implements OnInit {
 
   redirect() {
     this.router.navigate(['/job-board/professional']);
+  }
+
+  redirectRegistration() {
+    this.router.navigate(['/registration/professional']);
   }
 
   get usernameField() {

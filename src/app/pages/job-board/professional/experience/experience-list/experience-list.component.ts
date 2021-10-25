@@ -152,7 +152,6 @@ export class ExperienceListComponent implements OnInit, OnDestroy {
 
   setCols() {
     this.cols = [
-      {field: 'area', header: 'Área de estudios'},
       {field: 'position', header: 'Cargo'},
       {field: 'startedAt', header: 'Fecha de inicio'},
       {field: 'endedAt', header: 'Fecha de fin'},

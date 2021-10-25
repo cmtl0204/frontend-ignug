@@ -148,12 +148,11 @@ export class AcademicFormationListComponent implements OnInit {
   setCols() {
     this.cols = [
       {field: 'professionalDegree', header: 'Título'},
-      {field: 'registeredAt', header: 'Fecha de registro '},
+      {field: 'registeredAt', header: 'Fecha de registro'},
       {field: 'senescytCode', header: 'Código de Senescyt'},
       {field: 'certificated', header: '¿Está titulado?'},
       {field: 'updatedAt', header: 'Última actualización'},
     ];
-
   }
 
   setItems() {

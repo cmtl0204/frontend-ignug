@@ -165,6 +165,14 @@ export class MessageService {
     return `Procesando...`;
   }
 
+  get progressBarDownload(): string {
+    return `Descargando...`;
+  }
+
+  get progressBarUpload(): string {
+    return `Cargando...`;
+  }
+
   get progressBarLogin(): string {
     return `Ingresando...`;
   }

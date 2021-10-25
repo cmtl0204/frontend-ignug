@@ -18,7 +18,7 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
   private subscriptions: Subscription[] = [];
   form: FormGroup;
   progressBar: boolean = false;
-  skeletonLoading: boolean = false;
+  loadingSkeleton: boolean = false;
   title: string = 'Crear Formación Académica';
   buttonTitle: string = 'Crear Formación Académica';
   professionalDegrees: CategoryModel[] = [];
@@ -79,16 +79,16 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
   }
 
   loadAcademicFormation() {
-    this.skeletonLoading = true;
+    this.loadingSkeleton = true;
     this.subscriptions.push(
       this.jobBoardHttpService
         .getAcademicFormation(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
         .subscribe(
           response => {
             this.form.patchValue(response.data);
-            this.skeletonLoading = false;
+            this.loadingSkeleton = false;
           }, error => {
-            this.skeletonLoading = false;
+            this.loadingSkeleton = false;
             this.messageService.error(error);
           }
         ));

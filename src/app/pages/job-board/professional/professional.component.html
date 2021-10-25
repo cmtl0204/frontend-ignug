@@ -11,6 +11,9 @@
         <app-reference *ngSwitchCase="4"></app-reference>
         <app-skill *ngSwitchCase="5"></app-skill>
         <app-language *ngSwitchCase="6"></app-language>
+        <div *ngSwitchCase="7" class="text-center mt-6">
+          <button pButton pRipple label="Descargar Certificado" (click)="downloadCertificate()"></button>
+        </div>
       </div>
     </div>
   </div>

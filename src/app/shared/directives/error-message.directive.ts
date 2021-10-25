@@ -60,6 +60,9 @@ export class ErrorMessageDirective {
         if (this._errors?.identification) {
           this.nativeElement.innerText = this.messageService.fieldIdentification;
         }
+        if (this._errors?.NoPasswordMatch) {
+          this.nativeElement.innerText = this.messageService.fieldNoPasswordMatch;
+        }
         this.renderer.addClass(this.nativeElement, 'p-error');
         this.renderer.removeClass(this.nativeElement, 'hidden');
       } else {

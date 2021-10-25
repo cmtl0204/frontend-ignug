@@ -15,6 +15,7 @@ import {
 } from '@models/job-board';
 import {catchError, map} from 'rxjs/operators';
 import {Handler} from '../../exceptions/handler';
+import {MessageService} from "@services/core";
 
 @Injectable({
   providedIn: 'root'
@@ -24,12 +25,21 @@ export class JobBoardHttpService {
 
   API_URL: string = environment.API_URL;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private messageService: MessageService) {
   }
 
   getProfile(id: number): Observable<ServerResponse> {
     const url = `${this.API_URL}/professional/profile/${id}`;
     return this.httpClient.get<ServerResponse>(url)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  registrationProfessional(professional: ProfessionalModel): Observable<ServerResponse> {
+    const url = `${this.API_URL}/registration/professional`;
+    return this.httpClient.post<ServerResponse>(url, professional)
       .pipe(
         map(response => response),
         catchError(Handler.render)
@@ -427,7 +437,7 @@ export class JobBoardHttpService {
         map(response => response),
         catchError(Handler.render)
       );
-  }  
+  }
 
   updateProfessionalDegree(id: number, category: CategoryModel): Observable<ServerResponse> {
     const url = `${this.API_URL}/category/professional-degrees/${id}`;
@@ -454,7 +464,7 @@ export class JobBoardHttpService {
         map(response => response),
         catchError(Handler.render)
       );
-  }  
+  }
 
   updateArea(id: number, category: CategoryModel): Observable<ServerResponse> {
     const url = `${this.API_URL}/category/areas/${id}`;
@@ -524,5 +534,24 @@ export class JobBoardHttpService {
         map(response => response),
         catchError(Handler.render)
       );
+  }
+
+  downloadCertificate(username: string): void {
+    const url = `${this.API_URL}/professional/certificate/${username}`;
+    this.messageService.showLoading();
+    this.httpClient.get(url, {responseType: 'blob' as 'json'}).subscribe(response => {
+      const binaryData = [] as BlobPart[];
+      binaryData.push(response as BlobPart);
+      const filePath = URL.createObjectURL(new Blob(binaryData, {type: 'pdf'}));
+      const downloadLink = document.createElement('a');
+      downloadLink.href = filePath;
+      downloadLink.setAttribute('download', `certificado-${username}.pdf`);
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      this.messageService.hideLoading();
+    }, error => {
+      this.messageService.error(error);
+      this.messageService.hideLoading();
+    });
   }
 }
