@@ -6,8 +6,7 @@ import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {MessageService} from '@services/core';
 import {UicHttpService, UicService} from '@services/uic';
-import {TutorModel, CategoryModel, ProjectPlanModel,} from '@models/uic';
-import { CatalogueModel } from '@models/core';
+import {TutorModel, CatalogueModel, ProjectPlanModel,TeacherModel} from '@models/uic';
 
 @Component({
   selector: 'app-tutor-form',
@@ -23,7 +22,7 @@ export class TutorFormComponent implements OnInit, OnDestroy, OnExitInterface {
   title: string = 'Crear Tutor';
   buttonTitle: string = 'Crear Tutor';
   projectPlans: ProjectPlanModel[] = [];
-  teachers: TeacherModel[] = [];
+  teacher: TeacherModel[] = [];
   types: CatalogueModel[] = [];
 
   constructor(

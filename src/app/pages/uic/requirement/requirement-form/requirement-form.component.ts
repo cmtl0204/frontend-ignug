@@ -6,7 +6,7 @@ import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {MessageService} from '@services/core';
 import {UicHttpService, UicService} from '@services/uic';
-import {RequirementModel, CategoryModel,} from '@models/uic';
+import {RequirementModel, CareerModel,} from '@models/uic';
 
 @Component({
   selector: 'app-requirement-form',
@@ -21,7 +21,7 @@ export class RequirementFormComponent implements OnInit, OnDestroy, OnExitInterf
   loadingSkeleton: boolean = false;
   title: string = 'Crear Requerimiento';
   buttonTitle: string = 'Crear Requerimiento';
-  careers: CategoryModel[] = [];
+  career: CareerModel[] = [];
   yearRange: string = `1900:${(new Date()).getFullYear()}`;
 
   constructor(

@@ -1,4 +1,4 @@
-export interface RequirementRequestModel {
+export interface MeshStudentRequirementModel {
     id?: number
     meshStudent?: MeshStudentModel;
     requirement?: RequirementModel;

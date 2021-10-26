@@ -6,7 +6,7 @@ import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {MessageService} from '@services/core';
 import {UicHttpService, UicService} from '@services/uic';
-import {MeshStudentRequirementModel, CategoryModel,} from '@models/uic';
+import {MeshStudentRequirementModel, MeshStudentModel , RequirementModel } from '@models/uic';
 
 @Component({
   selector: 'app-mesh-student-requirement-form',
@@ -21,8 +21,8 @@ export class MeshStudentRequirementFormComponent implements OnInit, OnDestroy, O
   loadingSkeleton: boolean = false;
   title: string = 'Crear Requerimiento';
   buttonTitle: string = 'Crear Requerimiento';
-  meshStudents: CategoryModel[] = [];
-  requirements: CategoryModel[] = [];
+  meshStudents: MeshStudentModel[] = [];
+  requirements: RequirementModel[] = [];
   yearRange: string = `1900:${(new Date()).getFullYear()}`;
 
   constructor(
@@ -196,7 +196,7 @@ export class MeshStudentRequirementFormComponent implements OnInit, OnDestroy, O
     return this.form.controls['meshStudent'];
   }
 
-  get requirementAtField() {
+  get requirementField() {
     return this.form.controls['requirement'];
   }
 

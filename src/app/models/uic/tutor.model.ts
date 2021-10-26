@@ -1,7 +1,7 @@
-export interface RequirementRequestModel {
+export interface TutorRequestModel {
     id?: number;
     projectPlan?: ProjectPlanModel;
-    projectPlan?: TeacherModel;
+    teacher?: TeacherModel;
     type?: CatalogueModel;
     observations?: array;
 }
