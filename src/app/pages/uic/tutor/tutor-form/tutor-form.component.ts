@@ -6,7 +6,8 @@ import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {MessageService} from '@services/core';
 import {UicHttpService, UicService} from '@services/uic';
-import {TutorModel, CategoryModel,} from '@models/uic';
+import {TutorModel, CategoryModel, ProjectPlanModel,} from '@models/uic';
+import { CatalogueModel } from '@models/core';
 
 @Component({
   selector: 'app-tutor-form',
@@ -21,9 +22,9 @@ export class TutorFormComponent implements OnInit, OnDestroy, OnExitInterface {
   loadingSkeleton: boolean = false;
   title: string = 'Crear Tutor';
   buttonTitle: string = 'Crear Tutor';
-  projectPlans: CategoryModel[] = [];
-  teachers: CategoryModel[] = [];
-  types: CategoryModel[] = [];
+  projectPlans: ProjectPlanModel[] = [];
+  teachers: TeacherModel[] = [];
+  types: CatalogueModel[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -125,7 +126,7 @@ export class TutorFormComponent implements OnInit, OnDestroy, OnExitInterface {
       this.uicHttpService.getCatalogues()
         .subscribe(
           response => {
-            this.projectPlans = response.data;
+            this.types = response.data;
           }, error => {
             this.messageService.error(error);
           }

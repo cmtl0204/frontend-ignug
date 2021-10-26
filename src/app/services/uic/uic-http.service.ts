@@ -11,16 +11,12 @@ import {
   ProjectModel,
   ProjectPlanModel,
   ReferenceModel,
-<<<<<<< HEAD
   SkillModel,
   MeshStudentRequirementModel,
   RequirementModel,
   TutorModel,
 
 
-=======
-  SkillModel
->>>>>>> 356071322e8f3fef25b99b2543a7dbaa2e169fe8
 } from '@models/uic';
 import {catchError, map} from 'rxjs/operators';
 import {Handler} from '../../exceptions/handler';
@@ -235,7 +231,6 @@ export class UicHttpService {
       .set('per_page', paginator.per_page);
     // El filtro depende de los campos propios que sean cadenas de texto
     if (filter !== '') {
-      filter = `?name=${filter}&description=${filter}`;
     }
     return this.httpClient.get<ServerResponse>(url + filter, {params})
       .pipe(
@@ -298,7 +293,7 @@ export class UicHttpService {
       .set('per_page', paginator.per_page);
     // El filtro depende de los campos propios que sean cadenas de texto
     if (filter !== '') {
-      filter = `?name=${filter}&description=${filter}`;
+      filter = `?title=${filter}&description=${filter}`;
     }
     return this.httpClient.get<ServerResponse>(url + filter, {params})
       .pipe(
@@ -407,7 +402,7 @@ export class UicHttpService {
   }
 
   deleteProjectPlans(ids: (number | undefined)[]): Observable<ServerResponse> {
-    const url = `${this.API_URL}/projectPlant/destroys`;
+    const url = `${this.API_URL}/project-plans/destroys`;
     return this.httpClient.patch<ServerResponse>(url, {ids})
       .pipe(
         map(response => response),
@@ -418,13 +413,12 @@ export class UicHttpService {
   //didyer
 
   getMeshStudentRequirements(paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
-    const url = `${this.API_URL}/meshStudentRequirements`;
+    const url = `${this.API_URL}/mesh-student-requirements`;
     const params = new HttpParams()
       .set('page', paginator.current_page)
       .set('per_page', paginator.per_page);
     // El filtro depende de los campos propios que sean cadenas de texto
     if (filter !== '') {
-      filter = `?name=${filter}&description=${filter}`;
     }
     return this.httpClient.get<ServerResponse>(url + filter, {params})
       .pipe(
@@ -477,6 +471,11 @@ export class UicHttpService {
         catchError(Handler.render)
       );
   }
+
+  /***********************************************************************************************************************
+ * Requirements
+ **********************************************************************************************************************/
+
   getRequirements(paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
     const url = `${this.API_URL}/requirements`;
     const params = new HttpParams()
@@ -494,7 +493,7 @@ export class UicHttpService {
   }
 
   getRequirement(id: number): Observable<ServerResponse> {
-    const url = `${this.API_URL}/Requirements/${id}`;
+    const url = `${this.API_URL}/requirements/${id}`;
     return this.httpClient.get<ServerResponse>(url)
       .pipe(
         map(response => response),
@@ -537,6 +536,8 @@ export class UicHttpService {
         catchError(Handler.render)
       );
   }
+
+  
   getTutors(paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
     const url = `${this.API_URL}/tutors`;
     const params = new HttpParams()

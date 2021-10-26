@@ -7,6 +7,7 @@ import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {MessageService} from '@services/core';
 import {UicHttpService, UicService} from '@services/uic';
 import {EventModel, CategoryModel,} from '@models/uic';
+import { CatalogueModel } from '@models/core';
 
 @Component({
   selector: 'app-event-form',
@@ -21,7 +22,8 @@ export class EventFormComponent implements OnInit, OnDestroy, OnExitInterface {
   loadingSkeleton: boolean = false;
   title: string = 'Crear Evento';
   buttonTitle: string = 'Crear Evento';
-  planning: CategoryModel[] = [];
+  plannings: PlanningModel[] = [];
+  names: CatalogueModel[] = [];
   yearRange: string = `1900:${(new Date()).getFullYear()}`;
 
   constructor(
@@ -51,7 +53,8 @@ export class EventFormComponent implements OnInit, OnDestroy, OnExitInterface {
       this.buttonTitle = 'Actualizar Evento';
       this.loadEvent();
     }
-    this.loadPannings();
+    this.loadPlannings();
+    this.loadNames();
   }
 
   ngOnDestroy(): void {
@@ -73,7 +76,7 @@ export class EventFormComponent implements OnInit, OnDestroy, OnExitInterface {
       id: [null],
       planning: [null, [Validators.required]],
       name: [false, [Validators.required]],
-      sstartedAt: [null],
+      startedAt: [null],
       endedAt: [null],
     });
   }
@@ -99,7 +102,19 @@ export class EventFormComponent implements OnInit, OnDestroy, OnExitInterface {
       this.uicHttpService.getPlannings()
         .subscribe(
           response => {
-            this.professionalDegrees = response.data;
+            this.plannings = response.data;
+          }, error => {
+            this.messageService.error(error);
+          }
+        ));
+  }
+
+  loadNames() {
+    this.subscriptions.push(
+      this.uicHttpService.getPlannings()
+        .subscribe(
+          response => {
+            this.plannings = response.data;
           }, error => {
             this.messageService.error(error);
           }

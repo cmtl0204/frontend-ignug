@@ -1,4 +1,4 @@
-export interface EventModel {
+export interface StudentModel {
     id?: number;
     planning?: PlanningModel;
     name?: CatalogueModel;
