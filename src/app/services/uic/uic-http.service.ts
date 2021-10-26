@@ -11,8 +11,13 @@ import {
   LanguageModel,
   ProfessionalModel,
   ReferenceModel,
-  SkillModel
-} from '@models/job-board';
+  SkillModel,
+  MeshStudentRequirementModel,
+  RequirementModel,
+  TutorModel,
+
+
+} from '@models/uic';
 import {catchError, map} from 'rxjs/operators';
 import {Handler} from '../../exceptions/handler';
 import {MessageService} from "@services/core";
@@ -408,8 +413,8 @@ export class UicHttpService {
 
   //didyer
 
-  getStudents(paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
-    const url = `${this.API_URL}/students`;
+  getMeshStudentRequirements(paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
+    const url = `${this.API_URL}/meshStudentRequirements`;
     const params = new HttpParams()
       .set('page', paginator.current_page)
       .set('per_page', paginator.per_page);
@@ -424,8 +429,8 @@ export class UicHttpService {
       );
   }
 
-  getStudent(id: number): Observable<ServerResponse> {
-    const url = `${this.API_URL}/students/${id}`;
+  getMeshStudentRequirement(id: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/meshStudentRequirements/${id}`;
     return this.httpClient.get<ServerResponse>(url)
       .pipe(
         map(response => response),
@@ -433,26 +438,26 @@ export class UicHttpService {
       );
   }
 
-  storeStudent(student: StudentModel): Observable<ServerResponse> {
-    const url = `${this.API_URL}/students`;
-    return this.httpClient.post<ServerResponse>(url, student)
+  storeMeshStudentRequirement(meshStudentRequirement: MeshStudentRequirementModel): Observable<ServerResponse> {
+    const url = `${this.API_URL}/meshStudentRequirements`;
+    return this.httpClient.post<ServerResponse>(url, meshStudentRequirement)
       .pipe(
         map(response => response),
         catchError(Handler.render)
       );
   }
 
-  updateStudent(id: number, student: StudentModel): Observable<ServerResponse> {
-    const url = `${this.API_URL}/students/${id}`;
-    return this.httpClient.put<ServerResponse>(url, student)
+  updateMeshStudentRequirement(id: number, meshStudentRequirement: MeshStudentRequirementModel): Observable<ServerResponse> {
+    const url = `${this.API_URL}/meshStudentRequirements/${id}`;
+    return this.httpClient.put<ServerResponse>(url, meshStudentRequirement)
       .pipe(
         map(response => response),
         catchError(Handler.render)
       );
   }
 
-  deleteStudent(id: number): Observable<ServerResponse> {
-    const url = `${this.API_URL}/students/${id}`;
+  deleteMeshStudentRequirement(id: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/meshStudentRequirements/${id}`;
     return this.httpClient.delete<ServerResponse>(url)
       .pipe(
         map(response => response),
@@ -460,16 +465,16 @@ export class UicHttpService {
       );
   }
 
-  deleteStudents(ids: (number | undefined)[]): Observable<ServerResponse> {
-    const url = `${this.API_URL}/student/destroys`;
+  deleteMeshStudentRequirements(ids: (number | undefined)[]): Observable<ServerResponse> {
+    const url = `${this.API_URL}/meshStudentRequirement/destroys`;
     return this.httpClient.patch<ServerResponse>(url, {ids})
       .pipe(
         map(response => response),
         catchError(Handler.render)
       );
   }
-  getStudents(paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
-    const url = `${this.API_URL}/students`;
+  getRequirements(paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
+    const url = `${this.API_URL}/requirements`;
     const params = new HttpParams()
       .set('page', paginator.current_page)
       .set('per_page', paginator.per_page);
@@ -484,8 +489,8 @@ export class UicHttpService {
       );
   }
 
-  getStudent(id: number): Observable<ServerResponse> {
-    const url = `${this.API_URL}/students/${id}`;
+  getRequirement(id: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/Requirements/${id}`;
     return this.httpClient.get<ServerResponse>(url)
       .pipe(
         map(response => response),
@@ -493,26 +498,26 @@ export class UicHttpService {
       );
   }
 
-  storeStudent(student: StudentModel): Observable<ServerResponse> {
-    const url = `${this.API_URL}/students`;
-    return this.httpClient.post<ServerResponse>(url, student)
+  storeRequirement(requirement: RequirementModel): Observable<ServerResponse> {
+    const url = `${this.API_URL}/requirements`;
+    return this.httpClient.post<ServerResponse>(url, requirement)
       .pipe(
         map(response => response),
         catchError(Handler.render)
       );
   }
 
-  updateStudent(id: number, student: StudentModel): Observable<ServerResponse> {
-    const url = `${this.API_URL}/students/${id}`;
-    return this.httpClient.put<ServerResponse>(url, student)
+  updateRequirement(id: number, requirement: RequirementModel): Observable<ServerResponse> {
+    const url = `${this.API_URL}/requirements/${id}`;
+    return this.httpClient.put<ServerResponse>(url, requirement)
       .pipe(
         map(response => response),
         catchError(Handler.render)
       );
   }
 
-  deleteStudent(id: number): Observable<ServerResponse> {
-    const url = `${this.API_URL}/students/${id}`;
+  deleteRequirement(id: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/requirements/${id}`;
     return this.httpClient.delete<ServerResponse>(url)
       .pipe(
         map(response => response),
@@ -520,16 +525,16 @@ export class UicHttpService {
       );
   }
 
-  deleteStudents(ids: (number | undefined)[]): Observable<ServerResponse> {
-    const url = `${this.API_URL}/student/destroys`;
+  deleteRequirements(ids: (number | undefined)[]): Observable<ServerResponse> {
+    const url = `${this.API_URL}/requirement/destroys`;
     return this.httpClient.patch<ServerResponse>(url, {ids})
       .pipe(
         map(response => response),
         catchError(Handler.render)
       );
   }
-  getStudents(paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
-    const url = `${this.API_URL}/students`;
+  getTutors(paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
+    const url = `${this.API_URL}/tutors`;
     const params = new HttpParams()
       .set('page', paginator.current_page)
       .set('per_page', paginator.per_page);
@@ -544,8 +549,8 @@ export class UicHttpService {
       );
   }
 
-  getStudent(id: number): Observable<ServerResponse> {
-    const url = `${this.API_URL}/students/${id}`;
+  getTutor(id: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/tutors/${id}`;
     return this.httpClient.get<ServerResponse>(url)
       .pipe(
         map(response => response),
@@ -553,26 +558,26 @@ export class UicHttpService {
       );
   }
 
-  storeStudent(student: StudentModel): Observable<ServerResponse> {
-    const url = `${this.API_URL}/students`;
-    return this.httpClient.post<ServerResponse>(url, student)
+  storeTutor(tutor: TutorModel): Observable<ServerResponse> {
+    const url = `${this.API_URL}/tutors`;
+    return this.httpClient.post<ServerResponse>(url, tutor)
       .pipe(
         map(response => response),
         catchError(Handler.render)
       );
   }
 
-  updateStudent(id: number, student: StudentModel): Observable<ServerResponse> {
-    const url = `${this.API_URL}/students/${id}`;
-    return this.httpClient.put<ServerResponse>(url, student)
+  updateTutor(id: number, tutor: TutorModel): Observable<ServerResponse> {
+    const url = `${this.API_URL}/tutors/${id}`;
+    return this.httpClient.put<ServerResponse>(url, tutor)
       .pipe(
         map(response => response),
         catchError(Handler.render)
       );
   }
 
-  deleteStudent(id: number): Observable<ServerResponse> {
-    const url = `${this.API_URL}/students/${id}`;
+  deleteTutor(id: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/tutors/${id}`;
     return this.httpClient.delete<ServerResponse>(url)
       .pipe(
         map(response => response),
@@ -580,8 +585,8 @@ export class UicHttpService {
       );
   }
 
-  deleteStudents(ids: (number | undefined)[]): Observable<ServerResponse> {
-    const url = `${this.API_URL}/student/destroys`;
+  deleteTutors(ids: (number | undefined)[]): Observable<ServerResponse> {
+    const url = `${this.API_URL}/tutor/destroys`;
     return this.httpClient.patch<ServerResponse>(url, {ids})
       .pipe(
         map(response => response),
