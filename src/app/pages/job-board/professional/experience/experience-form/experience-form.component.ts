@@ -20,7 +20,7 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
   private subscriptions: Subscription[] = [];
   form: FormGroup;
   progressBar: boolean = false;
-  skeletonLoading: boolean = false;
+  loadingSkeleton: boolean = false;
   title: string = 'Crear Experiencia Profesional';
   buttonTitle: string = 'Crear Experiencia Profesional';
   areas: CatalogueModel[] = [];
@@ -86,7 +86,7 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
   }
 
   loadExperience(): void {
-    this.skeletonLoading = true;
+    this.loadingSkeleton = true;
     this.subscriptions.push(
       this.jobBoardHttpService
         .getExperience(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
@@ -97,9 +97,9 @@ export class ExperienceFormComponent implements OnInit, OnDestroy, OnExitInterfa
             response.data.activities.forEach((value: string) => {
               this.addActivity(value);
             });
-            this.skeletonLoading = false;
+            this.loadingSkeleton = false;
           }, error => {
-            this.skeletonLoading = false;
+            this.loadingSkeleton = false;
             this.messageService.error(error);
           }
         ));

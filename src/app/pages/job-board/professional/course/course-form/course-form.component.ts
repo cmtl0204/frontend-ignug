@@ -20,7 +20,7 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
   private subscriptions: Subscription[] = [];
   form: FormGroup;
   progressBar: boolean = false;
-  skeletonLoading: boolean = false;
+  loadingSkeleton: boolean = false;
   title: string = 'Crear Evento';
   buttonTitle: string = 'Crear Evento';
   types: CatalogueModel[] = [];
@@ -88,16 +88,16 @@ export class CourseFormComponent implements OnInit, OnDestroy, OnExitInterface {
   }
 
   loadCourse() {
-    this.skeletonLoading = true;
+    this.loadingSkeleton = true;
     this.subscriptions.push(
       this.jobBoardHttpService
         .getCourse(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
         .subscribe(
           response => {
             this.form.patchValue(response.data);
-            this.skeletonLoading = false;
+            this.loadingSkeleton = false;
           }, error => {
-            this.skeletonLoading = false;
+            this.loadingSkeleton = false;
             this.messageService.error(error);
           }
         ));

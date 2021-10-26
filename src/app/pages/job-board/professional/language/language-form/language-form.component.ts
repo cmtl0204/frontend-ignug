@@ -20,7 +20,7 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
   private subscriptions: Subscription[] = [];
   form: FormGroup;
   progressBar: boolean = false;
-  skeletonLoading: boolean = false;
+  loadingSkeleton: boolean = false;
   title: string = 'Crear Idioma';
   buttonTitle: string = 'Crear Idioma';
   idioms: CatalogueModel[] = [];
@@ -89,16 +89,16 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
   }
 
   loadLanguage(): void {
-    this.skeletonLoading = true;
+    this.loadingSkeleton = true;
     this.subscriptions.push(
       this.jobBoardHttpService
         .getLanguage(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
         .subscribe(
           response => {
             this.form.patchValue(response.data);
-            this.skeletonLoading = false;
+            this.loadingSkeleton = false;
           }, error => {
-            this.skeletonLoading = false;
+            this.loadingSkeleton = false;
             this.messageService.error(error);
           }
         ));

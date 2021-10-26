@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <p-toolbar *ngIf="!skeletonLoading" styleClass="bg-primary">
+  <p-toolbar *ngIf="!loadingSkeleton" styleClass="bg-primary">
     <div class="p-toolbar-group-left">
       <h3 class="ml-2">{{title}}</h3>
     </div>
@@ -13,9 +13,9 @@
   </p-toolbar>
 </div>
 <div class="container">
-  <app-skeleton *ngIf="skeletonLoading" [type]="'card'"></app-skeleton>
+  <app-skeleton *ngIf="loadingSkeleton" [type]="'card'"></app-skeleton>
   <p-card>
-    <div class="p-fluid" *ngIf="!skeletonLoading">
+    <div class="p-fluid" *ngIf="!loadingSkeleton">
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="formgrid grid">
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">

@@ -19,7 +19,7 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
   private subscriptions: Subscription[] = [];
   form: FormGroup;
   progressBar: boolean = false;
-  skeletonLoading: boolean = false;
+  loadingSkeleton: boolean = false;
   title: string = 'Crear Referencia Profesional';
   buttonTitle: string = 'Crear Referencia Profesional';
 
@@ -75,16 +75,16 @@ export class ReferenceFormComponent implements OnInit, OnDestroy, OnExitInterfac
   }
 
   loadReference() {
-    this.skeletonLoading = true;
+    this.loadingSkeleton = true;
     this.subscriptions.push(
       this.jobBoardHttpService.getReference(
         this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
         .subscribe(
           response => {
-            this.skeletonLoading = false;
+            this.loadingSkeleton = false;
             this.form.patchValue(response.data);
           }, error => {
-            this.skeletonLoading = false;
+            this.loadingSkeleton = false;
             this.messageService.error(error);
           }
         ));
