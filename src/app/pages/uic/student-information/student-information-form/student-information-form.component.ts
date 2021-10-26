@@ -7,21 +7,26 @@ import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {MessageService} from '@services/core';
 import {UicHttpService, UicService} from '@services/uic';
 import {StudentInformationModel, CategoryModel,} from '@models/uic';
+import { CatalogueModel } from '@models/core';
+import { StudentModel } from '@models/uic/student-information.model';
 
 @Component({
-  selector: 'app-academic-formation-form',
-  templateUrl: './academic-formation-form.component.html',
-  styleUrls: ['./academic-formation-form.component.scss']
+  selector: 'app-student-information-form',
+  templateUrl: './student-information-form.component.html',
+  styleUrls: ['./student-information-form.component.scss']
 })
 
-export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExitInterface {
+export class StudentInformationFormComponent implements OnInit, OnDestroy, OnExitInterface {
   private subscriptions: Subscription[] = [];
   form: FormGroup;
   progressBar: boolean = false;
   loadingSkeleton: boolean = false;
-  title: string = 'Crear Formación Académica';
-  buttonTitle: string = 'Crear Formación Académica';
-  professionalDegrees: CategoryModel[] = [];
+  title: string = 'Crear Información de estudiante';
+  buttonTitle: string = 'Crear Información de estudiante';
+  students: StudentModel[] = [];
+  relationLaboralCareers: CatalogueModel[] = [];
+  companyAreas: CatalogueModel[] = [];
+  companyPositions: CatalogueModel[] = [];
   yearRange: string = `1900:${(new Date()).getFullYear()}`;
 
   constructor(
@@ -36,7 +41,7 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/uic/professional']},
-      {label: 'Formaciones Académicas', routerLink: ['/uic/professional/academic-formation'], disabled: true},
+      {label: 'Formaciones Académicas', routerLink: ['/uic/professional/student-information'], disabled: true},
       {label: 'Formulario', disabled: true},
     ]);
     this.form = this.newForm();
@@ -47,9 +52,9 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
 
   ngOnInit(): void {
     if (this.activatedRoute.snapshot.params.id != 'new') {
-      this.title = 'Actualizar Formación Académica';
-      this.buttonTitle = 'Actualizar Formación Académica';
-      this.loadAcademicFormation();
+      this.title = 'Actualizar Información de estudiante';
+      this.buttonTitle = 'Actualizar Información de estudiante';
+      this.loadStudentInformation();
     }
     this.loadProfessionalDegrees();
   }
@@ -75,14 +80,15 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
       relationLaboralCareer: [false, [Validators.required]],
       companyArea: [null],
       companyPosition: [null],
+      companyWork: [null],
     });
   }
 
-  loadAcademicFormation() {
+  loadStudentInformation() {
     this.loadingSkeleton = true;
     this.subscriptions.push(
       this.uicHttpService
-        .getAcademicFormation(this.uicService.professional.id!, this.activatedRoute.snapshot.params.id)
+        .getStudentInformation(this.activatedRoute.snapshot.params.id)
         .subscribe(
           response => {
             this.form.patchValue(response.data);
@@ -94,12 +100,48 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
         ));
   }
 
-  loadProfessionalDegrees() {
+  loadStudents() {
     this.subscriptions.push(
-      this.uicHttpService.getProfessionalDegrees()
+      this.uicHttpService.getStudents()
         .subscribe(
           response => {
-            this.professionalDegrees = response.data;
+            this.students = response.data;
+          }, error => {
+            this.messageService.error(error);
+          }
+        ));
+  }
+
+  loadRelationLaboralCareers() {
+    this.subscriptions.push(
+      this.uicHttpService.getRelationLaboralCareers()
+        .subscribe(
+          response => {
+            this.relationLaboralCareers = response.data;
+          }, error => {
+            this.messageService.error(error);
+          }
+        ));
+  }
+
+  loadCompanyAreas() {
+    this.subscriptions.push(
+      this.uicHttpService.getCompanyAreas()
+        .subscribe(
+          response => {
+            this.companyAreas = response.data;
+          }, error => {
+            this.messageService.error(error);
+          }
+        ));
+  }
+
+  loadCompanyPositions() {
+    this.subscriptions.push(
+      this.uicHttpService.getCompanyPositions()
+        .subscribe(
+          response => {
+            this.companyPositions = response.data;
           }, error => {
             this.messageService.error(error);
           }
@@ -121,7 +163,7 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
   store(studentInformation: StudentInformationModel): void {
     this.progressBar = true;
     this.subscriptions.push(
-      this.uicHttpService.storeAcademicFormation(studentInformation, this.uicService.professional.id!)
+      this.uicHttpService.storeStudentInformation(studentInformation)
         .subscribe(
           response => {
             this.messageService.success(response);
@@ -139,7 +181,7 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
   update(studentInformation: StudentInformationModel): void {
     this.progressBar = true;
     this.subscriptions.push(
-      this.uicHttpService.updateAcademicFormation(studentInformation.id!, studentInformation, this.uicService.professional.id!)
+      this.uicHttpService.updateStudentInformation(studentInformation.id!, studentInformation)
         .subscribe(
           response => {
             this.messageService.success(response);
@@ -194,6 +236,10 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
 
   get companyPositionField() {
     return this.form.controls['companyPosition'];
+  }
+  
+  get companyWorkField() {
+    return this.form.controls['companyWork'];
   }
 }
 

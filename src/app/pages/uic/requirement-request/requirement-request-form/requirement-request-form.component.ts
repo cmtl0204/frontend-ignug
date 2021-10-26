@@ -21,7 +21,8 @@ export class RequirementRequestFormComponent implements OnInit, OnDestroy, OnExi
   loadingSkeleton: boolean = false;
   title: string = 'Crear Formación Académica';
   buttonTitle: string = 'Crear Formación Académica';
-  professionalDegrees: CategoryModel[] = [];
+  requirements: RequirementModel[] = [];
+  meshStudents: MeshStudentModel[] = [];
   yearRange: string = `1900:${(new Date()).getFullYear()}`;
 
   constructor(
@@ -40,7 +41,7 @@ export class RequirementRequestFormComponent implements OnInit, OnDestroy, OnExi
       {label: 'Formulario', disabled: true},
     ]);
     this.form = this.newForm();
-    this.certificatedField.valueChanges.subscribe(value => {
+    this.approvedField.valueChanges.subscribe(value => {
       this.verifyCertificatedValidators();
     });
   }
@@ -95,12 +96,23 @@ export class RequirementRequestFormComponent implements OnInit, OnDestroy, OnExi
         ));
   }
 
-  loadProfessionalDegrees() {
+  loadRequirements() {
     this.subscriptions.push(
-      this.uicHttpService.getProfessionalDegrees()
+      this.uicHttpService.getRequirements()
         .subscribe(
           response => {
-            this.professionalDegrees = response.data;
+            this.requirements = response.data;
+          }, error => {
+            this.messageService.error(error);
+          }
+        ));
+  }
+  loadMeshStudents() {
+    this.subscriptions.push(
+      this.uicHttpService.getMeshStudents()
+        .subscribe(
+          response => {
+            this.meshStudents = response.data;
           }, error => {
             this.messageService.error(error);
           }
@@ -156,7 +168,7 @@ export class RequirementRequestFormComponent implements OnInit, OnDestroy, OnExi
   }
 
   verifyCertificatedValidators() {
-    if (this.certificatedField.value) {
+    if (this.approvedField.value) {
       this.senescytCodeField.setValidators([Validators.required]);
       this.registeredAtField.setValidators([Validators.required]);
     } else {

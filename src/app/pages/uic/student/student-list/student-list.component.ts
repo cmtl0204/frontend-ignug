@@ -147,10 +147,8 @@ export class StudentListComponent implements OnInit {
 
   setCols() {
     this.cols = [
-      {field: 'student', header: 'Título'},
-      {field: 'relationLaboralCareer', header: 'Relación de carrera laboral'},
-      {field: 'companyArea', header: 'Área de la compañía'},
-      {field: 'companyPosition', header: 'Posición en la compañía'},
+      {field: 'projectPlan', header: 'Plan de proyecto'},
+      {field: 'observations', header: 'Observaciones'},
       {field: 'updatedAt', header: 'Última actualización'},
     ];
   }
