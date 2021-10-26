@@ -7,12 +7,12 @@ import {
   AcademicFormationModel,
   CategoryModel,
   StudentModel,
-  ExperienceModel,
-  LanguageModel,
-  ProfessionalModel,
+  EventModel,
+  ProjectModel,
+  ProjectPlanModel,
   ReferenceModel,
   SkillModel
-} from '@models/job-board';
+} from '@models/uic';
 import {catchError, map} from 'rxjs/operators';
 import {Handler} from '../../exceptions/handler';
 import {MessageService} from "@services/core";
@@ -219,7 +219,7 @@ export class UicHttpService {
 
   // Santiago
   
-  getStudents(paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
+  getEvents(paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
     const url = `${this.API_URL}/events`;
     const params = new HttpParams()
       .set('page', paginator.current_page)
@@ -235,8 +235,8 @@ export class UicHttpService {
       );
   }
 
-  getStudent(id: number): Observable<ServerResponse> {
-    const url = `${this.API_URL}/students/${id}`;
+  getEvent(id: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/events/${id}`;
     return this.httpClient.get<ServerResponse>(url)
       .pipe(
         map(response => response),
@@ -244,26 +244,26 @@ export class UicHttpService {
       );
   }
 
-  storeStudent(student: StudentModel): Observable<ServerResponse> {
-    const url = `${this.API_URL}/students`;
-    return this.httpClient.post<ServerResponse>(url, student)
+  storeEvent(event: EventModel): Observable<ServerResponse> {
+    const url = `${this.API_URL}/events`;
+    return this.httpClient.post<ServerResponse>(url, event)
       .pipe(
         map(response => response),
         catchError(Handler.render)
       );
   }
 
-  updateStudent(id: number, student: StudentModel): Observable<ServerResponse> {
-    const url = `${this.API_URL}/students/${id}`;
-    return this.httpClient.put<ServerResponse>(url, student)
+  updateEvent(id: number, event: EventModel): Observable<ServerResponse> {
+    const url = `${this.API_URL}/events/${id}`;
+    return this.httpClient.put<ServerResponse>(url, event)
       .pipe(
         map(response => response),
         catchError(Handler.render)
       );
   }
 
-  deleteStudent(id: number): Observable<ServerResponse> {
-    const url = `${this.API_URL}/students/${id}`;
+  deleteEvent(id: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/events/${id}`;
     return this.httpClient.delete<ServerResponse>(url)
       .pipe(
         map(response => response),
@@ -271,7 +271,7 @@ export class UicHttpService {
       );
   }
 
-  deleteStudents(ids: (number | undefined)[]): Observable<ServerResponse> {
+  deleteEvents(ids: (number | undefined)[]): Observable<ServerResponse> {
     const url = `${this.API_URL}/event/destroys`;
     return this.httpClient.patch<ServerResponse>(url, {ids})
       .pipe(
@@ -280,10 +280,10 @@ export class UicHttpService {
       );
   }
 
-  //
+  //Project
 
-  getStudents(paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
-    const url = `${this.API_URL}/students`;
+  getProjects(paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
+    const url = `${this.API_URL}/projects`;
     const params = new HttpParams()
       .set('page', paginator.current_page)
       .set('per_page', paginator.per_page);
@@ -298,8 +298,8 @@ export class UicHttpService {
       );
   }
 
-  getStudent(id: number): Observable<ServerResponse> {
-    const url = `${this.API_URL}/students/${id}`;
+  getProject(id: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/projects/${id}`;
     return this.httpClient.get<ServerResponse>(url)
       .pipe(
         map(response => response),
@@ -307,26 +307,26 @@ export class UicHttpService {
       );
   }
 
-  storeStudent(student: StudentModel): Observable<ServerResponse> {
-    const url = `${this.API_URL}/students`;
-    return this.httpClient.post<ServerResponse>(url, student)
+  storeProject(project: ProjectModel): Observable<ServerResponse> {
+    const url = `${this.API_URL}/projects`;
+    return this.httpClient.post<ServerResponse>(url, project)
       .pipe(
         map(response => response),
         catchError(Handler.render)
       );
   }
 
-  updateStudent(id: number, student: StudentModel): Observable<ServerResponse> {
-    const url = `${this.API_URL}/students/${id}`;
-    return this.httpClient.put<ServerResponse>(url, student)
+  updateProject(id: number, project: ProjectModel): Observable<ServerResponse> {
+    const url = `${this.API_URL}/projects/${id}`;
+    return this.httpClient.put<ServerResponse>(url, project)
       .pipe(
         map(response => response),
         catchError(Handler.render)
       );
   }
 
-  deleteStudent(id: number): Observable<ServerResponse> {
-    const url = `${this.API_URL}/students/${id}`;
+  deleteProject(id: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/projects/${id}`;
     return this.httpClient.delete<ServerResponse>(url)
       .pipe(
         map(response => response),
@@ -334,8 +334,8 @@ export class UicHttpService {
       );
   }
 
-  deleteStudents(ids: (number | undefined)[]): Observable<ServerResponse> {
-    const url = `${this.API_URL}/student/destroys`;
+  deleteProjects(ids: (number | undefined)[]): Observable<ServerResponse> {
+    const url = `${this.API_URL}/project/destroys`;
     return this.httpClient.patch<ServerResponse>(url, {ids})
       .pipe(
         map(response => response),
@@ -343,10 +343,10 @@ export class UicHttpService {
       );
   }
 
-  //
+  //Project Plan
 
-  getStudents(paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
-    const url = `${this.API_URL}/students`;
+  getProjectPlans(paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
+    const url = `${this.API_URL}/projectPlans`;
     const params = new HttpParams()
       .set('page', paginator.current_page)
       .set('per_page', paginator.per_page);
@@ -361,8 +361,8 @@ export class UicHttpService {
       );
   }
 
-  getStudent(id: number): Observable<ServerResponse> {
-    const url = `${this.API_URL}/students/${id}`;
+  getProjectPlan(id: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/projectPlans/${id}`;
     return this.httpClient.get<ServerResponse>(url)
       .pipe(
         map(response => response),
@@ -370,26 +370,26 @@ export class UicHttpService {
       );
   }
 
-  storeStudent(student: StudentModel): Observable<ServerResponse> {
-    const url = `${this.API_URL}/students`;
-    return this.httpClient.post<ServerResponse>(url, student)
+  storeProjectPlan(projectPlan: ProjectPlanModel): Observable<ServerResponse> {
+    const url = `${this.API_URL}/projectPlans`;
+    return this.httpClient.post<ServerResponse>(url, projectPlan)
       .pipe(
         map(response => response),
         catchError(Handler.render)
       );
   }
 
-  updateStudent(id: number, student: StudentModel): Observable<ServerResponse> {
-    const url = `${this.API_URL}/students/${id}`;
-    return this.httpClient.put<ServerResponse>(url, student)
+  updateProjectPlan(id: number, projectPlan: ProjectPlanModel): Observable<ServerResponse> {
+    const url = `${this.API_URL}/projectPlans/${id}`;
+    return this.httpClient.put<ServerResponse>(url, projectPlan)
       .pipe(
         map(response => response),
         catchError(Handler.render)
       );
   }
 
-  deleteStudent(id: number): Observable<ServerResponse> {
-    const url = `${this.API_URL}/students/${id}`;
+  deleteProjectPlan(id: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/projectPlans/${id}`;
     return this.httpClient.delete<ServerResponse>(url)
       .pipe(
         map(response => response),
@@ -397,8 +397,8 @@ export class UicHttpService {
       );
   }
 
-  deleteStudents(ids: (number | undefined)[]): Observable<ServerResponse> {
-    const url = `${this.API_URL}/student/destroys`;
+  deleteProjectPlans(ids: (number | undefined)[]): Observable<ServerResponse> {
+    const url = `${this.API_URL}/projectPlant/destroys`;
     return this.httpClient.patch<ServerResponse>(url, {ids})
       .pipe(
         map(response => response),
