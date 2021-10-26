@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <p-toolbar *ngIf="!skeletonLoading" styleClass="bg-primary">
+  <p-toolbar *ngIf="!loadingSkeleton" styleClass="bg-primary">
     <div class="p-toolbar-group-left">
       <h3 class="ml-2">{{title}}</h3>
     </div>
@@ -7,64 +7,99 @@
       <app-progress-bar *ngIf="progressBar" [message]="messageService.progressBarSaveOrUpdate"></app-progress-bar>
       <i *ngIf="form.touched || form.dirty" class="pi pi-check p-button p-button-text" (click)="onSubmit()"
          style="font-size: 2rem; color: #fff" [pTooltip]="messageService.buttonFormSaveOrUpdate"></i>
-      <i class="pi pi-times p-button p-button-text" [routerLink]="['/custom/example']"
+      <i class="pi pi-times p-button p-button-text" (click)="returnList()"
          style="font-size: 2rem; color: #fff" [pTooltip]="messageService.buttonFormClose"></i>
     </div>
   </p-toolbar>
 </div>
 <div class="container">
-  <app-skeleton *ngIf="skeletonLoading" [type]="'card'"></app-skeleton>
+  <app-skeleton *ngIf="loadingSkeleton" [type]="'card'"></app-skeleton>
   <p-card>
-    <div class="p-fluid" *ngIf="!skeletonLoading">
+    <div class="p-fluid" *ngIf="!loadingSkeleton">
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
-
-        <div class="field">
-          <label for="parent" appLabel label="Área de estudios:"
-                 [required]="isRequired(parentField)"
-                 [valid]="parentField.valid"
-                 [touched]="parentField.touched"
-                 [dirty]="parentField.dirty">
-          </label>
-          <p-dropdown id="parent"
-                      [options]="areas"
-                      formControlName="parent"
-                      [filter]="true"
-                      filterBy="name"
-                      placeholder="Seleccione">
-            <ng-template pTemplate="selectedItem">
-              <div class="country-item country-item-value" *ngIf="parentField.value">
-                <div>{{parentField.value?.name}}</div>
-              </div>
-            </ng-template>
-            <ng-template let-item pTemplate="item">
-              <div class="country-item">
-                <div>{{item.name}}</div>
-              </div>
-            </ng-template>
-          </p-dropdown>
-          <small appErrorMessage
-                 [errors]="parentField.errors"
-                 [touched]="parentField.touched"
-                 [dirty]="parentField.dirty">
-          </small>
+        <div class="formgrid grid">
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <label for="professionalDegree" appLabel label="Título:"
+                   [required]="isRequired(professionalDegreeField)"
+                   [valid]="professionalDegreeField.valid"
+                   [touched]="professionalDegreeField.touched"
+                   [dirty]="professionalDegreeField.dirty">
+            </label>
+            <p-dropdown id="professionalDegree"
+                        [options]="professionalDegrees"
+                        formControlName="professionalDegree"
+                        dataKey="id"
+                        [filter]="true"
+                        filterBy="name"
+                        placeholder="Seleccione">
+              <ng-template pTemplate="selectedItem">
+                <div class="country-item country-item-value" *ngIf="professionalDegreeField.value">
+                  <div>{{professionalDegreeField.value?.name}}</div>
+                </div>
+              </ng-template>
+              <ng-template let-item pTemplate="item">
+                <div class="country-item">
+                  <div>{{item.name}} </div>
+                </div>
+              </ng-template>
+            </p-dropdown>
+            <small appErrorMessage
+                   [errors]="professionalDegreeField.errors"
+                   [touched]="professionalDegreeField.touched"
+                   [dirty]="professionalDegreeField.dirty">
+            </small>
+          </div>
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <label for="certificated" appLabel label="¿Está titulado?"
+                   [required]="isRequired(certificatedField)"
+                   [valid]="certificatedField.valid"
+                   [touched]="certificatedField.touched"
+                   [dirty]="certificatedField.dirty">
+            </label>
+            <p>
+              <p-inputSwitch id="certificated" formControlName="certificated"></p-inputSwitch>
+            </p>
+            <small appErrorMessage
+                   [errors]="certificatedField.errors"
+                   [touched]="certificatedField.touched"
+                   [dirty]="certificatedField.dirty">
+            </small>
+          </div>
         </div>
-
-        <div class="field">
-          <label for="name" appLabel label="Título:"
-                 [required]="isRequired(nameField)"
-                 [valid]="nameField.valid"
-                 [touched]="nameField.touched"
-                 [dirty]="nameField.dirty">
-          </label>
-          <input pInputText id="name" formControlName="name" class="text-uppercase"
-                 placeholder="Ej. Título en Medicina General">
-          <small appErrorMessage
-                 [errors]="nameField.errors"
-                 [touched]="nameField.touched"
-                 [dirty]="nameField.dirty">
-          </small>
+        <div *ngIf="certificatedField.value" class="formgrid grid">
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <label for="senescytCode" appLabel label="Código Senescyt:"
+                   [required]="isRequired(senescytCodeField)"
+                   [valid]="senescytCodeField.valid"
+                   [touched]="senescytCodeField.touched"
+                   [dirty]="senescytCodeField.dirty"></label>
+            <input pInputText id="senescytCode" formControlName="senescytCode">
+            <small appErrorMessage
+                   [errors]="senescytCodeField.errors"
+                   [touched]="senescytCodeField.touched"
+                   [dirty]="senescytCodeField.dirty">
+            </small>
+          </div>
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <label for="registeredAt" appLabel label="Fecha de registro:"
+                   [required]="isRequired(registeredAtField)"
+                   [valid]="registeredAtField.valid"
+                   [touched]="registeredAtField.touched"
+                   [dirty]="registeredAtField.dirty">
+            </label>
+            <p-calendar id="registeredAt" formControlName="registeredAt" dateFormat="yy-mm-dd"
+                        [yearRange]="yearRange"
+                        [showIcon]="true"
+                        [monthNavigator]="true"
+                        [yearNavigator]="true"
+                        [readonlyInput]="true"></p-calendar>
+            <small appErrorMessage
+                   [errors]="registeredAtField.errors"
+                   [touched]="registeredAtField.touched"
+                   [dirty]="registeredAtField.dirty">
+            </small>
+          </div>
         </div>
-
         <p-divider></p-divider>
         <div class="formgrid grid">
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">

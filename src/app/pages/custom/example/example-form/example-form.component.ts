@@ -21,7 +21,7 @@ export class ExampleFormComponent implements OnInit, OnDestroy, OnExitInterface 
   loadingSkeleton: boolean = false;
   title: string = 'Crear Custom';
   buttonTitle: string = 'Crear Custom';
-
+  yearRange: string = `1900:${(new Date()).getFullYear()}`;
   //areas: AreaModel[] = [];
 
   constructor(
@@ -65,10 +65,10 @@ export class ExampleFormComponent implements OnInit, OnDestroy, OnExitInterface 
   newForm(): FormGroup {
     return this.formBuilder.group({
       id: [null],
-      parent: [null, [Validators.required]],
-      name: [null, [Validators.required]],
-      code: [null],
-      icon: [null],
+      professionalDegree: [null, [Validators.required]],
+      certificated: [false, [Validators.required]],
+      observations: [null],
+      registeredAt: [null],
     });
   }
 
@@ -122,7 +122,7 @@ export class ExampleFormComponent implements OnInit, OnDestroy, OnExitInterface 
             this.messageService.success(response);
             this.form.reset();
             this.progressBar = false;
-            this.router.navigate(['/custom/example']);
+            this.returnList();
           },
           error => {
             this.messageService.error(error);
@@ -140,7 +140,7 @@ export class ExampleFormComponent implements OnInit, OnDestroy, OnExitInterface 
             this.messageService.success(response);
             this.progressBar = false;
             this.form.reset();
-            this.router.navigate(['/custom/example']);
+            this.returnList();
           },
           error => {
             this.messageService.error(error);
@@ -152,7 +152,9 @@ export class ExampleFormComponent implements OnInit, OnDestroy, OnExitInterface 
   isRequired(field: AbstractControl): boolean {
     return field.hasValidator(Validators.required);
   }
-
+  returnList() {
+    this.router.navigate(['/job-board/professional', 2]);
+  }
   get idField() {
     return this.form.controls['id'];
   }
