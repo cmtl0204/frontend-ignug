@@ -1,0 +1,127 @@
+<div class="container-fluid">
+  <p-toolbar *ngIf="!loadingSkeleton" styleClass="bg-primary">
+    <div class="p-toolbar-group-left">
+      <h3 class="ml-2">{{title}}</h3>
+    </div>
+    <div class="p-toolbar-group-right">
+      <app-progress-bar *ngIf="progressBar" [message]="messageService.progressBarSaveOrUpdate"></app-progress-bar>
+      <i *ngIf="form.touched || form.dirty" class="pi pi-check p-button p-button-text" (click)="onSubmit()"
+         style="font-size: 2rem; color: #fff" [pTooltip]="messageService.buttonFormSaveOrUpdate"></i>
+      <i class="pi pi-times p-button p-button-text" (click)="returnList()"
+         style="font-size: 2rem; color: #fff" [pTooltip]="messageService.buttonFormClose"></i>
+    </div>
+  </p-toolbar>
+</div>
+<div class="container">
+  <app-skeleton *ngIf="loadingSkeleton" [type]="'card'"></app-skeleton>
+  <p-card>
+    <div class="p-fluid" *ngIf="!loadingSkeleton">
+
+        <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
+          <label for="meshStudent" appLabel label="Malla curricular:"
+                   [required]="isRequired(meshStudentField)"
+                   [valid]="meshStudentField.valid"
+                   [touched]="meshStudentField.touched"
+                   [dirty]="meshStudentField.dirty">
+            </label>
+            <p-dropdown id="meshStudent"
+                        [options]="meshStudents"
+                        formControlName="meshStudent"
+                        dataKey="id"
+                        [filter]="true"
+                        filterBy="name"
+                        placeholder="Seleccione">
+              <ng-template pTemplate="selectedItem">
+                <div class="country-item country-item-value" *ngIf="meshStudentField.value">
+                  <div>{{meshStudentField.value?.name}}</div>
+                </div>
+              </ng-template>
+              <ng-template let-item pTemplate="item">
+                <div class="country-item">
+                  <div>{{item.name}} </div>
+                </div>
+              </ng-template>
+            </p-dropdown>
+            <small appErrorMessage
+                   [errors]="meshStudentField.errors"
+                   [touched]="meshStudentField.touched"
+                   [dirty]="meshStudentField.dirty">
+            </small>
+        </div>
+
+        <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
+          <label for="requirement" appLabel label="Requerimiento :"
+                   [required]="isRequired(requirementField)"
+                   [valid]="requirementField.valid"
+                   [touched]="requirementField.touched"
+                   [dirty]="requirementField.dirty">
+            </label>
+            <p-dropdown id="requirement"
+                        [options]="requirements"
+                        formControlName="requirement"
+                        dataKey="id"
+                        [filter]="true"
+                        filterBy="name"
+                        placeholder="Seleccione">
+              <ng-template pTemplate="selectedItem">
+                <div class="country-item country-item-value" *ngIf="requirementField.value">
+                  <div>{{requirementField.value?.name}}</div>
+                </div>
+              </ng-template>
+              <ng-template let-item pTemplate="item">
+                <div class="country-item">
+                  <div>{{item.name}} </div>
+                </div>
+              </ng-template>
+            </p-dropdown>
+            <small appErrorMessage
+                   [errors]="requirementField.errors"
+                   [touched]="requirementField.touched"
+                   [dirty]="requirementField.dirty">
+            </small>
+        </div>
+
+        <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
+          <label for="approved" appLabel label="¿Está aprobado?:"
+                 [required]="isRequired(approvedField)"
+                 [valid]="approvedField.valid"
+                 [touched]="approvedField.touched"
+                 [dirty]="approvedField.dirty">
+          </label>
+          <input pInputText id="approved" formControlName="approved" pKeyFilter="pnum">
+          <small appErrorMessage
+                 [errors]="approvedField.errors"
+                 [touched]="approvedField.touched"
+                 [dirty]="approvedField.dirty">
+          </small>
+        </div>
+
+        <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
+          <label for="observations" appLabel label="Observaciónes:"
+                 [required]="isRequired(contactPhoneField)"
+                 [valid]="observationsField.valid"
+                 [touched]="observationsField.touched"
+                 [dirty]="observationsField.dirty">
+          </label>
+          <input pInputText id="observations" formControlName="observations" pKeyFilter="pnum">
+          <small appErrorMessage
+                 [errors]="observationsField.errors"
+                 [touched]="observationsField.touched"
+                 [dirty]="observationsField.dirty">
+          </small>
+        </div>
+
+        <p-divider></p-divider>
+
+        <div class="formgrid grid">
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <button pButton pRipple [label]="buttonTitle" class="p-button-rounded" icon="pi pi-save"></button>
+          </div>
+          <div *ngIf="progressBar" class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <app-progress-bar [message]="messageService.progressBarSaveOrUpdate"></app-progress-bar>
+          </div>
+        </div>
+      </form>
+    </div>
+  </p-card>
+</div>

@@ -1,0 +1,109 @@
+<div class="container-fluid">
+  <p-toolbar *ngIf="!loadingSkeleton" styleClass="bg-primary">
+    <div class="p-toolbar-group-left">
+      <h3 class="ml-2">{{title}}</h3>
+    </div>
+    <div class="p-toolbar-group-right">
+      <app-progress-bar *ngIf="progressBar" [message]="messageService.progressBarSaveOrUpdate"></app-progress-bar>
+      <i *ngIf="form.touched || form.dirty" class="pi pi-check p-button p-button-text" (click)="onSubmit()"
+         style="font-size: 2rem; color: #fff" [pTooltip]="messageService.buttonFormSaveOrUpdate"></i>
+      <i class="pi pi-times p-button p-button-text" (click)="returnList()"
+         style="font-size: 2rem; color: #fff" [pTooltip]="messageService.buttonFormClose"></i>
+    </div>
+  </p-toolbar>
+</div>
+<div class="container">
+  <app-skeleton *ngIf="loadingSkeleton" [type]="'card'"></app-skeleton>
+  <p-card>
+    <div class="p-fluid" *ngIf="!loadingSkeleton">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
+          <label for="career" appLabel label="Cargo:"
+                   [required]="isRequired(careerField)"
+                   [valid]="careerField.valid"
+                   [touched]="careerField.touched"
+                   [dirty]="careerField.dirty">
+            </label>
+            <p-dropdown id="career"
+                        [options]="careers"
+                        formControlName="career"
+                        dataKey="id"
+                        [filter]="true"
+                        filterBy="name"
+                        placeholder="Seleccione">
+              <ng-template pTemplate="selectedItem">
+                <div class="country-item country-item-value" *ngIf="careerField.value">
+                  <div>{{careerField.value?.name}}</div>
+                </div>
+              </ng-template>
+              <ng-template let-item pTemplate="item">
+                <div class="country-item">
+                  <div>{{item.name}} </div>
+                </div>
+              </ng-template>
+            </p-dropdown>
+            <small appErrorMessage
+                   [errors]="careerField.errors"
+                   [touched]="careerField.touched"
+                   [dirty]="careerField.dirty">
+            </small>
+        </div>
+          
+        <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
+          <label for="name" appLabel label="Nombre:"
+                 [required]="isRequired(nameField)"
+                 [valid]="nameField.valid"
+                 [touched]="nameField.touched"
+                 [dirty]="nameField.dirty">
+          </label>
+          <input pInputText id="name" formControlName="name" pKeyFilter="pnum">
+          <small appErrorMessage
+                 [errors]="nameField.errors"
+                 [touched]="nameField.touched"
+                 [dirty]="nameField.dirty">
+          </small>
+        </div>
+
+        <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
+          <label for="required" appLabel label="¿Es requrido?:"
+                 [required]="isRequired(requiredField)"
+                 [valid]="requiredField.valid"
+                 [touched]="requiredField.touched"
+                 [dirty]="requiredField.dirty">
+          </label>
+          <input pInputText id="required" formControlName="required" pKeyFilter="pnum">
+          <small appErrorMessage
+                 [errors]="requiredField.errors"
+                 [touched]="requiredField.touched"
+                 [dirty]="requiredField.dirty">
+          </small>
+        </div>
+
+        <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
+          <label for="solicited" appLabel label="¿Se solicita?:"
+                 [required]="isRequired(solicitedField)"
+                 [valid]="solicitedField.valid"
+                 [touched]="solicitedField.touched"
+                 [dirty]="solicitedField.dirty">
+          </label>
+          <input pInputText id="solicited" formControlName="solicited" pKeyFilter="pnum">
+          <small appErrorMessage
+                 [errors]="solicitedField.errors"
+                 [touched]="solicitedField.touched"
+                 [dirty]="solicitedField.dirty">
+          </small>
+        </div>
+
+        <p-divider></p-divider>
+        <div class="formgrid grid">
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <button pButton pRipple [label]="buttonTitle" class="p-button-rounded" icon="pi pi-save"></button>
+          </div>
+          <div *ngIf="progressBar" class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <app-progress-bar [message]="messageService.progressBarSaveOrUpdate"></app-progress-bar>
+          </div>
+        </div>
+      </form>
+    </div>
+  </p-card>
+</div>
