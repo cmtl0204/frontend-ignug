@@ -1,0 +1,208 @@
+<div class="container-fluid">
+  <p-toolbar *ngIf="!loadingSkeleton" styleClass="bg-primary">
+    <div class="p-toolbar-group-left">
+      <h3 class="ml-2">{{title}}</h3>
+    </div>
+    <div class="p-toolbar-group-right">
+      <app-progress-bar *ngIf="progressBar" [message]="messageService.progressBarSaveOrUpdate"></app-progress-bar>
+      <i *ngIf="form.touched || form.dirty" class="pi pi-check p-button p-button-text" (click)="onSubmit()"
+         style="font-size: 2rem; color: #fff" [pTooltip]="messageService.buttonFormSaveOrUpdate"></i>
+      <i class="pi pi-times p-button p-button-text" (click)="returnList()"
+         style="font-size: 2rem; color: #fff" [pTooltip]="messageService.buttonFormClose"></i>
+    </div>
+  </p-toolbar>
+</div>
+<div class="container">
+  <app-skeleton *ngIf="loadingSkeleton" [type]="'card'"></app-skeleton>
+  <p-card>
+    <div class="p-fluid" *ngIf="!loadingSkeleton">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="formgrid grid">
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <label for="enrollment" appLabel label="Título:"
+                   [required]="isRequired(enrollmentField)"
+                   [valid]="enrollmentField.valid"
+                   [touched]="enrollmentField.touched"
+                   [dirty]="enrollmentField.dirty">
+            </label>
+            <p-dropdown id="enrollment"
+                        [options]="enrollments"
+                        formControlName="enrollment"
+                        dataKey="id"
+                        [filter]="true"
+                        filterBy="name"
+                        placeholder="Seleccione">
+              <ng-template pTemplate="selectedItem">
+                <div class="country-item country-item-value" *ngIf="enrollmentField.value">
+                  <div>{{professionalDegreeField.value?.name}}</div>
+                </div>
+              </ng-template>
+              <ng-template let-item pTemplate="item">
+                <div class="country-item">
+                  <div>{{item.name}} </div>
+                </div>
+              </ng-template>
+            </p-dropdown>
+            <small appErrorMessage
+                   [errors]="enrollmentField.errors"
+                   [touched]="enrollmentField.touched"
+                   [dirty]="enrollmentField.dirty">
+            </small>
+          </div>
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <label for="projectPlan" appLabel label="Plan de Proyecto:"
+                   [required]="isRequired(projectPlanField)"
+                   [valid]="projectPlanField.valid"
+                   [touched]="projectPlanField.touched"
+                   [dirty]="projectPlanField.dirty">
+            </label>
+            <p-dropdown id="projectPlan"
+                        [options]="projectPlans"
+                        formControlName="projectPlan"
+                        dataKey="id"
+                        [filter]="true"
+                        filterBy="name"
+                        placeholder="Seleccione">
+              <ng-template pTemplate="selectedItem">
+                <div class="country-item country-item-value" *ngIf="projectPlanField.value">
+                  <div>{{projectPlanField.value?.name}}</div>
+                </div>
+              </ng-template>
+              <ng-template let-item pTemplate="item">
+                <div class="country-item">
+                  <div>{{item.name}} </div>
+                </div>
+              </ng-template>
+            </p-dropdown>
+            <small appErrorMessage
+                   [errors]="projectPlanField.errors"
+                   [touched]="projectPlanField.touched"
+                   [dirty]="projectPlanField.dirty">
+            </small>
+          </div>
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <label for="title" appLabel label="Titulo"
+                   [required]="isRequired(titleField)"
+                   [valid]="titleField.valid"
+                   [touched]="titleField.touched"
+                   [dirty]="titleField.dirty">
+            </label>
+            <p>
+              <p-inputSwitch id="title" formControlName="title"></p-inputSwitch>
+            </p>
+            <small appErrorMessage
+                   [errors]="titleField.errors"
+                   [touched]="titleField.touched"
+                   [dirty]="titleField.dirty">
+            </small>
+          </div>
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <label for="description" appLabel label="Descripcion"
+                   [required]="isRequired(descriptionField)"
+                   [valid]="descriptionField.valid"
+                   [touched]="descriptionField.touched"
+                   [dirty]="descriptionField.dirty">
+            </label>
+            <p>
+              <p-inputSwitch id="description" formControlName="description"></p-inputSwitch>
+            </p>
+            <small appErrorMessage
+                   [errors]="descriptionField.errors"
+                   [touched]="descriptionField.touched"
+                   [dirty]="descriptionField.dirty">
+            </small>
+          </div>
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <label for="score" appLabel label="Puntaje"
+                   [required]="isRequired(scoreField)"
+                   [valid]="scoreField.valid"
+                   [touched]="scoreField.touched"
+                   [dirty]="scoreField.dirty">
+            </label>
+            <p>
+              <p-inputSwitch id="score" formControlName="score"></p-inputSwitch>
+            </p>
+            <small appErrorMessage
+                   [errors]="scoreField.errors"
+                   [touched]="scoreField.touched"
+                   [dirty]="scoreField.dirty">
+            </small>
+          </div>
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <label for="totalAdvance" appLabel label="Avance total"
+                   [required]="isRequired(totalAdvanceField)"
+                   [valid]="totalAdvanceField.valid"
+                   [touched]="totalAdvanceField.touched"
+                   [dirty]="totalAdvanceField.dirty">
+            </label>
+            <p>
+              <p-inputSwitch id="totalAdvance" formControlName="totalAdvance"></p-inputSwitch>
+            </p>
+            <small appErrorMessage
+                   [errors]="totalAdvanceField.errors"
+                   [touched]="totalAdvanceField.touched"
+                   [dirty]="totalAdvanceField.dirty">
+            </small>
+          </div>
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <label for="approved" appLabel label="Aprovado"
+                   [required]="isRequired(approvedField)"
+                   [valid]="approvedField.valid"
+                   [touched]="approvedField.touched"
+                   [dirty]="approvedField.dirty">
+            </label>
+            <p>
+              <p-inputSwitch id="approved" formControlName="approved"></p-inputSwitch>
+            </p>
+            <small appErrorMessage
+                   [errors]="approvedField.errors"
+                   [touched]="approvedField.touched"
+                   [dirty]="approvedField.dirty">
+            </small>
+          </div>
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <label for="tutorAsigned" appLabel label="Aprovado"
+                   [required]="isRequired(tutorAsignedField)"
+                   [valid]="tutorAsignedField.valid"
+                   [touched]="tutorAsignedField.touched"
+                   [dirty]="tutorAsignedField.dirty">
+            </label>
+            <p>
+              <p-inputSwitch id="tutorAsigned" formControlName="tutorAsigned"></p-inputSwitch>
+            </p>
+            <small appErrorMessage
+                   [errors]="tutorAsignedField.errors"
+                   [touched]="tutorAsignedField.touched"
+                   [dirty]="tutorAsignedField.dirty">
+            </small>
+          </div>
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <label for="observations" appLabel label="Observaciones"
+                   [required]="isRequired(observationsField)"
+                   [valid]="observationsField.valid"
+                   [touched]="observationsField.touched"
+                   [dirty]="observationsField.dirty">
+            </label>
+            <p>
+              <p-inputSwitch id="observations" formControlName="observations"></p-inputSwitch>
+            </p>
+            <small appErrorMessage
+                   [errors]="observationsField.errors"
+                   [touched]="observationsField.touched"
+                   [dirty]="observationsField.dirty">
+            </small>
+          </div>
+        </div>
+        <p-divider></p-divider>
+        <div class="formgrid grid">
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <button pButton pRipple [label]="buttonTitle" class="p-button-rounded" icon="pi pi-save"></button>
+          </div>
+          <div *ngIf="progressBar" class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <app-progress-bar [message]="messageService.progressBarSaveOrUpdate"></app-progress-bar>
+          </div>
+        </div>
+      </form>
+    </div>
+  </p-card>
+</div>
