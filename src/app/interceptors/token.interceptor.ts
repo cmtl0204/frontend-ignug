@@ -23,7 +23,7 @@ export class TokenInterceptor implements HttpInterceptor {
         flag = true;
       }
     });
-    console.log(flag);
+
     if (flag) {
       headers = headers
         .append('Accept', 'application/json')

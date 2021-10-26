@@ -6,8 +6,8 @@ import {environment} from '@env/environment';
 import {LoginModel, ServerResponse} from '@models/core';
 import {LoginResponse} from '@models/core/login.response';
 import {AuthService} from './auth.service';
-import {JobBoardService} from '@services/job-board/job-board.service';
-import {CourseModel} from "@models/job-board";
+import {CustomService} from '@services/custom/custom.service';
+import {CourseModel} from "@models/custom";
 import {Handler} from "../../exceptions/handler";
 
 @Injectable({
@@ -17,7 +17,7 @@ import {Handler} from "../../exceptions/handler";
 export class AuthHttpService {
   API_URL: string = environment.API_URL;
 
-  constructor(private httpClient: HttpClient, private authService: AuthService, private jobBoardService: JobBoardService) {
+  constructor(private httpClient: HttpClient, private authService: AuthService, private jobBoardService: CustomService) {
 
   }
 

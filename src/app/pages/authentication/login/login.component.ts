@@ -95,7 +95,7 @@ export class LoginComponent implements OnInit {
   }
 
   redirect() {
-    this.router.navigate(['/job-board/professional']);
+    this.router.navigate(['/custom/professional']);
   }
 
   redirectRegistration() {

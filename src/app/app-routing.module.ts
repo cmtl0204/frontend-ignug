@@ -10,8 +10,8 @@ const routes: Routes = [
     path: '',
     component: MainComponent,
     children: [
-      {path: '', redirectTo: '/job-board/professional', pathMatch: 'full'},
-      {path: 'dashboard', redirectTo: '/job-board/professional', pathMatch: 'full'},
+      {path: '', redirectTo: '/custom/professional', pathMatch: 'full'},
+      {path: 'dashboard', redirectTo: '/custom/professional', pathMatch: 'full'},
       // {
       //   path: 'dashboard',
       //   loadChildren: () => import('./pages/core/dashboard/dashboard.module').then(m => m.DashboardModule),
@@ -29,8 +29,8 @@ const routes: Routes = [
         canActivate: [TokenGuard, RoleGuard]
       },
       {
-        path: 'job-board',
-        loadChildren: () => import('./pages/job-board/job-board.module').then(m => m.JobBoardModule),
+        path: 'custom',
+        loadChildren: () => import('./pages/custom/example.module').then(m => m.ExampleModule),
         data: {
           roles: [RolesEnum.PROFESSIONAL]
         },
@@ -40,7 +40,7 @@ const routes: Routes = [
   {
     path: 'registration',
     component: BlankComponent,
-    loadChildren: () => import('./pages/job-board/registration/registration.module').then(m => m.RegistrationModule)
+    loadChildren: () => import('./pages/custom/registration/registration.module').then(m => m.RegistrationModule)
   },
   {
     path: 'authentication',

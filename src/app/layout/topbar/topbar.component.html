@@ -54,7 +54,7 @@
       </ul>
       <ul class="navbar-nav ms-3">
         <li *appToken="'unauthenticated'" class="nav-item">
-          <a class="nav-link text-nowrap" [routerLink]="['/job-board/professional']">
+          <a class="nav-link text-nowrap" [routerLink]="['/custom/professional']">
             <i class="bi bi-box-arrow-in-right" style="font-size: 2rem; color: cornflowerblue;"></i>
             Iniciar Sesión
           </a>
@@ -63,7 +63,7 @@
 
       <form *appToken="'authenticated'" class="d-flex">
         <p-avatar image="assets/images/anonymous.png" styleClass="p-mr-2" size="xlarge" shape="circle"
-                  [routerLink]="['/job-board/professional']"></p-avatar>
+                  [routerLink]="['/custom/professional']"></p-avatar>
       </form>
     </div>
   </nav>

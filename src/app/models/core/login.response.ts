@@ -1,5 +1,5 @@
 import {UserModel,PermissionModel,RoleModel} from '@models/core';
-import {ProfessionalModel} from '@models/job-board';
+import {ProfessionalModel} from '@models/custom';
 
 export interface LoginResponse {
   data: Data;
