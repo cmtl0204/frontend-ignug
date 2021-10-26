@@ -12,14 +12,6 @@ const routes: Routes = [
     children: [
       {path: '', redirectTo: '/custom/professional', pathMatch: 'full'},
       {path: 'dashboard', redirectTo: '/custom/professional', pathMatch: 'full'},
-      // {
-      //   path: 'dashboard',
-      //   loadChildren: () => import('./pages/core/dashboard/dashboard.module').then(m => m.DashboardModule),
-      //   data: {
-      //     roles: [RolesEnum.PROFESSIONAL]
-      //   },
-      //   canActivate: [TokenGuard, RoleGuard]
-      // },
       {
         path: 'user-administration',
         loadChildren: () => import('./pages/core/user-administration/user-administration.module').then(m => m.UserAdministrationModule),
@@ -36,11 +28,6 @@ const routes: Routes = [
         },
       }
     ]
-  },
-  {
-    path: 'registration',
-    component: BlankComponent,
-    loadChildren: () => import('./pages/custom/registration/registration.module').then(m => m.RegistrationModule)
   },
   {
     path: 'authentication',

@@ -29,7 +29,7 @@ export class ExampleListComponent implements OnInit, OnDestroy {
   constructor(private router: Router,
               private breadcrumbService: BreadcrumbService,
               public messageService: MessageService,
-              private jobBoardHttpService: CustomHttpService,
+              private customHttpService: CustomHttpService,
   ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
@@ -52,7 +52,7 @@ export class ExampleListComponent implements OnInit, OnDestroy {
   loadExamples() {
     this.loading = true;
     this.subscriptions.push(
-      this.jobBoardHttpService.getCustoms(this.paginator, this.filter.value).subscribe(
+      this.customHttpService.getCustoms(this.paginator, this.filter.value).subscribe(
         response => {
           this.loading = false;
           this.examples = response.data;
@@ -89,7 +89,7 @@ export class ExampleListComponent implements OnInit, OnDestroy {
       .then((result) => {
         if (result.isConfirmed) {
           this.progressBarDelete = true;
-          this.subscriptions.push(this.jobBoardHttpService.deleteCustom(example.id!)
+          this.subscriptions.push(this.customHttpService.deleteCustom(example.id!)
             .subscribe(
               response => {
                 this.removeExample(example);
@@ -111,7 +111,7 @@ export class ExampleListComponent implements OnInit, OnDestroy {
         if (result.isConfirmed) {
           this.progressBarDelete = true;
           const ids = this.selectedExamples.map(element => element.id);
-          this.subscriptions.push(this.jobBoardHttpService.deleteCustoms(ids).subscribe(
+          this.subscriptions.push(this.customHttpService.deleteCustoms(ids).subscribe(
             response => {
               this.removeExamples(ids!);
               this.messageService.success(response);
