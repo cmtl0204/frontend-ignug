@@ -218,57 +218,42 @@
           </small>
         </div>
 
-//observations
         <div class="formgrid grid">
-          <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
-            <label appLabel label="Actividades realizadas:"
-                   [required]="isRequired(activitiesField)"
-                   [valid]="activitiesField.valid"
-                   [touched]="activitiesField.touched"
-                   [dirty]="activitiesField.dirty">
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <label for="timeStartedAt" appLabel label="Hora de Inicio:"
+                   [required]="isRequired(timeStartedAtField)"
+                   [valid]="timeStartedAtField.valid"
+                   [touched]="timeStartedAtField.touched"
+                   [dirty]="timeStartedAtField.dirty">
             </label>
+            <p-inputNumber id="timeStartedAt" formControlName="timeStartedAtField" mode="decimal" [showButtons]="true"
+                           [min]="0" [max]="1000" [step]="10">
+            </p-inputNumber>
+            <small appErrorMessage
+                   [errors]="timeStartedAtField.errors"
+                   [touched]="timeStartedAtField.touched"
+                   [dirty]="timeStartedAtField.dirty">
+            </small>
+
           </div>
-          <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
-            <button pButton pRipple type="button" label="Añadir" class="p-button-secondary p-button-rounded"
-                    icon="pi pi-plus"
-                    (click)="addActivity()"></button>
-          </div>
-        </div>
-        <div formArrayName="activities">
-          <div *ngFor="let activity of activitiesField.controls; let i = index;">
-            <div class="formgrid grid">
-              <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
-                <label [for]="'activity'+i" appLabel [label]="'Actividad ' + (i + 1) + ':'"
-                       [required]="isRequired(activitiesField.controls[i])"
-                       [valid]="activitiesField.controls[i].valid"
-                       [touched]="activitiesField.controls[i].touched"
-                       [dirty]="activitiesField.controls[i].dirty"></label>
-              </div>
-              <div class="field xl:col-9 lg:col-9 md:col-12 sm:col-12">
-                <input pInputText [id]="'activity'+i" [formControlName]="i" class="text-uppercase">
-                <small appErrorMessage
-                       [errors]="activitiesField.controls[i].errors"
-                       [touched]="activitiesField.controls[i].touched"
-                       [dirty]="activitiesField.controls[i].dirty">
-                </small>
-              </div>
-              <div class="field xl:col-1 lg:col-1 md:col-12 sm:col-12">
-                <button pButton pRipple type="button" (click)="removeActivity(i)" iconPos="right" icon="pi pi-trash"
-                        class="p-button-danger p-button-rounded"></button>
-              </div>
-            </div>
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <label for="timeEndedAt" appLabel label="Hora de Fin:"
+                   [required]="isRequired(timeEndedAtField)"
+                   [valid]="timeEndedAtField.valid"
+                   [touched]="timeEndedAtField.touched"
+                   [dirty]="timeEndedAtField.dirty">
+            </label>
+            <p-inputNumber id="timeEndedAt" formControlName="timeEndedAt" mode="decimal" [showButtons]="true"
+                           [min]="0" [max]="1000" [step]="10">
+            </p-inputNumber>
+            <small appErrorMessage
+                   [errors]="timeEndedAtField.errors"
+                   [touched]="timeEndedAtField.touched"
+                   [dirty]="timeEndedAtField.dirty">
+            </small>
           </div>
         </div>
 
-        <p-divider></p-divider>
-        <div class="formgrid grid">
-          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-            <button pButton pRipple [label]="buttonTitle" class="p-button-rounded" icon="pi pi-save"></button>
-          </div>
-          <div *ngIf="progressBar" class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-            <app-progress-bar [message]="messageService.progressBarSaveOrUpdate"></app-progress-bar>
-          </div>
-        </div>
       </form>
     </div>
   </p-card>

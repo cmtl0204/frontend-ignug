@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Subscription} from "rxjs";
-import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {LocationModel, CatalogueModel} from '@models/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {BreadcrumbService} from "@services/core/breadcrumb.service";
@@ -29,7 +29,8 @@ export class ApplicationFormComponent implements OnInit {
   locations: LocationModel[] = [];
   types: CatalogueModel[] = [];
 
-  //yearRange: string = `1900:${(new Date()).getFullYear()}`;
+  yearRange: string = `1900:${(new Date()).getFullYear()}`;
+  private coreHttpService: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -90,7 +91,7 @@ export class ApplicationFormComponent implements OnInit {
     this.loadingSkeleton = true;
     this.subscriptions.push(
       this.licenseWorkHttpService
-        .getApplication(this.licenseWorkService.professional.id!)
+        .getApplication(this.activatedRoute.snapshot.params.id)
         .subscribe(
           response => {
             this.form.patchValue(response.data);
@@ -104,7 +105,7 @@ export class ApplicationFormComponent implements OnInit {
 
   loadEmployees() {
     this.subscriptions.push(
-      this.licenseWorkHttpService.getEmployees()
+      this.licenseWorkHttpService.getCataloguesEmployees()
         .subscribe(
           response => {
             this.employees = response.data;
@@ -137,7 +138,7 @@ export class ApplicationFormComponent implements OnInit {
   }
   loadLocations() {
     this.subscriptions.push(
-      this.licenseWorkHttpService.getLocations()
+      this.coreHttpService.getLocations('PROVINCE')
         .subscribe(
           response => {
             this.locations = response.data;
@@ -148,7 +149,7 @@ export class ApplicationFormComponent implements OnInit {
   }
   loadTypes() {
     this.subscriptions.push(
-      this.licenseWorkHttpService.getTypes()
+      this.coreHttpService.getCatalogues()
         .subscribe(
           response => {
             this.types = response.data;
@@ -244,8 +245,8 @@ export class ApplicationFormComponent implements OnInit {
   get timeEndedAtField() {
     return this.form.controls['timeEndedAt'];
   }
-  get observationsField() {
-    return this.form.controls['observations'];
+  get observationsField(): FormArray{
+    return this.form.controls['observations']as FormArray;
   }
 }
 
