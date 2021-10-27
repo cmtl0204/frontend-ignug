@@ -10,8 +10,8 @@ const routes: Routes = [
     path: '',
     component: MainComponent,
     children: [
-      {path: '', redirectTo: '/custom/professional', pathMatch: 'full'},
-      {path: 'dashboard', redirectTo: '/custom/professional', pathMatch: 'full'},
+      {path: '', redirectTo: '/license-work/professional', pathMatch: 'full'},
+      {path: 'dashboard', redirectTo: '/license-work/professional', pathMatch: 'full'},
       {
         path: 'user-administration',
         loadChildren: () => import('./pages/core/user-administration/user-administration.module').then(m => m.UserAdministrationModule),
@@ -21,8 +21,8 @@ const routes: Routes = [
         canActivate: [TokenGuard, RoleGuard]
       },
       {
-        path: 'custom',
-        loadChildren: () => import('./pages/custom/example.module').then(m => m.ExampleModule),
+        path: 'license-work',
+        loadChildren: () => import('./pages/license-work/license-work.module').then(m => m.LicenseWorkModule),
         data: {
           roles: [RolesEnum.PROFESSIONAL]
         },

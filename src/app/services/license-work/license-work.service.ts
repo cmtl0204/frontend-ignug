@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {ProfessionalModel} from '@models/custom';
+import {ProfessionalModel} from '@models/license-work';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CustomService {
+export class LicenseWorkService {
 
   constructor() {
   }
