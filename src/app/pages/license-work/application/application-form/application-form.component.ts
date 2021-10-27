@@ -168,6 +168,9 @@ export class ApplicationFormComponent implements OnInit {
       this.form.markAllAsTouched();
     }
   }
+  addActivity(data: string = '') {
+    this.observationsField.push(this.formBuilder.control(data, Validators.required));
+  }
 
   store(application: ApplicationModel): void {
     this.progressBar = true;

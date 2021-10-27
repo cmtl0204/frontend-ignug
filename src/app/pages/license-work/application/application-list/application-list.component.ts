@@ -20,6 +20,7 @@ export class ApplicationListComponent implements OnInit {
   cols: ColModel[] = [];
   items: MenuItem[] = [];
   loading: boolean = false;
+  filter: FormControl;
   paginator: PaginatorModel = {current_page: 1, per_page: 5, total: 0};
   progressBarDelete: boolean = false;
 
@@ -84,7 +85,7 @@ export class ApplicationListComponent implements OnInit {
     this.selectedApplication = application;
   }
 
-  deleteApplication(application: ApplicationModell): void {
+  deleteApplication(application: ApplicationModel): void {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
@@ -111,7 +112,7 @@ export class ApplicationListComponent implements OnInit {
           const ids = this.selectedApplications.map(element => element.id);
           this.subscriptions.push(this.licenseWorkHttpService.deleteApplications(ids).subscribe(
             response => {
-              this.removeApplication(ids!);
+              this.removeApplications(ids!);
               this.messageService.success(response);
               this.progressBarDelete = false;
             },
