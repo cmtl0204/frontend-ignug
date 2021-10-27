@@ -22,7 +22,7 @@ const routes: Routes = [
       },
       {
         path: 'custom',
-        loadChildren: () => import('./pages/custom/example.module').then(m => m.ExampleModule),
+        loadChildren: () => import('./pages/license-work/example.module').then(m => m.ExampleModule),
         data: {
           roles: [RolesEnum.PROFESSIONAL]
         },
