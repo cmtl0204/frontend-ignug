@@ -76,7 +76,7 @@ export class EmployeeListComponent implements OnInit {
   }
 
   editEmployee(user: EmployeeModel) {
-    this.router.navigate(['/license-work/employee/', employee.id]);// preguntar reason
+    this.router.navigate(['/license-work/employee/',employee.id]);
   }
 
   createEmployee() {

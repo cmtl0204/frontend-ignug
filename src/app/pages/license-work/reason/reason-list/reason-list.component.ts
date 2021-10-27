@@ -3,9 +3,9 @@ import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {MenuItem} from 'primeng/api';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
-import {LicenseWorkHttpService, LicenseWorkService} from '@services/job-board';
+import {LicenseWorkHttpService, LicenseWorkService} from '@services/license-work';
 import {MessageService} from '@services/core';
-import {ReasonModel} from '@models/job-board';
+import {ReasonModel} from '@models/license-work';
 import {ColModel, PaginatorModel} from '@models/core';
 import {FormControl} from '@angular/forms';
 

@@ -41,7 +41,7 @@ export class EmployeeFormComponent implements OnInit,OnDestroy,OnExitInterface {
 
      ngOnInit(): void {
       if (this.activatedRoute.snapshot.params.id != 'new') {
-        this.title = 'Actualizar Empleados';
+        this.title = 'Actualizar Empleado';
         this.buttonTitle = 'Actualizar Empleados';
         this.loadEmployee();
       }
