@@ -8,12 +8,12 @@ import {MessageService} from "@services/core";
 import {LicenseWorkHttpService, LicenseWorkService} from "@services/license-work";
 import {ApplicationModel} from "@models/license-work";
 
-
 @Component({
   selector: 'app-application-form',
   templateUrl: './application-form.component.html',
   styleUrls: ['./application-form.component.scss']
 })
+
 export class ApplicationFormComponent implements OnInit {
 
   private subscriptions: Subscription[] = [];
