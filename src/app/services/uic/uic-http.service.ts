@@ -356,7 +356,7 @@ export class UicHttpService {
       .set('per_page', paginator.per_page);
     // El filtro depende de los campos propios que sean cadenas de texto
     if (filter !== '') {
-      filter = `?name=${filter}&description=${filter}`;
+      filter = `?title=${filter}&description=${filter}&actCode=${filter}`;
     }
     return this.httpClient.get<ServerResponse>(url + filter, {params})
       .pipe(
