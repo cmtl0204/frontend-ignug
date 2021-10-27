@@ -35,6 +35,7 @@ import {LocationStrategy, PathLocationStrategy} from '@angular/common';
 import {SharedModule} from '@shared/shared.module';
 import {BreadcrumbModule} from 'primeng/breadcrumb';
 import {ProgressSpinnerModule} from "primeng/progressspinner";
+import { Reason } from './models/license-work/reason.model.ts/reason.model.ts.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import {ProgressSpinnerModule} from "primeng/progressspinner";
     TopbarComponent,
     FooterComponent,
     BreadcrumbComponent,
+    Reason.Model.TsComponent,
   ],
     imports: [
         BrowserModule,

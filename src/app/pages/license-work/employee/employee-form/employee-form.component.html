@@ -1,0 +1,66 @@
+<div class="container-fluid">
+    <p-toolbar *ngIf="!skeletonLoading" styleClass="bg-primary">
+      <div class="p-toolbar-group-left">
+        <h3 class="ml-2">{{title}}</h3>
+      </div>
+      <div class="p-toolbar-group-right">
+        <app-progress-bar *ngIf="progressBar" [message]="messageService.progressBarSaveOrUpdate"></app-progress-bar>
+        <i *ngIf="form.touched || form.dirty" class="pi pi-check p-button p-button-text" (click)="onSubmit()"
+           style="font-size: 2rem; color: #fff" [pTooltip]="messageService.buttonFormSaveOrUpdate"></i>
+        <i class="pi pi-times p-button p-button-text" (click)="returnList()"
+           style="font-size: 2rem; color: #fff" [pTooltip]="messageService.buttonFormClose"></i>
+      </div>
+    </p-toolbar>
+  </div>
+
+  <div class="container">
+    <app-skeleton *ngIf="loadingSkeleton" [type]="'card'"></app-skeleton>
+    <p-card>
+      <div class="p-fluid" *ngIf="!loadingSkeleton">
+         <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+            <div class="field ">
+              <label for="userId" appLabel label="Identificación de usuario:"
+                     [required]="isRequired(userId)"
+                     [valid]="userIdField.valid"
+                     [touched]="userId.touched"
+                     [dirty]="userId.dirty">
+              </label>
+              <p-dropdown id="userId"
+                          [options]="userId"
+                          formControlName="userId"
+                          [filter]="true"
+                          filterBy="name"
+                          placeholder="Seleccione">
+                <ng-template pTemplate="selectedItem">
+                  <div class="country-item country-item-value" *ngIf="userIdField.value">
+                    <div>{{userIdField.value?.name}}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-item pTemplate="item">
+                  <div class="country-item">
+                    <div>{{item.name}}</div>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+              <small appErrorMessage
+                     [errors]="userIdField.errors"
+                     [touched]="userIdField.touched"
+                     [dirty]="userIdField.dirty">
+              </small> 
+            </div>
+
+          <p-divider></p-divider>
+
+          <div class="formgrid grid">
+            <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
+              <button pButton pRipple [label]="buttonTitle" class="p-button-rounded" icon="pi pi-save"></button>
+            </div>
+            <div *ngIf="progressBar" class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
+              <app-progress-bar [message]="messageService.progressBarSaveOrUpdate"></app-progress-bar>
+            </div>
+          </div>
+          </form>     
+    </p-card>
+  </div>
+  

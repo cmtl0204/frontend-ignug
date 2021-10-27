@@ -1,12 +1,9 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
-import {ExampleRoutingModule} from './example-routing.module';
-import {ExampleComponent} from './example.component';
+import {LicenseWorkRoutingModule} from './license-work-routing.module';
+import {LicenseWorkComponent} from './license-work.component';
 import {SharedModule} from '@shared/shared.module';
-import {ExampleComponent} from "./example/example.component";
-import {ExampleFormComponent} from "./example/example-form/example-form.component";
-import {ExampleListComponent} from "./example/example-list/example-list.component";
 import {ToolbarModule} from "primeng/toolbar";
 import {CardModule} from "primeng/card";
 import {PaginatorModule} from "primeng/paginator";
@@ -21,18 +18,32 @@ import {ProgressBarModule} from "primeng/progressbar";
 import {TooltipModule} from "primeng/tooltip";
 import {CalendarModule} from "primeng/calendar";
 import {InputSwitchModule} from "primeng/inputswitch";
+import { ApplicationComponent } from './application/application.component';
+import { ApplicationFormComponent } from './Application/application-form/application-form.component';
+import { ApplicationListComponent } from './Application/application-list/application-list.component';
+import { ReasonComponent } from './reason/reason.component';
+import { ReasonFormComponent } from './reason/reason-form/reason-form.component';
+import { ReasonListComponent } from './reason/reason-list/reason-list.component';
+import { EmployeeComponent } from './employee/employee.component';
+import { EmployeeFormComponent } from './employee/employee-form/employee-form.component';
+import { EmployeeListComponent } from './employee/employee-list/employee-list.component';
 
 
 @NgModule({
   declarations: [
-    ExampleComponent,
-    ExampleComponent,
-    ExampleFormComponent,
-    ExampleListComponent,
+    ApplicationComponent,
+    ApplicationFormComponent,
+    ApplicationListComponent,
+    ReasonComponent,
+    ReasonFormComponent,
+    ReasonListComponent,
+    EmployeeComponent,
+    EmployeeFormComponent,
+    EmployeeListComponent,
   ],
   imports: [
     CommonModule,
-    ExampleRoutingModule,
+    LicenseWorkRoutingModule,
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
@@ -52,5 +63,5 @@ import {InputSwitchModule} from "primeng/inputswitch";
     InputSwitchModule
   ]
 })
-export class ExampleModule {
+export class LicenseWorkModule {
 }
