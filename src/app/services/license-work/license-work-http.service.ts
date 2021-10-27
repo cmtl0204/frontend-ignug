@@ -165,6 +165,14 @@ export class LicenseWorkHttpService {
         catchError(Handler.render)
       );
   }
+  getCataloguesEmployees(){
+    const url = `${this.API_URL}/employee/catalogues`;
+    return this.httpClient.get<ServerResponse>(url)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
 
   getEmployee(id: number): Observable<ServerResponse> {
     const url = `${this.API_URL}/employees/${id}`;

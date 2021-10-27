@@ -6,7 +6,7 @@ import {ApplicationModel} from "@models/license-work";
 import {Router} from "@angular/router";
 import {BreadcrumbService} from "@services/core/breadcrumb.service";
 import {MessageService} from "@services/core";
-import {LicenseWorkHttpService, LicenseWorkService} from "@services/license-work";
+import {LicenseWorkHttpService} from "@services/license-work";
 import {FormControl} from "@angular/forms";
 
 @Component({
@@ -32,15 +32,14 @@ export class ApplicationListComponent implements OnInit {
     private router: Router,
     private breadcrumbService: BreadcrumbService,
     public messageService: MessageService,
-    private licenseWorkHttpService: LicenseWorkHttpService,
-    private licenseWorkService: LicenseWorkService,
+    private licenseWorkHttpService: LicenseWorkHttpService
   ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Solicitud', disabled: true},
     ]);
 
-    this.filter = new FormControl('');
+    this.filter = new FormControl(null);
   }
 
   ngOnInit(): void {
@@ -48,6 +47,7 @@ export class ApplicationListComponent implements OnInit {
     this.setItems();
     this.loadApplications();
   }
+
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
@@ -55,7 +55,8 @@ export class ApplicationListComponent implements OnInit {
   loadApplications() {
     this.loading = true;
     this.subscriptions.push(
-      this.licenseWorkHttpService.getApplications(this.paginator, this.filter.value).subscribe(
+      this.licenseWorkHttpService.getApplications(this.paginator, this.filter.value)
+        .subscribe(
         response => {
           this.loading = false;
           this.applications = response.data;
@@ -90,7 +91,8 @@ export class ApplicationListComponent implements OnInit {
       .then((result) => {
         if (result.isConfirmed) {
           this.progressBarDelete = true;
-          this.subscriptions.push(this.licenseWorkHttpService.deleteApplication(application.id!).subscribe(
+          this.subscriptions.push(this.licenseWorkHttpService.deleteApplication(application.id!)
+            .subscribe(
             response => {
               this.removeApplication(application);
               this.messageService.success(response);
@@ -123,7 +125,6 @@ export class ApplicationListComponent implements OnInit {
           ));
         }
       });
-
   }
 
   removeApplication(application: ApplicationModel) {
@@ -157,7 +158,6 @@ export class ApplicationListComponent implements OnInit {
       {field: 'timeEndedAt', header: 'Hora final de la Licencia o Permiso'},
       {field: 'observations', header: 'Listado de observaciones'},
     ];
-
   }
 
   setItems() {
