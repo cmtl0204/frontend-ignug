@@ -162,9 +162,11 @@
             <app-view-files [acceptAttributes]="'.pdf'"
                             [loadingUpload]="loadingUploadFiles"
                             [filesIn]="files"
+                            [loadingFiles]="loadingFiles"
                             (files)="uploadFile($event)"
                             [paginatorIn]="paginatorFiles"
-                            (paginatorOut)="loadFiles()">
+                            (paginatorOut)="loadFiles()"
+                            (searchOut)="filterFiles.setValue($event);loadFiles()">
             </app-view-files>
           </p-dialog>
         </div>

@@ -39,7 +39,7 @@ export class LanguageListComponent implements OnInit, OnDestroy {
       {label: 'Idiomas', disabled: true},
     ]);
 
-    this.filter = new FormControl('');
+    this.filter = new FormControl(null);
   }
 
   ngOnInit(): void {

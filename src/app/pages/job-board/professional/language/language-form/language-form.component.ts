@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
@@ -19,6 +19,7 @@ import {LanguageModel} from '@models/job-board';
 export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface {
   private subscriptions: Subscription[] = [];
   form: FormGroup;
+  formId: string;
   progressBar: boolean = false;
   loadingSkeleton: boolean = false;
   title: string = 'Crear Idioma';
@@ -28,9 +29,11 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
   spokenLevels: CatalogueModel[] = [];
   readLevels: CatalogueModel[] = [];
   loadingUploadFiles: boolean = false;
+  loadingFiles: boolean = false;
   files: FileModel[] = [];
   displayModalFiles: boolean = false;
   paginatorFiles: PaginatorModel = {current_page: 1, per_page: 5, total: 0};
+  filterFiles: FormControl;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -49,10 +52,12 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
       {label: 'Formulario', disabled: true},
     ]);
     this.form = this.newForm();
+    this.formId = this.activatedRoute.snapshot.params.id;
+    this.filterFiles = new FormControl(null);
   }
 
   ngOnInit(): void {
-    if (this.activatedRoute.snapshot.params.id != 'new') {
+    if (this.formId != 'new') {
       this.title = 'Actualizar Idioma';
       this.buttonTitle = 'Actualizar Idioma';
       this.loadLanguage();
@@ -105,16 +110,21 @@ export class LanguageFormComponent implements OnInit, OnDestroy, OnExitInterface
   }
 
   loadFiles() {
-    this.subscriptions.push(
-      this.coreHttpService.getFiles(`/language/${this.idField.value}/file`)
-        .subscribe(
-          response => {
-            this.files = response.data;
-            this.paginatorFiles = response.meta;
-          }, error => {
-            this.messageService.error(error);
-          }
-        ));
+    if (this.formId != 'new') {
+      this.loadingFiles = true;
+      this.subscriptions.push(
+        this.coreHttpService.getFiles(`/language/${this.idField.value}/file`, this.paginatorFiles,this.filterFiles.value)
+          .subscribe(
+            response => {
+              this.files = response.data;
+              this.paginatorFiles = response.meta;
+              this.loadingFiles = false;
+            }, error => {
+              this.messageService.error(error);
+              this.loadingFiles = false;
+            }
+          ));
+    }
   }
 
   loadIdioms() {

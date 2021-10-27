@@ -4,6 +4,7 @@ import {PaginatorModel, ServerResponse} from '@models/core';
 import {HttpErrorResponse} from '@angular/common/http';
 import {AbstractControl, ValidationErrors, Validators} from '@angular/forms';
 import {LoginResponse} from '@models/core/login.response';
+import {Message} from "primeng/api";
 
 @Injectable({
   providedIn: 'root'
@@ -183,5 +184,16 @@ export class MessageService {
 
   get progressBarDelete(): string {
     return `Eliminando...`;
+  }
+
+  get messagesDelete(): Message[] {
+    return [{
+      severity: 'success', summary: 'Success', detail: 'Message Content'
+    }];
+  }
+
+
+  get messageSuccessDelete(): string {
+    return `Se eliminó correctamente`;
   }
 }

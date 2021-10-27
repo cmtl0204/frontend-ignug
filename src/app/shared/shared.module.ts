@@ -25,6 +25,8 @@ import {MessageModule} from "primeng/message";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {DividerModule} from "primeng/divider";
 import {CardModule} from "primeng/card";
+import {OverlayPanelModule} from "primeng/overlaypanel";
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -56,6 +58,7 @@ import {CardModule} from "primeng/card";
   ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     SkeletonModule,
     TableModule,
     ProgressBarModule,
@@ -69,7 +72,8 @@ import {CardModule} from "primeng/card";
     MessageModule,
     InputTextareaModule,
     DividerModule,
-    CardModule
+    CardModule,
+    OverlayPanelModule
   ]
 })
 export class SharedModule {

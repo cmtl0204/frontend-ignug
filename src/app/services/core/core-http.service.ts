@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import themes from '../../../assets/themes/themes.json';
 import {MenuItem} from 'primeng/api';
 import {Observable} from 'rxjs';
-import {ServerResponse, FileModel} from '@models/core';
+import {ServerResponse, FileModel, PaginatorModel} from '@models/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {catchError, map} from 'rxjs/operators';
 import {Handler} from '../../exceptions/handler';
@@ -65,8 +65,15 @@ export class CoreHttpService {
     });
   }
 
-  getFiles(url: string, params = new HttpParams()): Observable<ServerResponse> {
+  getFiles(url: string, paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
     url = this.API_URL + url;
+    let params = new HttpParams()
+      .set('page', paginator.current_page)
+      .set('per_page', paginator.per_page);
+    // El filtro depende de los campos propios que sean cadenas de texto
+    if (filter !== '') {
+      params = params.append('name', filter).append('description', filter);
+    }
     return this.httpClient.get<ServerResponse>(url, {params})
       .pipe(
         map(response => response),
@@ -88,7 +95,7 @@ export class CoreHttpService {
       );
   }
 
-  deleteFiles(ids: number[], params = new HttpParams()): Observable<ServerResponse> {
+  deleteFiles(ids: (number | undefined)[], params = new HttpParams()): Observable<ServerResponse> {
     const url = this.API_URL + '/file/destroys';
     return this.httpClient.patch<ServerResponse>(url, {ids}, {params})
       .pipe(

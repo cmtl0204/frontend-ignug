@@ -179,7 +179,7 @@
             </div>
           </div>
           <div class="formgrid grid">
-            <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
               <label for="bloodTypeUser" appLabel label="Tipo de sangre:"
                      [required]="isRequired(bloodTypeUserField)"
                      [valid]="bloodTypeUserField.valid"
@@ -209,7 +209,7 @@
                      [dirty]="bloodTypeUserField.dirty">
               </small>
             </div>
-            <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
               <label for="ethnicOriginUser" appLabel label="Etnia:"
                      [required]="isRequired(ethnicOriginUserField)"
                      [valid]="ethnicOriginUserField.valid"
@@ -239,9 +239,7 @@
                      [dirty]="ethnicOriginUserField.dirty">
               </small>
             </div>
-          </div>
-          <div class="formgrid grid">
-            <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
               <label for="birthdateUser" appLabel label="Fecha de nacimiento:"
                      [required]="isRequired(birthdateUserField)"
                      [valid]="birthdateUserField.valid"
@@ -259,8 +257,6 @@
                      [touched]="birthdateUserField.touched"
                      [dirty]="birthdateUserField.dirty">
               </small>
-            </div>
-            <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
             </div>
           </div>
         </div>
@@ -374,7 +370,7 @@
                  [dirty]="aboutMeField.dirty">
           </label> {{aboutMeField.value?.length ? aboutMeField.value?.length : 0}}/300
           <textarea pInputTextarea id="aboutMe" formControlName="aboutMe" class="text-uppercase"
-                    placeholder="Ej. Con años de experiencia en la gestión de sistemas, he sido capaz de adaptarme a los diferentes planes informáticos de las empresas para las que he trabajado."
+                    placeholder="Escriba una descripción profesional acerca de usted"
                     rows="3" maxlength="300"></textarea>
           <small appErrorMessage
                  [errors]="aboutMeField.errors"
