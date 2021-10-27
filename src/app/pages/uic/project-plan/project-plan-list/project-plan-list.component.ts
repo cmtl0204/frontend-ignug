@@ -5,17 +5,17 @@ import {MenuItem} from 'primeng/api';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {UicHttpService, UicService} from '@services/uic';
 import {MessageService} from '@services/core';
-import {EventModel,} from '@models/uic';
+import {ProjectPlanModel,} from '@models/uic';
 import {ColModel, PaginatorModel} from '@models/core';
 import {FormControl} from '@angular/forms';
 
 @Component({
-  selector: 'app-event-list',
-  templateUrl: './event-list.component.html',
-  styleUrls: ['./event-list.component.scss']
+  selector: 'app-project-plan-list',
+  templateUrl: './project-plan-list.component.html',
+  styleUrls: ['./project-plan-list.component.scss']
 })
 
-export class EventListComponent implements OnInit {
+export class ProjectListComponent implements OnInit {
   private subscriptions: Subscription[] = [];
   cols: ColModel[] = [];
   items: MenuItem[] = [];
@@ -23,9 +23,9 @@ export class EventListComponent implements OnInit {
   paginator: PaginatorModel = {current_page: 1, per_page: 5, total: 0};
   filter: FormControl;
   progressBarDelete: boolean = false;
-  events: EventModel[] = [];
-  selectedEvent: EventModel = {};
-  selectedEvents: EventModel[] = [];
+  projectPlans: ProjectPlanModel[] = [];
+  selectedProjectPlan: ProjectPlanModel = {};
+  selectedProjectPlans: ProjectPlanModel[] = [];
 
   constructor(private router: Router,
               private breadcrumbService: BreadcrumbService,
@@ -36,7 +36,7 @@ export class EventListComponent implements OnInit {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
       {label: 'Profesional', routerLink: ['/uic/professional']},
-      {label: 'Evento', disabled: true},
+      {label: 'Proyecto', disabled: true},
     ]);
 
     this.filter = new FormControl('');
@@ -45,20 +45,20 @@ export class EventListComponent implements OnInit {
   ngOnInit(): void {
     this.setCols();
     this.setItems();
-    this.loadEvents();
+    this.loadProjectPlans();
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  loadEvents() {
+  loadProjectPlans() {
     this.loading = true;
     this.subscriptions.push(
-      this.uicHttpService.getEvents(this.paginator, this.filter.value).subscribe(
+      this.uicHttpService.getProjectPlans( this.paginator, this.filter.value).subscribe(
         response => {
           this.loading = false;
-          this.events = response.data;
+          this.projectPlans = response.data;
           this.paginator = response.meta;
         }, error => {
           this.loading = false;
@@ -67,32 +67,32 @@ export class EventListComponent implements OnInit {
       ));
   }
 
-  filterEvents(event: any) {
+  filterProjectPlans(event: any) {
     if (event.key === 'Enter' || event.type === 'click') {
-      this.loadEvents();
+      this.loadProjectPlans();
     }
   }
 
-  editEvent(event: EventModel) {
-    this.router.navigate(['/uic/professional/event/', event.id]);
+  editProjectPlan(projectPlan: ProjectPlanModel) {
+    this.router.navigate(['/uic/professional/projectPlan/', projectPlan.id]);
   }
 
-  createEvent() {
-    this.router.navigate(['/uic/professional/event/', 'new']);
+  createProjectPlan() {
+    this.router.navigate(['/uic/professional/projectPlan/', 'new']);
   }
 
-  selectEvent(event: EventModel) {
-    this.selectedEvent = event;
+  selectProjectPlan(projectPlan: ProjectPlanModel) {
+    this.selectedProjectPlan = projectPlan;
   }
 
-  deleteEvent(event: EventModel): void {
+  deleteProjectPlan(projectPlan: ProjectPlanModel): void {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
           this.progressBarDelete = true;
-          this.subscriptions.push(this.uicHttpService.deleteEvent(event.id!).subscribe(
+          this.subscriptions.push(this.uicHttpService.deleteProjectPlan(projectPlan.id!).subscribe(
             response => {
-              this.removeEvent(event);
+              this.removeProjectPlan(projectPlan);
               this.messageService.success(response);
               this.progressBarDelete = false;
             },
@@ -105,15 +105,15 @@ export class EventListComponent implements OnInit {
       });
   }
 
-  deleteEvents(): void {
+  deleteProjectPlans(): void {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
           this.progressBarDelete = true;
-          const ids = this.selectedEvents.map(element => element.id);
-          this.subscriptions.push(this.uicHttpService.deleteEvents(ids).subscribe(
+          const ids = this.selectedProjectPlans.map(element => element.id);
+          this.subscriptions.push(this.uicHttpService.deleteProjectPlans(ids).subscribe(
             response => {
-              this.removeEvents(ids!);
+              this.removeProjectPlans(ids!);
               this.messageService.success(response);
               this.progressBarDelete = false;
             },
@@ -127,31 +127,32 @@ export class EventListComponent implements OnInit {
 
   }
 
-  removeEvent(event: EventModel) {
-    this.events = this.events.filter(element => element.id !== event.id);
+  removeProjectPlan(projectPlan: ProjectPlanModel) {
+    this.projectPlans = this.projectPlans.filter(element => element.id !== projectPlan.id);
     this.paginator.total = this.paginator.total - 1;
   }
 
-  removeEvents(ids: (number | undefined)[]) {
+  removeProjectPlans(ids: (number | undefined)[]) {
     for (const id of ids) {
-      this.events = this.events.filter(element => element.id !== id);
+      this.projectPlans = this.projectPlans.filter(element => element.id !== id);
       this.paginator.total = this.paginator.total - 1;
     }
-    this.selectedEvents = [];
+    this.selectedProjectPlans = [];
   }
 
   paginate(event: any) {
     this.paginator.current_page = event.page + 1;
-    this.loadEvents();
+    this.loadProjectPlans();
   }
 
   setCols() {
     this.cols = [
-      {field: 'planning', header: 'Planificación'},
-      {field: 'name', header: 'Nombre'},
-      {field: 'startedAt', header: 'Fecha de Inicio'},
-      {field: 'endedAt', header: 'Fecha Fin'},
-      {field: 'updatedAt', header: 'Última actualización'},
+      {field: 'title', header: 'Titulo'},
+      {field: 'description', header: 'Descripcion'},
+      {field: 'actCode', header: 'Codigo de acta'},
+      {field: 'approvedAt', header: 'Fecha de aprovacion'},
+      {field: 'approved', header: 'Aprovado'},
+      {field: 'observations', header: 'Observaciones'},
     ];
   }
 
@@ -159,12 +160,12 @@ export class EventListComponent implements OnInit {
     this.items = [
       {
         label: 'Modificar', icon: 'pi pi-pencil', command: () => {
-          this.editEvent(this.selectedEvent);
+          this.editProjectPlan(this.selectedProjectPlan);
         }
       },
       {
         label: 'Eliminar', icon: 'pi pi-trash', command: () => {
-          this.deleteEvent(this.selectedEvent);
+          this.deleteProjectPlan(this.selectedProjectPlan);
         }
       }
     ];

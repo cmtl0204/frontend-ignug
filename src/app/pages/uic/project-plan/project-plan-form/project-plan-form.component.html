@@ -17,69 +17,92 @@
   <p-card>
     <div class="p-fluid" *ngIf="!loadingSkeleton">
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <div class="formgrid grid">
+        <div *ngIf="titleField.value" class="formgrid grid">
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-            <label for="professionalDegree" appLabel label="Título:"
-                   [required]="isRequired(professionalDegreeField)"
-                   [valid]="professionalDegreeField.valid"
-                   [touched]="professionalDegreeField.touched"
-                   [dirty]="professionalDegreeField.dirty">
-            </label>
-            <p-dropdown id="professionalDegree"
-                        [options]="professionalDegrees"
-                        formControlName="professionalDegree"
-                        dataKey="id"
-                        [filter]="true"
-                        filterBy="name"
-                        placeholder="Seleccione">
-              <ng-template pTemplate="selectedItem">
-                <div class="country-item country-item-value" *ngIf="professionalDegreeField.value">
-                  <div>{{professionalDegreeField.value?.name}}</div>
-                </div>
-              </ng-template>
-              <ng-template let-item pTemplate="item">
-                <div class="country-item">
-                  <div>{{item.name}} </div>
-                </div>
-              </ng-template>
-            </p-dropdown>
+            <label for="title" appLabel label="Titulo:"
+                   [required]="isRequired(titleField)"
+                   [valid]="titleField.valid"
+                   [touched]="titleField.touched"
+                   [dirty]="titleField.dirty"></label>
+            <input pInputText id="title" formControlName="title">
             <small appErrorMessage
-                   [errors]="professionalDegreeField.errors"
-                   [touched]="professionalDegreeField.touched"
-                   [dirty]="professionalDegreeField.dirty">
+                   [errors]="titleField.errors"
+                   [touched]="titleField.touched"
+                   [dirty]="titleField.dirty">
             </small>
           </div>
-          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-            <label for="certificated" appLabel label="¿Está titulado?"
-                   [required]="isRequired(certificatedField)"
-                   [valid]="certificatedField.valid"
-                   [touched]="certificatedField.touched"
-                   [dirty]="certificatedField.dirty">
-            </label>
-            <p>
-              <p-inputSwitch id="certificated" formControlName="certificated"></p-inputSwitch>
-            </p>
-            <small appErrorMessage
-                   [errors]="certificatedField.errors"
-                   [touched]="certificatedField.touched"
-                   [dirty]="certificatedField.dirty">
-            </small>
-          </div>
+          <div *ngIf="descriptionField.value" class="formgrid grid">
+            <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+              <label for="description" appLabel label="Descripcion:"
+                     [required]="isRequired(descriptionField)"
+                     [valid]="descriptionField.valid"
+                     [touched]="descriptionField.touched"
+                     [dirty]="descriptionField.dirty"></label>
+              <input pInputText id="description" formControlName="description">
+              <small appErrorMessage
+                     [errors]="descriptionField.errors"
+                     [touched]="descriptionField.touched"
+                     [dirty]="descriptionField.dirty">
+              </small>
+            </div>
+            <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+              <label for="actCode" appLabel label="Codigo de acta:"
+                     [required]="isRequired(actCodeField)"
+                     [valid]="actCodeField.valid"
+                     [touched]="actCodeField.touched"
+                     [dirty]="actCodeField.dirty"></label>
+              <input pInputText id="actCode" formControlName="actCode">
+              <small appErrorMessage
+                     [errors]="actCodeField.errors"
+                     [touched]="actCodeField.touched"
+                     [dirty]="actCodeField.dirty">
+              </small>
+            </div>
+        <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+          <label for="approvedAt" appLabel label="Fecha de aprobacion:"
+                 [required]="isRequired(approvedAtField)"
+                 [valid]="approvedAtField.valid"
+                 [touched]="approvedAtField.touched"
+                 [dirty]="approvedAtField.dirty">
+          </label>
+          <p-calendar id="approvedAt" formControlName="approvedAt" dateFormat="yy-mm-dd"
+                      [yearRange]="'1900:2021'"
+                      [showIcon]="true"
+                      [monthNavigator]="true"
+                      [yearNavigator]="true"
+                      [readonlyInput]="true"></p-calendar>
+          <small appErrorMessage
+                 [errors]="approvedAtField.errors"
+                 [touched]="approvedAtField.touched"
+                 [dirty]="approvedAtField.dirty">
+          </small>
         </div>
-        <div *ngIf="certificatedField.value" class="formgrid grid">
-          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-            <label for="senescytCode" appLabel label="Código Senescyt:"
-                   [required]="isRequired(senescytCodeField)"
-                   [valid]="senescytCodeField.valid"
-                   [touched]="senescytCodeField.touched"
-                   [dirty]="senescytCodeField.dirty"></label>
-            <input pInputText id="senescytCode" formControlName="senescytCode">
-            <small appErrorMessage
-                   [errors]="senescytCodeField.errors"
-                   [touched]="senescytCodeField.touched"
-                   [dirty]="senescytCodeField.dirty">
-            </small>
-          </div>
+        <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+          <label for="approved" appLabel label="¿Aprovado?:"
+                 [required]="isRequired(approvedField)"
+                 [valid]="approvedField.valid"
+                 [touched]="approvedField.touched"
+                 [dirty]="approvedField.dirty"></label>
+          <input pInputText id="approved" formControlName="approved">
+          <small appErrorMessage
+                 [errors]="approvedField.errors"
+                 [touched]="approvedField.touched"
+                 [dirty]="approvedField.dirty">
+          </small>
+        </div>
+        <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+          <label for="observations" appLabel label="Observaciones:"
+                 [required]="isRequired(observationsField)"
+                 [valid]="observationsField.valid"
+                 [touched]="observationsField.touched"
+                 [dirty]="observationsField.dirty"></label>
+          <input pInputText id="observations" formControlName="observations">
+          <small appErrorMessage
+                 [errors]="observationsField.errors"
+                 [touched]="observationsField.touched"
+                 [dirty]="observationsField.dirty">
+          </small>
+        </div>
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
             <label for="registeredAt" appLabel label="Fecha de registro:"
                    [required]="isRequired(registeredAtField)"

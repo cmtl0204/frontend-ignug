@@ -5,13 +5,13 @@ import {Subscription} from 'rxjs';
 import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {MessageService} from '@services/core';
-import {JobBoardHttpService, JobBoardService} from '@services/job-board';
-import {AcademicFormationModel, CategoryModel,} from '@models/job-board';
+import {UicHttpService, UicService} from '@services/uic';
+import {ProjectPlanModel, CategoryModel,} from '@models/uic';
 
 @Component({
-  selector: 'app-academic-formation-form',
-  templateUrl: './academic-formation-form.component.html',
-  styleUrls: ['./academic-formation-form.component.scss']
+  selector: 'app-project-plan-form',
+  templateUrl: './project-plan-form.component.html',
+  styleUrls: ['./project-plan-form.component.scss']
 })
 
 export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExitInterface {
@@ -19,9 +19,8 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
   form: FormGroup;
   progressBar: boolean = false;
   loadingSkeleton: boolean = false;
-  title: string = 'Crear Formación Académica';
-  buttonTitle: string = 'Crear Formación Académica';
-  professionalDegrees: CategoryModel[] = [];
+  title: string = 'Crear Plan de Proyecto';
+  buttonTitle: string = 'Crear Plan de Proyecto';
   yearRange: string = `1900:${(new Date()).getFullYear()}`;
 
   constructor(
@@ -30,13 +29,13 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
     private activatedRoute: ActivatedRoute,
     private breadcrumbService: BreadcrumbService,
     public messageService: MessageService,
-    private jobBoardHttpService: JobBoardHttpService,
-    private jobBoardService: JobBoardService
+    private uicHttpService: UicHttpService,
+    private uicService: UicService
   ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
-      {label: 'Profesional', routerLink: ['/job-board/professional']},
-      {label: 'Formaciones Académicas', routerLink: ['/job-board/professional/academic-formation'], disabled: true},
+      {label: 'Profesional', routerLink: ['/uic/professional']},
+      {label: 'Planes de Proyectos', routerLink: ['/uic/professional/project-plan'], disabled: true},
       {label: 'Formulario', disabled: true},
     ]);
     this.form = this.newForm();
@@ -47,11 +46,10 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
 
   ngOnInit(): void {
     if (this.activatedRoute.snapshot.params.id != 'new') {
-      this.title = 'Actualizar Formación Académica';
-      this.buttonTitle = 'Actualizar Formación Académica';
-      this.loadAcademicFormation();
+      this.title = 'Actualizar Plan de Proyecto';
+      this.buttonTitle = 'Actualizar Plan de Proyecto';
+      this.loadProjectPlan();
     }
-    this.loadProfessionalDegrees();
   }
 
   ngOnDestroy(): void {
@@ -71,18 +69,20 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
   newForm(): FormGroup {
     return this.formBuilder.group({
       id: [null],
-      professionalDegree: [null, [Validators.required]],
-      certificated: [false, [Validators.required]],
-      senescytCode: [null],
-      registeredAt: [null],
+      title: [null],
+      description: [null],
+      actCode: [null],
+      approvedAt: [null],
+      approved: [null],
+      observations: [null],
     });
   }
 
-  loadAcademicFormation() {
+  loadProjectPlan() {
     this.loadingSkeleton = true;
     this.subscriptions.push(
-      this.jobBoardHttpService
-        .getAcademicFormation(this.jobBoardService.professional.id!, this.activatedRoute.snapshot.params.id)
+      this.uicHttpService
+        .getProjectPlan( this.activatedRoute.snapshot.params.id)
         .subscribe(
           response => {
             this.form.patchValue(response.data);
@@ -94,7 +94,7 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
         ));
   }
 
-  loadProfessionalDegrees() {
+ /*/ loadProfessionalDegrees() {
     this.subscriptions.push(
       this.jobBoardHttpService.getProfessionalDegrees()
         .subscribe(
@@ -104,7 +104,7 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
             this.messageService.error(error);
           }
         ));
-  }
+  }/*/
 
   onSubmit(): void {
     if (this.form.valid) {
@@ -118,10 +118,10 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
     }
   }
 
-  store(academicFormation: AcademicFormationModel): void {
+  store(projectPlan: ProjectPlanModel): void {
     this.progressBar = true;
     this.subscriptions.push(
-      this.jobBoardHttpService.storeAcademicFormation(academicFormation, this.jobBoardService.professional.id!)
+      this.uicHttpService.storeProjectPlan(projectPlan)
         .subscribe(
           response => {
             this.messageService.success(response);
@@ -136,10 +136,10 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
         ));
   }
 
-  update(academicFormation: AcademicFormationModel): void {
+  update(projectPlan: ProjectPlanModel): void {
     this.progressBar = true;
     this.subscriptions.push(
-      this.jobBoardHttpService.updateAcademicFormation(academicFormation.id!, academicFormation, this.jobBoardService.professional.id!)
+      this.uicHttpService.updateProjectPlan(projectPlan.id!, projectPlan)
         .subscribe(
           response => {
             this.messageService.success(response);
@@ -154,7 +154,7 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
         ));
   }
 
-  verifyCertificatedValidators() {
+  /*/verifyCertificatedValidators() {
     if (this.certificatedField.value) {
       this.senescytCodeField.setValidators([Validators.required]);
       this.registeredAtField.setValidators([Validators.required]);
@@ -166,34 +166,40 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
     }
     this.senescytCodeField.updateValueAndValidity();
     this.registeredAtField.updateValueAndValidity();
-  }
+  }/*/
 
   isRequired(field: AbstractControl): boolean {
     return field.hasValidator(Validators.required);
   }
 
   returnList() {
-    this.router.navigate(['/job-board/professional', 2]);
+    this.router.navigate(['/uic/professional', 2]);
   }
 
   get idField() {
     return this.form.controls['id'];
   }
 
-  get professionalDegreeField() {
-    return this.form.controls['professionalDegree'];
+  get titleField() {
+    return this.form.controls['title'];
   }
 
-  get registeredAtField() {
-    return this.form.controls['registeredAt'];
+  get descriptionField() {
+    return this.form.controls['description'];
   }
 
-  get senescytCodeField() {
-    return this.form.controls['senescytCode'];
+  get actCodeField() {
+    return this.form.controls['actCode'];
   }
 
-  get certificatedField() {
-    return this.form.controls['certificated'];
+  get approvedAtField() {
+    return this.form.controls['approvedAt'];
+  }
+  get approvedField() {
+    return this.form.controls['approved'];
+  }
+  get observationsField() {
+    return this.form.controls['observations'];
   }
 }
 

@@ -111,7 +111,7 @@ export class EventFormComponent implements OnInit, OnDestroy, OnExitInterface {
 
   loadNames() {
     this.subscriptions.push(
-      this.uicHttpService.getPlannings()
+      this.uicHttpService.getNames()
         .subscribe(
           response => {
             this.plannings = response.data;
@@ -195,19 +195,19 @@ export class EventFormComponent implements OnInit, OnDestroy, OnExitInterface {
     return this.form.controls['id'];
   }
 
-  get professionalDegreeField() {
+  get planningField() {
     return this.form.controls['planning'];
   }
 
-  get registeredAtField() {
+  get nameField() {
     return this.form.controls['name'];
   }
 
-  get senescytCodeField() {
+  get startedAtField() {
     return this.form.controls['startedAt'];
   }
 
-  get certificatedField() {
+  get endedAtField() {
     return this.form.controls['endedAt'];
   }
 }

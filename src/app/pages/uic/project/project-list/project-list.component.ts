@@ -15,7 +15,7 @@ import {FormControl} from '@angular/forms';
   styleUrls: ['./project-list.component.scss']
 })
 
-export class AcademicFormationListComponent implements OnInit {
+export class ProjectListComponent implements OnInit {
   private subscriptions: Subscription[] = [];
   cols: ColModel[] = [];
   items: MenuItem[] = [];
@@ -23,7 +23,7 @@ export class AcademicFormationListComponent implements OnInit {
   paginator: PaginatorModel = {current_page: 1, per_page: 5, total: 0};
   filter: FormControl;
   progressBarDelete: boolean = false;
-  project: ProjectModel[] = [];
+  projects: ProjectModel[] = [];
   selectedProject: ProjectModel = {};
   selectedProjects: ProjectModel[] = [];
 
@@ -90,7 +90,7 @@ export class AcademicFormationListComponent implements OnInit {
       .then((result) => {
         if (result.isConfirmed) {
           this.progressBarDelete = true;
-          this.subscriptions.push(this.uicHttpService.deleteProject(project.id!, this.uicService.professional?.id!).subscribe(
+          this.subscriptions.push(this.uicHttpService.deleteProject(project.id!).subscribe(
             response => {
               this.removeProject(project);
               this.messageService.success(response);
