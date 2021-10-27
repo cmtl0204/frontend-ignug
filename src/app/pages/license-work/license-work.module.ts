@@ -19,6 +19,7 @@ import {TooltipModule} from "primeng/tooltip";
 import {CalendarModule} from "primeng/calendar";
 import {InputSwitchModule} from "primeng/inputswitch";
 import { ApplicationComponent } from './application/application.component';
+<<<<<<< HEAD
 import { ApplicationFormComponent } from './Application/application-form/application-form.component';
 import { ApplicationListComponent } from './Application/application-list/application-list.component';
 import { ReasonComponent } from './reason/reason.component';
@@ -28,18 +29,43 @@ import { EmployeeComponent } from './employee/employee.component';
 import { EmployeeFormComponent } from './employee/employee-form/employee-form.component';
 import { EmployeeListComponent } from './employee/employee-list/employee-list.component';
 
+=======
+import { ApplicationFormComponent } from './application/application-form/application-form.component';
+import { ApplicationListComponent } from './application/application-list/application-list.component';
+import { EmployerComponent } from './employer/employer.component';
+import { EmployerFormComponent } from './employer/employer-form/employer-form.component';
+import { EmployerListComponent } from './employer/employer-list/employer-list.component';
+import { HolidayComponent } from './holiday/holiday.component';
+import { HolidayFormComponent } from './holiday/holiday-form/holiday-form.component';
+import { HolidayListComponent } from './holiday/holiday-list/holiday-list.component';
+import { FormComponent } from './form/form.component';
+import { FormFormComponent } from './form/form-form/form-form.component';
+import { FormListComponent } from './form/form-list/form-list.component';
+>>>>>>> 8825b48a5fe3e78090d0a805834615b45ed78057
 
 @NgModule({
   declarations: [
     ApplicationComponent,
     ApplicationFormComponent,
     ApplicationListComponent,
+<<<<<<< HEAD
     ReasonComponent,
     ReasonFormComponent,
     ReasonListComponent,
     EmployeeComponent,
     EmployeeFormComponent,
     EmployeeListComponent,
+=======
+    EmployerComponent,
+    EmployerFormComponent,
+    EmployerListComponent,
+    HolidayComponent,
+    HolidayFormComponent,
+    HolidayListComponent,
+    FormComponent,
+    FormFormComponent,
+    FormListComponent,
+>>>>>>> 8825b48a5fe3e78090d0a805834615b45ed78057
   ],
   imports: [
     CommonModule,
