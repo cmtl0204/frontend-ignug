@@ -25,6 +25,7 @@ import {MessageModule} from "primeng/message";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {DividerModule} from "primeng/divider";
 import {CardModule} from "primeng/card";
+import { DiscountableHolidayPipe } from './pipes/license-work/reason/discountable-holiday.pipe';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import {CardModule} from "primeng/card";
     UploadFilesComponent,
     CertificatedPipe,
     WorkedPipe,
-    ExtensionsPipe
+    ExtensionsPipe,
+    DiscountableHolidayPipe
   ],
   exports: [
     RolesPermissionsDirective,
@@ -53,6 +55,7 @@ import {CardModule} from "primeng/card";
     ExtensionsPipe,
     UploadFilesComponent,
     ViewFilesComponent,
+    DiscountableHolidayPipe,
   ],
   imports: [
     CommonModule,
