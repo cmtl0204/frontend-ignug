@@ -21,29 +21,13 @@
 
          <div class="formgrid grid">
             <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
-              <label for="name" appLabel label="Nombre:"
+              <label for="name" appLabel label="Nombre de la razón:"
                      [required]="isRequired(nameField)"
                      [valid]="nameField.valid"
                      [touched]="name.touched"
                      [dirty]="name.dirty">
               </label>
-              <p-dropdown id="name"
-                          [options]="name"
-                          formControlName="name"
-                          [filter]="true"
-                          filterBy="name"
-                          placeholder="Seleccione">
-                <ng-template pTemplate="selectedItem">
-                  <div class="country-item country-item-value" *ngIf="nameField.value">
-                    <div>{{nameField.value?.name}}</div>
-                  </div>
-                </ng-template>
-                <ng-template let-item pTemplate="item">
-                  <div class="country-item">
-                    <div>{{item.name}}</div>
-                  </div>
-                </ng-template>
-              </p-dropdown>
+              <input pInputText id="name" formControlName="name">
               <small appErrorMessage
                      [errors]="nameField.errors"
                      [touched]="nameField.touched"
@@ -58,14 +42,14 @@
                      [touched]="descriptionOneField.touched"
                      [dirty]="descriptionOneField.dirty">
               </label>
-             
+              <input pInputText id="descriptionOne" formControlName="descriptionOne">
               <small appErrorMessage
                      [errors]="descriptionOneField.errors"
                      [touched]="descriptionOneField.touched"
                      [dirty]="descriptionOneField.dirty">
               </small>
             </div>
-            <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
+             <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
                 <label for="descriptionTwo" appLabel label="Descripción Dos:"
                        [required]="isRequired(descriptionTwoField)"
                        [valid]="descriptionTwoField.valid"
@@ -79,7 +63,7 @@
                 </small>
               </div>
                 
-             <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
+              <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
                 <label for="discountableHolidays" appLabel label="¿Es descontable a vacaciones?:"
                        [required]="isRequired(discountableHolidaysField)"
                        [valid]="discountableHolidaysField.valid"
@@ -95,15 +79,16 @@
                        [dirty]="discountableHolidaysField.dirty">
                 </small>
               </div>
-            </div>
-
-            <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
+            
+               <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
                 <label for="daysMin" appLabel label="Días mínimos:"
                        [required]="isRequired(daysMinField)"
                        [valid]="daysMinField.valid"
                        [touched]="daysMinField.touched"
                        [dirty]="daysMinField.dirty"></label>
-                <input pInputText id="daysMin" formControlName="daysMin">
+                      <p-inputNumber id="daysMin" formControlName="daysMin" mode="entero">
+                      </p-inputNumber>
+
                 <small appErrorMessage
                        [errors]="daysMinField.errors"
                        [touched]="daysMinField.touched"
@@ -111,21 +96,22 @@
                 </small>
               </div>
              
-              <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
+               <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
                 <label for="daysMax" appLabel label="Días máximos:"
                        [required]="isRequired(daysMaxField)"
                        [valid]="daysMaxField.valid"
                        [touched]="daysMaxField.touched"
                        [dirty]="daysMaxField.dirty"></label>
-                <input pInputText id="daysMax" formControlName="daysMax">
-                <small appErrorMessage
+                   <p-inputNumber id="daysMax" formControlName="daysMax" mode="entero">
+                   </p-inputNumber>
+                 <small appErrorMessage
                        [errors]="daysMaxField.errors"
                        [touched]="daysMaxField.touched"
                        [dirty]="daysMaxField.dirty">
-                </small>
-              </div>
-          <p-divider></p-divider>
-          <div class="formgrid grid">
+                 </small>
+               </div>
+            <p-divider></p-divider>
+           <div class="formgrid grid">
             <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
               <button pButton pRipple [label]="buttonTitle" class="p-button-rounded" icon="pi pi-save"></button>
             </div>

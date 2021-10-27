@@ -3,7 +3,7 @@ import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {MenuItem} from 'primeng/api';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
-import {LicenseWorkHttpService, LicenseWorkService} from '@services/license-work';
+import {LicenseWorkHttpService} from '@services/license-work';
 import {MessageService} from '@services/core';
 import {EmployeeModel} from '@models/license-work';
 import {ColModel, PaginatorModel} from '@models/core';
@@ -32,7 +32,7 @@ export class EmployeeListComponent implements OnInit {
     private breadcrumbService: BreadcrumbService,
     public messageService: MessageService,
     private licenseWorkHttpService: LicenseWorkHttpService,
-    private licenseWorkService: LicenseWorkService)
+    )
 
      { 
       this.breadcrumbService.setItems([

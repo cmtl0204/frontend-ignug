@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class DiscountableHolidayPipe implements PipeTransform {
 
   transform(value: unknown, ...args: unknown[]): unknown {
-    return null;
+    return value? 'Descontable' : 'No Descontable';
   }
 
 }

@@ -25,12 +25,8 @@ import {MessageModule} from "primeng/message";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {DividerModule} from "primeng/divider";
 import {CardModule} from "primeng/card";
-<<<<<<< HEAD
 import { DiscountableHolidayPipe } from './pipes/license-work/reason/discountable-holiday.pipe';
-=======
 import { StatePipe } from './pipes/license-work/form/state.pipe';
->>>>>>> 8825b48a5fe3e78090d0a805834615b45ed78057
-
 
 @NgModule({
   declarations: [
@@ -45,11 +41,8 @@ import { StatePipe } from './pipes/license-work/form/state.pipe';
     CertificatedPipe,
     WorkedPipe,
     ExtensionsPipe,
-<<<<<<< HEAD
-    DiscountableHolidayPipe
-=======
+    DiscountableHolidayPipe,
     StatePipe
->>>>>>> 8825b48a5fe3e78090d0a805834615b45ed78057
   ],
   exports: [
     RolesPermissionsDirective,
@@ -63,11 +56,8 @@ import { StatePipe } from './pipes/license-work/form/state.pipe';
     ExtensionsPipe,
     UploadFilesComponent,
     ViewFilesComponent,
-<<<<<<< HEAD
     DiscountableHolidayPipe,
-=======
     StatePipe,
->>>>>>> 8825b48a5fe3e78090d0a805834615b45ed78057
   ],
   imports: [
     CommonModule,
