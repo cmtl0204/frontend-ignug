@@ -22,14 +22,14 @@
 
           <div class="field ">
               <label for="user" appLabel label="Identificación de usuario:"
-                     [required]="isRequired(user)"
+                     [required]="isRequired(userField)"
                      [valid]="userField.valid"
-                     [touched]="user.touched"
-                     [dirty]="user.dirty">
+                     [touched]="userField.touched"
+                     [dirty]="userField.dirty">
               </label>
      <p-dropdown id="user"
                  dataKey="id"
-                [options]="users"
+                [options]="user"
                 formControlName="user"
                 [filter]="true"
                 filterBy="name"
@@ -49,7 +49,7 @@
                      [errors]="userField.errors"
                      [touched]="userField.touched"
                      [dirty]="userField.dirty">
-              </small> 
+              </small>
             </div>
          <p-divider></p-divider>
 
@@ -61,7 +61,8 @@
               <app-progress-bar [message]="messageService.progressBarSaveOrUpdate"></app-progress-bar>
             </div>
           </div>
-          </form>     
+         </form>
+      </div>
     </p-card>
   </div>
-  
+

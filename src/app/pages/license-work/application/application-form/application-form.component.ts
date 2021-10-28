@@ -143,15 +143,15 @@ export class ApplicationFormComponent implements OnInit {
   }
 
   loadLocations() {
-    this.subscriptions.push(
+    /*this.subscriptions.push(
       this.coreHttpService.getLocations('PROVINCE')
         .subscribe(
           response => {
-            //this.locations = response.data;
+            this.locations = response.data;
           }, error => {
-            //this.messageService.error(error);
+            this.messageService.error(error);
           }
-        ));
+        ));*/
   }
 
   addObservations(data: string = '') {

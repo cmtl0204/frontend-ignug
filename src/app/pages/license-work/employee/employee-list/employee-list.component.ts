@@ -34,21 +34,21 @@ export class EmployeeListComponent implements OnInit {
     private licenseWorkHttpService: LicenseWorkHttpService,
     )
 
-     { 
+     {
       this.breadcrumbService.setItems([
        {label: 'Dashboard', routerLink: ['/dashboard']},
        {label: 'Empleados', disabled: true},
      ]);
- 
+
      this.filter = new FormControl('');
    }
- 
+
    ngOnInit(): void {
      this.setCols();
      this.setItems();
      this.loadEmployees();
    }
- 
+
    ngOnDestroy(): void {
      this.subscriptions.forEach(subscription => subscription.unsubscribe());
    }
@@ -75,7 +75,7 @@ export class EmployeeListComponent implements OnInit {
     }
   }
 
-  editEmployee(user: EmployeeModel) {
+  editEmployee(employee: EmployeeModel) {
     this.router.navigate(['/license-work/employee/',employee.id]);
   }
 
@@ -113,7 +113,7 @@ export class EmployeeListComponent implements OnInit {
         if (result.isConfirmed) {
           this.progressBarDelete = true;
           const ids = this.selectedEmployees.map(element => element.id);
-          this.subscriptions.push(this.licenseWorkdHttpService.deleteEmployees(ids).subscribe(
+          this.subscriptions.push(this.licenseWorkHttpService.deleteEmployees(ids).subscribe(
             response => {
               this.removeEmployees(ids!);
               this.messageService.success(response);
@@ -150,7 +150,7 @@ export class EmployeeListComponent implements OnInit {
   setCols() {
     this.cols = [
       {field: 'user', header: 'Usuario'},
-      
+
     ];
 
   }
