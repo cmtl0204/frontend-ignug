@@ -9,6 +9,8 @@ import { HolidayComponent } from './holiday/holiday.component';
 import { HolidayFormComponent } from './holiday/holiday-form/holiday-form.component';
 import { FormComponent } from './form/form.component';
 import { FormFormComponent } from './form/form-form/form-form.component';
+import {ReasonComponent} from "./reason/reason.component";
+import {ReasonFormComponent} from "./reason/reason-form/reason-form.component";
 
 
 const routes: Routes = [
@@ -46,6 +48,15 @@ const routes: Routes = [
   {
     path: 'holiday/:id',
     component: HolidayFormComponent,
+    canDeactivate: [ExitGuard]
+  },
+  {
+    path: 'reason',
+    component: ReasonComponent,
+  },
+  {
+    path: 'reason/:id',
+    component: ReasonFormComponent,
     canDeactivate: [ExitGuard]
   }
 ];

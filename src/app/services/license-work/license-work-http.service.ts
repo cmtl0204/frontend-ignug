@@ -157,7 +157,7 @@ export class LicenseWorkHttpService {
       .set('page', paginator.current_page)
       .set('per_page', paginator.per_page);
     if (filter !== '') {
-      filter = `?senescytCode=${filter}`;
+      filter = `?name=${filter}&description=${filter}`;
     }
     return this.httpClient.get<ServerResponse>(url + filter, {params})
       .pipe(

@@ -147,9 +147,9 @@ export class ApplicationFormComponent implements OnInit {
       this.coreHttpService.getLocations('PROVINCE')
         .subscribe(
           response => {
-            this.locations = response.data;
+            //this.locations = response.data;
           }, error => {
-            this.messageService.error(error);
+            //this.messageService.error(error);
           }
         ));
   }

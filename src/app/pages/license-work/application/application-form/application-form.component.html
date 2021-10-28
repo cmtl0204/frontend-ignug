@@ -211,10 +211,10 @@
           <!-- Hora de Inicio column 6 -->
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
             <label for="timeStartedAt" appLabel label="Hora de Inicio:"
-                   [required]="isRequired(dateStartedAtField)"
-                   [valid]="dateStartedAtField.valid"
-                   [touched]="dateStartedAtField.touched"
-                   [dirty]="dateStartedAtField.dirty">
+                   [required]="isRequired(timeStartedAtField)"
+                   [valid]="timeStartedAtField.valid"
+                   [touched]="timeStartedAtField.touched"
+                   [dirty]="timeStartedAtField.dirty">
             </label>
             <p-calendar id="timeStartedAt" formControlName="timeStartedAt" [timeOnly]="true" inputId="timeonly"></p-calendar>
           </div>
