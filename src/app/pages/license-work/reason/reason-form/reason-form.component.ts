@@ -29,7 +29,7 @@ export class ReasonFormComponent implements OnInit, OnDestroy, OnExitInterface {
     private breadcrumbService: BreadcrumbService,
     public messageService: MessageService,
     private licenseWorkHttpService: LicenseWorkHttpService,
-    private licenseWorkService: LicenseWorkService
+    
   ) 
   {
     this.breadcrumbService.setItems([
@@ -42,7 +42,7 @@ export class ReasonFormComponent implements OnInit, OnDestroy, OnExitInterface {
   ngOnInit(): void {
       if (this.activatedRoute.snapshot.params.id != 'new') {
         this.title = 'Actualizar Razón';
-        this.buttonTitle = 'Actualizar Razones';
+        this.buttonTitle = 'Actualizar Razón';
         this.loadReason();
       }
     }
