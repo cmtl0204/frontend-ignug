@@ -1,9 +1,9 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {MenuItem} from 'primeng/api';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
-import {LicenseWorkHttpService, LicenseWorkService} from '@services/license-work';
+import {LicenseWorkHttpService} from '@services/license-work';
 import {MessageService} from '@services/core';
 import {HolidayModel,} from '@models/license-work';
 import {ColModel, PaginatorModel} from '@models/core';
@@ -147,7 +147,7 @@ export class HolidayListComponent implements OnInit {
   
     setCols() {
       this.cols = [
-        {field: 'employee', header: 'fk nombre del trabajador Losep.Cod.'},
+        {field: 'employee', header: 'Nombre del trabajador Losep.Cod.'},
         {field: 'numberDays', header: 'Número de dás de licencias y permisos '},
         {field: 'year', header: 'Año de vacaciones'},
         

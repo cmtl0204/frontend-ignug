@@ -26,9 +26,7 @@
                      [touched]="logoField.touched"
                      [dirty]="logoField.dirty">
               </label>
-              <p>
-                <input pInputText id="department" formControlName="department">
-              </p>
+                <input pInputText id="logo" formControlName="logo">
               <small appErrorMessage
                      [errors]="logoField.errors"
                      [touched]="logoField.touched"
@@ -50,6 +48,7 @@
               </small>
             </div>
           </div>
+          <div class="formgrid grid">
             <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
               <label for="coordination" appLabel label="Sub. Fom. Técnica y Tecnológica:"
                      [required]="isRequired(coordinationField)"
@@ -78,6 +77,8 @@
                        [dirty]="unitField.dirty">
                 </small>
             </div>
+          </div>
+          <div class="formgrid grid">
             <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
                 <label for="approvalName" appLabel label="Nombre de quien aprueba:"
                        [required]="isRequired(approvalNameField)"
@@ -85,7 +86,7 @@
                        [touched]="approvalNameField.touched"
                        [dirty]="approvalNameField.dirty">
                 </label>
-                <input pInputText id="approvalNameField" formControlName="approvalNameField">
+                <input pInputText id="approvalName" formControlName="approvalName">
                 <small appErrorMessage
                        [errors]="approvalNameField.errors"
                        [touched]="approvalNameField.touched"
@@ -106,6 +107,7 @@
                        [dirty]="registerNameField.dirty">
                 </small>
             </div>
+          </div>
           <p-divider></p-divider>
           <div class="formgrid grid">
             <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">

@@ -79,7 +79,7 @@ export class FormFormComponent implements OnInit, OnDestroy, OnExitInterface {
     this.loadingSkeleton = true;
     this.subscriptions.push(
       this.licenseWorkHttpService
-      .getForm(this.licenseWorkService.professional.id!)
+      .getForm(this.activatedRoute.snapshot.params.id)
         .subscribe(
           response => {
             this.form.patchValue(response.data);
@@ -93,7 +93,7 @@ export class FormFormComponent implements OnInit, OnDestroy, OnExitInterface {
 
   loadEmployers() {
     this.subscriptions.push(
-      this.licenseWorkHttpService.getEmployers()
+      this.licenseWorkHttpService.getCatalogueEmployers()
         .subscribe(
           response => {
             this.form= response.data;
