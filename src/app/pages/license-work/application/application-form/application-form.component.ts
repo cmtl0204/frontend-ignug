@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {Subscription} from "rxjs";
 import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {LocationModel, CatalogueModel} from '@models/core';
+import {LocationModel} from '@models/core';
+import {EmployeeModel, FormModel, ReasonModel} from '@models/license-work';
 import {ActivatedRoute, Router} from "@angular/router";
 import {BreadcrumbService} from "@services/core/breadcrumb.service";
 import {MessageService} from "@services/core";
-import {LicenseWorkHttpService, LicenseWorkService} from "@services/license-work";
+import {LicenseWorkHttpService} from "@services/license-work";
 import {ApplicationModel} from "@models/license-work";
 
 @Component({
@@ -27,9 +28,9 @@ export class ApplicationFormComponent implements OnInit {
   forms: FormModel[] = [];
   reasons: ReasonModel[] = [];
   locations: LocationModel[] = [];
-  types: CatalogueModel[] = [];
 
   yearRange: string = `1900:${(new Date()).getFullYear()}`;
+
   private coreHttpService: any;
 
   constructor(
@@ -39,7 +40,6 @@ export class ApplicationFormComponent implements OnInit {
     private breadcrumbService: BreadcrumbService,
     public messageService: MessageService,
     private licenseWorkHttpService: LicenseWorkHttpService,
-    private licenseWorkService: LicenseWorkService,
   ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
@@ -58,11 +58,12 @@ export class ApplicationFormComponent implements OnInit {
     this.loadForms();
     this.loadReasons();
     this.loadLocations();
-    this.loadTypes();
   }
+
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
+
   async onExit() {
     if (this.form.touched || this.form.dirty) {
       return await this.messageService.questionOnExit({})
@@ -72,6 +73,7 @@ export class ApplicationFormComponent implements OnInit {
     }
     return true;
   }
+
   newForm(): FormGroup {
     return this.formBuilder.group({
       id: [null],
@@ -79,7 +81,7 @@ export class ApplicationFormComponent implements OnInit {
       form: [null, [Validators.required]],
       reason: [null, [Validators.required]],
       location: [null, [Validators.required]],
-      type: [null, [Validators.required]],
+      type: [false, [Validators.required]],
       dateStartedAt: [null, [Validators.required]],
       dateEndedAt: [null, [Validators.required]],
       timeStartedAt: [null, [Validators.required]],
@@ -87,6 +89,7 @@ export class ApplicationFormComponent implements OnInit {
       observations: [null],
     });
   }
+
   loadApplication() {
     this.loadingSkeleton = true;
     this.subscriptions.push(
@@ -105,7 +108,7 @@ export class ApplicationFormComponent implements OnInit {
 
   loadEmployees() {
     this.subscriptions.push(
-      this.licenseWorkHttpService.getCataloguesEmployees()
+      this.licenseWorkHttpService.getCatalogueEmployees()
         .subscribe(
           response => {
             this.employees = response.data;
@@ -114,9 +117,10 @@ export class ApplicationFormComponent implements OnInit {
           }
         ));
   }
+
   loadForms() {
     this.subscriptions.push(
-      this.licenseWorkHttpService.getForms()
+      this.licenseWorkHttpService.getCatalogueForms()
         .subscribe(
           response => {
             this.forms = response.data;
@@ -125,9 +129,10 @@ export class ApplicationFormComponent implements OnInit {
           }
         ));
   }
+
   loadReasons() {
     this.subscriptions.push(
-      this.licenseWorkHttpService.getReasons()
+      this.licenseWorkHttpService.getCatalogueReasons()
         .subscribe(
           response => {
             this.reasons = response.data;
@@ -136,6 +141,7 @@ export class ApplicationFormComponent implements OnInit {
           }
         ));
   }
+
   loadLocations() {
     this.subscriptions.push(
       this.coreHttpService.getLocations('PROVINCE')
@@ -147,17 +153,7 @@ export class ApplicationFormComponent implements OnInit {
           }
         ));
   }
-  loadTypes() {
-    this.subscriptions.push(
-      this.coreHttpService.getCatalogues()
-        .subscribe(
-          response => {
-            this.types = response.data;
-          }, error => {
-            this.messageService.error(error);
-          }
-        ));
-  }
+
   onSubmit(): void {
     if (this.form.valid) {
       if (this.idField.value) {

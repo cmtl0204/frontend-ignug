@@ -11,10 +11,11 @@ import {
   EmployerModel,
   FormModel,
   HolidayModel,
-  DependenceModel
+//  DependenceModel
 } from '@models/license-work';
 import {catchError, map} from 'rxjs/operators';
 import {Handler} from '../../exceptions/handler';
+import { MessageService } from '@services/core';
 
 @Injectable({
   providedIn: 'root'
@@ -88,7 +89,7 @@ export class LicenseWorkHttpService {
       );
   }
   //*************        DEPENDENCE         *******************//
-  getDependences(paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
+  /*getDependences(paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
     const url = `${this.API_URL}/dependences`;
     const params = new HttpParams()
       .set('page', paginator.current_page)
@@ -147,7 +148,7 @@ export class LicenseWorkHttpService {
         map(response => response),
         catchError(Handler.render)
       );
-  }
+  }*/
 
   //*************        EMPLOYEE         *******************//
   getEmployees(paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
@@ -155,7 +156,6 @@ export class LicenseWorkHttpService {
     const params = new HttpParams()
       .set('page', paginator.current_page)
       .set('per_page', paginator.per_page);
-    // El filtro depende de los campos propios que sean cadenas de texto
     if (filter !== '') {
       filter = `?senescytCode=${filter}`;
     }
@@ -165,8 +165,8 @@ export class LicenseWorkHttpService {
         catchError(Handler.render)
       );
   }
-  getCataloguesEmployees(){
-    const url = `${this.API_URL}/employee/catalogues`;
+  getCatalogueEmployees(){
+    const url = `${this.API_URL}/employee/catalogue`;
     return this.httpClient.get<ServerResponse>(url)
       .pipe(
         map(response => response),
@@ -297,6 +297,14 @@ export class LicenseWorkHttpService {
         catchError(Handler.render)
       );
   }
+  getCatalogueForms(){
+    const url = `${this.API_URL}/form/catalogue`;
+    return this.httpClient.get<ServerResponse>(url)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
 
   getForm(id: number): Observable<ServerResponse> {
     const url = `${this.API_URL}/forms/${id}`;
@@ -421,6 +429,14 @@ export class LicenseWorkHttpService {
       );
   }
 
+  getCatalogueReasons(){
+    const url = `${this.API_URL}/reason/catalogue`;
+    return this.httpClient.get<ServerResponse>(url)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
   getReason(id: number): Observable<ServerResponse> {
     const url = `${this.API_URL}/reasons/${id}`;
     return this.httpClient.get<ServerResponse>(url)
