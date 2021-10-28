@@ -1,5 +1,5 @@
 <div class="container-fluid">
-    <p-toolbar *ngIf="!skeletonLoading" styleClass="bg-primary">
+    <p-toolbar *ngIf="!loadingSkeleton" styleClass="bg-primary">//cambiar
       <div class="p-toolbar-group-left">
         <h3 class="ml-2">{{title}}</h3>
       </div>
@@ -56,23 +56,22 @@
                      [touched]="codeField.touched"
                      [dirty]="codeField.dirty">
               </label>
-              <p>
                 <input pinputText id="code" formControlName="code">
-              </p>
               <small appErrorMessage
                      [errors]="codeField.errors"
                      [touched]="codeField.touched"
                      [dirty]="codeField.dirty">
               </small>
             </div>
-            </div>
+          <div class="formgrid grid">
             <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
               <label for="description" appLabel label="Descripción de formularios de L y P:"
                      [required]="isRequired(descriptionField)"
                      [valid]="descriptionField.valid"
                      [touched]="descriptionField.touched"
-                     [dirty]="descriptionField.dirty"></label>
-              <input pInputText id="descriptionField" formControlName="descriptionField">
+                     [dirty]="descriptionField.dirty">
+              </label>
+              <input pInputText id="description" formControlName="description">
               <small appErrorMessage
                      [errors]="descriptionField.errors"
                      [touched]="descriptionField.touched"
@@ -84,59 +83,63 @@
                      [required]="isRequired(regimeField)"
                      [valid]="regimeField.valid"
                      [touched]="regimeField.touched"
-                     [dirty]="regimeField.dirty"></label>
-              <input pInputText id="regimeField" formControlName="regimeField">
+                     [dirty]="regimeField.dirty">
+              </label>
+              <input pInputText id="regime" formControlName="regime">
               <small appErrorMessage
                      [errors]="regimeField.errors"
                      [touched]="regimeField.touched"
                      [dirty]="regimeField.dirty">
               </small>
             </div>
-              <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-                <label for="daysConst" appLabel label="1,363636:"
-                       [required]="isRequired(daysConstField)"
-                       [valid]="daysConstField.valid"
-                       [touched]="daysConstField.touched"
-                       [dirty]="daysConstField.dirty">
-                </label>
-                <p-calendar id="daysConst" formControlName="daysConst" dateFormat="yy-mm-dd"
-                            [yearRange]="yearRange"
-                            [showIcon]="true"
-                            [monthNavigator]="true"
-                            [yearNavigator]="true"
-                            [readonlyInput]="true"></p-calendar>
-                <small appErrorMessage
-                       [errors]="daysConstField.errors"
-                       [touched]="daysConstField.touched"
-                       [dirty]="daysConstField.dirty">
-                </small>
-              </div>
-              <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-                <label for="approvedLevel" appLabel label="Nivel de aprobación que debe tener el formulario:"
-                       [required]="isRequired(approvedLevelField)"
-                       [valid]="approvedLevelField.valid"
-                       [touched]="approvedLevelField.touched"
-                       [dirty]="approvedLevelField.dirty"></label>
-                <input pInputText id="approvedLevelField" formControlName="approvedLevelField">
-                <small appErrorMessage
-                       [errors]="approvedLevelField.errors"
-                       [touched]="approvedLevelField.touched"
-                       [dirty]="approvedLevelField.dirty">
-                </small>
-              </div>
-              <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-                <label for="stateField" appLabel label="Activo-Inactivo:"
-                       [required]="isRequired(stateField)"
-                       [valid]="stateField.valid"
-                       [touched]="stateField.touched"
-                       [dirty]="stateField.dirty"></label>
-                <input pInputText id="stateField" formControlName="stateField">
-                <small appErrorMessage
-                       [errors]="stateField.errors"
-                       [touched]="stateField.touched"
-                       [dirty]="stateField.dirty">
-                </small>
-              </div>
+
+          </div>
+          <div class="formgrid grid">
+            <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+              <label for="daysConst" appLabel label="1,363636:"
+                     [required]="isRequired(daysConstField)"
+                     [valid]="daysConstField.valid"
+                     [touched]="daysConstField.touched"
+                     [dirty]="daysConstField.dirty">
+              </label>
+              <input pInputText id="daysConst" formControlName="daysConst">
+              <small appErrorMessage
+                     [errors]="daysConstField.errors"
+                     [touched]="daysConstField.touched"
+                     [dirty]="daysConstField.dirty">
+              </small>
+            </div>
+            <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+              <label for="approvedLevel" appLabel label="Nivel de aprobación que debe tener el formulario:"
+                     [required]="isRequired(approvedLevelField)"
+                     [valid]="approvedLevelField.valid"
+                     [touched]="approvedLevelField.touched"
+                     [dirty]="approvedLevelField.dirty">
+              </label>
+              <input pInputText id="approvedLevel" formControlName="approvedLevel">
+              <small appErrorMessage
+                     [errors]="approvedLevelField.errors"
+                     [touched]="approvedLevelField.touched"
+                     [dirty]="approvedLevelField.dirty">
+              </small>
+            </div>
+          </div>
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <label for="state" appLabel label="Activo-Inactivo:"
+                   [required]="isRequired(stateField)"
+                   [valid]="stateField.valid"
+                   [touched]="stateField.touched"
+                   [dirty]="stateField.dirty">
+            </label>
+            <p>
+              <p-inputSwitch id="state" formControlName="state"></p-inputSwitch>
+            </p>
+            <small appErrorMessage
+                   [errors]="stateField.errors"
+                   [touched]="stateField.touched"
+                   [dirty]="stateField.dirty">
+            </small>
+          </div>
           <p-divider></p-divider>
           <div class="formgrid grid">
             <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">

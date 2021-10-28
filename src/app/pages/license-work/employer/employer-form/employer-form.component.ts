@@ -4,7 +4,7 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/form
 import {ActivatedRoute, Router} from "@angular/router";
 import {BreadcrumbService} from "@services/core/breadcrumb.service";
 import {MessageService} from "@services/core";
-import {LicenseWorkHttpService, LicenseWorkService} from "@services/license-work";
+import {LicenseWorkHttpService} from "@services/license-work";
 import {EmployerModel} from "@models/license-work";
 
 @Component({
@@ -27,7 +27,6 @@ export class EmployerFormComponent implements OnInit {
     private breadcrumbService: BreadcrumbService,
     public messageService: MessageService,
     private licenseWorkHttpService: LicenseWorkHttpService,
-    private licenseWorkService: LicenseWorkService
   ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
@@ -75,7 +74,7 @@ export class EmployerFormComponent implements OnInit {
     this.loadingSkeleton = true;
     this.subscriptions.push(
       this.licenseWorkHttpService
-      .getEmployer(this.licenseWorkService.professional.id!)
+      .getEmployer(this.activatedRoute.snapshot.params.id)
         .subscribe(
           response => {
             this.form.patchValue(response.data);

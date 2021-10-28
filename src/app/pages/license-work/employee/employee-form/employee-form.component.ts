@@ -5,8 +5,9 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {MessageService} from '@services/core';
-import {LicenseWorkHttpService, LicenseWorkService} from '@services/license-work';
-import {EmployeeModel,userModel} from '@models/license-work';
+import {LicenseWorkHttpService} from '@services/license-work';
+import {EmployeeModel} from '@models/license-work';
+
 @Component({
   selector: 'app-employee-form',
   templateUrl: './employee-form.component.html',
@@ -16,10 +17,10 @@ export class EmployeeFormComponent implements OnInit,OnDestroy,OnExitInterface {
   private subscriptions: Subscription[] = [];
   form: FormGroup;
   progressBar: boolean = false;
-  skeletonLoading: boolean = false;
-  title: string = 'Crear Empleados';
-  buttonTitle: string = 'Crear Empleados';
-  user: userModel[] = [];
+  loadingSkeleton: boolean = false;
+  title: string = 'Crear Empleado';
+  buttonTitle: string = 'Crear Empleado';
+  user: number[] = [];
 
 
   constructor( private formBuilder: FormBuilder,
@@ -42,10 +43,9 @@ export class EmployeeFormComponent implements OnInit,OnDestroy,OnExitInterface {
      ngOnInit(): void {
       if (this.activatedRoute.snapshot.params.id != 'new') {
         this.title = 'Actualizar Empleado';
-        this.buttonTitle = 'Actualizar Empleados';
+        this.buttonTitle = 'Actualizar Empleado';
         this.loadEmployee();
       }
-      this.loadUserId();
     }
 
     ngOnDestroy(): void {
@@ -65,33 +65,21 @@ export class EmployeeFormComponent implements OnInit,OnDestroy,OnExitInterface {
     newForm(): FormGroup {
       return this.formBuilder.group({
        id: [null],
-       userId: [null, [Validators.required]],
+       user: [null, [Validators.required]],
       });
  }
 
  loadEmployee() {
-  this.skeletonLoading = true;
+  this.loadingSkeleton = true;
   this.subscriptions.push(
     this.licenseWorkHttpService
       .getEmployee( this.activatedRoute.snapshot.params.id)
       .subscribe(
         response => {
           this.form.patchValue(response.data);
-          this.skeletonLoading = false;
+          this.loadingSkeleton = false;
         }, error => {
-          this.skeletonLoading = false;
-          this.messageService.error(error);
-        }
-      ));
-}
-
-loadUser() {
-  this.subscriptions.push(
-    this.licenseWorkHttpService.getUser()
-      .subscribe(
-        response => {
-          this.userId = response.data;
-        }, error => {
+          this.loadingSkeleton = false;
           this.messageService.error(error);
         }
       ));
@@ -127,7 +115,6 @@ store(employee: EmployeeModel): void {
       ));
 }
 
-
 update(employee: EmployeeModel): void {
   this.progressBar = true;
   this.subscriptions.push(
@@ -162,7 +149,6 @@ get idField() {
 get userField() {
   return this.form.controls['user'];
 }
-
 
 }
 

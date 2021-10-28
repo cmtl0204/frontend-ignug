@@ -1,5 +1,5 @@
 <div class="container-fluid">
-    <p-toolbar *ngIf="!skeletonLoading" styleClass="bg-primary">
+    <p-toolbar *ngIf="!loadingSkeleton" styleClass="bg-primary">
       <div class="p-toolbar-group-left">
         <h3 class="ml-2">{{title}}</h3>
       </div>
@@ -56,34 +56,28 @@
                      [touched]="numberDaysField.touched"
                      [dirty]="numberDaysField.dirty">
               </label>
-              <p>
                 <input pinputText id="numberDays" formControlName="numberDays">
-              </p>
               <small appErrorMessage
                      [errors]="numberDaysField.errors"
                      [touched]="numberDaysField.touched"
                      [dirty]="numberDaysField.dirty">
               </small>
             </div>
-            <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+          </div>
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
               <label for="year" appLabel label="Año de las vacaiones:"
                      [required]="isRequired(yearField)"
                      [valid]="yearField.valid"
                      [touched]="yearField.touched"
                      [dirty]="yearField.dirty">
               </label>
-              <p-calendar id="year" formControlName="year" dateFormat="yy-mm-dd"
-                          [yearRange]="yearRange"
-                          [showIcon]="true"
-                          [monthNavigator]="true"
-                          [yearNavigator]="true"
-                          [readonlyInput]="true"></p-calendar>
+                <input pinputText id="year" formControlName="year">
               <small appErrorMessage
                      [errors]="yearField.errors"
                      [touched]="yearField.touched"
                      [dirty]="yearField.dirty">
               </small>
-            </div>
+          </div>          
           <p-divider></p-divider>
           <div class="formgrid grid">
             <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">

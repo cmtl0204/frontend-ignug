@@ -5,8 +5,8 @@ import {Subscription} from 'rxjs';
 import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {MessageService} from '@services/core';
-import {LicenseWorkHttpService, LicenseWorkService} from '@services/license-work';
-import {HolidayModel, CategoryModel,} from '@models/license-work';
+import {LicenseWorkHttpService} from '@services/license-work';
+import {HolidayModel, EmployeeModel} from '@models/license-work';
 
 @Component({
   selector: 'app-holiday-form',
@@ -21,7 +21,7 @@ export class HolidayFormComponent implements OnInit, OnDestroy, OnExitInterface 
   loadingSkeleton: boolean = false;
   title: string = 'Crear Vacaciones';
   buttonTitle: string = 'Crear Vacaciones';
-  Employee: CategoryModel[] = [];
+  employees: EmployeeModel[] = [];
   yearRange: string = `1900:${(new Date()).getFullYear()}`;
 
   constructor(
@@ -31,7 +31,6 @@ export class HolidayFormComponent implements OnInit, OnDestroy, OnExitInterface 
     private breadcrumbService: BreadcrumbService,
     public messageService: MessageService,
     private licenseWorkHttpService: LicenseWorkHttpService,
-    private licenseWorkService: LicenseWorkService
   ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
@@ -77,7 +76,7 @@ export class HolidayFormComponent implements OnInit, OnDestroy, OnExitInterface 
     this.loadingSkeleton = true;
     this.subscriptions.push(
       this.licenseWorkHttpService
-      .getApplication(this.licenseWorkService.professional.id!)
+      .getHoliday(this.activatedRoute.snapshot.params.id)
         .subscribe(
           response => {
             this.form.patchValue(response.data);
@@ -91,7 +90,7 @@ export class HolidayFormComponent implements OnInit, OnDestroy, OnExitInterface 
 
   loadEmployees() {
     this.subscriptions.push(
-      this.licenseWorkHttpService.getEmployees()
+      this.licenseWorkHttpService.getCatalogueEmployees()
         .subscribe(
           response => {
             this.employees = response.data;
