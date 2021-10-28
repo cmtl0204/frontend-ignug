@@ -6,7 +6,7 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/form
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {MessageService} from '@services/core';
 import {LicenseWorkHttpService, LicenseWorkService} from '@services/license-work';
-import {EmployeeModel,userIdModel} from '@models/license-work';
+import {EmployeeModel,userModel} from '@models/license-work';
 @Component({
   selector: 'app-employee-form',
   templateUrl: './employee-form.component.html',
@@ -19,7 +19,7 @@ export class EmployeeFormComponent implements OnInit,OnDestroy,OnExitInterface {
   skeletonLoading: boolean = false;
   title: string = 'Crear Empleados';
   buttonTitle: string = 'Crear Empleados';
-  userId: userIdModel[] = [];
+  user: userModel[] = [];
 
 
   constructor( private formBuilder: FormBuilder,
@@ -28,7 +28,7 @@ export class EmployeeFormComponent implements OnInit,OnDestroy,OnExitInterface {
     private breadcrumbService: BreadcrumbService,
     public messageService: MessageService,
     private licenseWorkHttpService: LicenseWorkHttpService,
-    private licenseWorkService: LicenseWorkService) 
+  )
     
     {
      this.breadcrumbService.setItems([
@@ -85,9 +85,9 @@ export class EmployeeFormComponent implements OnInit,OnDestroy,OnExitInterface {
       ));
 }
 
-loadUserId() {
+loadUser() {
   this.subscriptions.push(
-    this.licenseWorkHttpService.getUserId()
+    this.licenseWorkHttpService.getUser()
       .subscribe(
         response => {
           this.userId = response.data;
@@ -151,7 +151,7 @@ isRequired(field: AbstractControl): boolean {
 }
 
 returnList() {
-  this.router.navigate(['/license-work/professional', 2]);//
+  this.router.navigate(['/license-work', 2]);
 }
 
 
@@ -159,8 +159,8 @@ get idField() {
   return this.form.controls['id'];
 }
 
-get userIdField() {
-  return this.form.controls['userId'];
+get userField() {
+  return this.form.controls['user'];
 }
 
 

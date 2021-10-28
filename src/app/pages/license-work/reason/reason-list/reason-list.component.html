@@ -62,7 +62,7 @@
               </span>
               <span *ngIf="!rowData[col.field]?.id" [ngSwitch]="col.field">
                 <span *ngSwitchCase="'updatedAt'">{{rowData[col.field]|date}}</span>
-                <span *ngSwitchCase="'discountableHolidays'">{{rowData[col.field]|}}</span>
+                <span *ngSwitchCase="'discountableHolidays'">{{rowData[col.field]|discountableHolidays}}</span>
                 <span *ngSwitchDefault>{{rowData[col.field]}}</span>
               </span>
             </td>

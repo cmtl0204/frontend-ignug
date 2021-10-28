@@ -64,12 +64,12 @@ export class ReasonFormComponent implements OnInit, OnDestroy, OnExitInterface {
     newForm(): FormGroup {
        return this.formBuilder.group({
         id: [null],
-        name: [null], 
-        descriptionOne: [null],
-        descriptionTwo: [null],
+        name: [null, [Validators.required]], 
+        descriptionOne: [null,[Validators.required]],
+        descriptionTwo: [null,[Validators.required]],
         discountableHolidays: [false, [Validators.required]],
-        daysMin: [null],
-        daysMax:[null],
+        daysMin: [null,[Validators.required]],
+        daysMax:[null,[Validators.required]],
        });
   }
 

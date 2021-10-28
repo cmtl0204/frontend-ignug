@@ -27,7 +27,10 @@ import {DividerModule} from "primeng/divider";
 import {CardModule} from "primeng/card";
 import { DiscountableHolidayPipe } from './pipes/license-work/reason/discountable-holiday.pipe';
 import { StatePipe } from './pipes/license-work/form/state.pipe';
+<<<<<<< HEAD
 
+=======
+>>>>>>> 83affbdae22dc93627f6e6a13556ee28b2502b4a
 
 @NgModule({
   declarations: [
@@ -43,7 +46,11 @@ import { StatePipe } from './pipes/license-work/form/state.pipe';
     WorkedPipe,
     ExtensionsPipe,
     DiscountableHolidayPipe,
+<<<<<<< HEAD
     StatePipe,
+=======
+    StatePipe
+>>>>>>> 83affbdae22dc93627f6e6a13556ee28b2502b4a
   ],
   exports: [
     RolesPermissionsDirective,
