@@ -27,6 +27,7 @@ import {DividerModule} from "primeng/divider";
 import {CardModule} from "primeng/card";
 import {OverlayPanelModule} from "primeng/overlaypanel";
 import {ReactiveFormsModule} from "@angular/forms";
+import { SearchComponent } from './components/search/search.component';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import {ReactiveFormsModule} from "@angular/forms";
     UploadFilesComponent,
     CertificatedPipe,
     WorkedPipe,
-    ExtensionsPipe
+    ExtensionsPipe,
+    SearchComponent
   ],
   exports: [
     RolesPermissionsDirective,
@@ -55,6 +57,7 @@ import {ReactiveFormsModule} from "@angular/forms";
     ExtensionsPipe,
     UploadFilesComponent,
     ViewFilesComponent,
+    SearchComponent,
   ],
   imports: [
     CommonModule,

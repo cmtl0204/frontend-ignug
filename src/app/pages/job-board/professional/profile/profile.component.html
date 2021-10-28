@@ -26,24 +26,29 @@
                      [touched]="identificationTypeUserField.touched"
                      [dirty]="identificationTypeUserField.dirty">
               </label>
-              <p-dropdown id="identificationTypeUser"
-                          dataKey="id"
-                          [options]="identificationTypes"
-                          formControlName="identificationType"
-                          [filter]="true"
-                          filterBy="name"
-                          placeholder="Seleccione">
-                <ng-template pTemplate="selectedItem">
-                  <div class="country-item country-item-value" *ngIf="identificationTypeUserField.value">
-                    <div>{{identificationTypeUserField.value?.name}}</div>
-                  </div>
-                </ng-template>
-                <ng-template let-item pTemplate="item">
-                  <div class="country-item">
-                    <div>{{item.name}}</div>
-                  </div>
-                </ng-template>
-              </p-dropdown>
+              <!--              <p-dropdown id="identificationTypeUser"-->
+              <!--                          dataKey="id"-->
+              <!--                          [options]="identificationTypes"-->
+              <!--                          formControlName="identificationType"-->
+              <!--                          [filter]="true"-->
+              <!--                          filterBy="name"-->
+              <!--                          placeholder="Seleccione">-->
+              <!--                <ng-template pTemplate="selectedItem">-->
+              <!--                  <div class="country-item country-item-value" *ngIf="identificationTypeUserField.value">-->
+              <!--                    <div>{{identificationTypeUserField.value?.name}}</div>-->
+              <!--                  </div>-->
+              <!--                </ng-template>-->
+              <!--                <ng-template let-item pTemplate="item">-->
+              <!--                  <div class="country-item">-->
+              <!--                    <div>{{item.name}}</div>-->
+              <!--                  </div>-->
+              <!--                </ng-template>-->
+              <!--              </p-dropdown>-->
+              <span class="p-input-icon-right">
+                <i class="pi pi-search"
+                   (click)="showModalSearch(identificationTypes,identificationTypeUserField,'identificationTypes')"></i>
+                <input pInputText id="identificationTypeUser" [value]="identificationTypeUserField.value.name" readonly>
+              </span>
               <small appErrorMessage
                      [errors]="identificationTypeUserField.errors"
                      [touched]="identificationTypeUserField.touched"
@@ -124,23 +129,28 @@
                      [touched]="sexUserField.touched"
                      [dirty]="sexUserField.dirty">
               </label>
-              <p-dropdown id="sexUser"
-                          [options]="sexes"
-                          formControlName="sex"
-                          [filter]="true"
-                          filterBy="name"
-                          placeholder="Seleccione">
-                <ng-template pTemplate="selectedItem">
-                  <div class="country-item country-item-value" *ngIf="sexUserField.value">
-                    <div>{{sexUserField.value?.name}}</div>
-                  </div>
-                </ng-template>
-                <ng-template let-item pTemplate="item">
-                  <div class="country-item">
-                    <div>{{item.name}}</div>
-                  </div>
-                </ng-template>
-              </p-dropdown>
+              <!--              <p-dropdown id="sexUser"-->
+              <!--                          [options]="sexes"-->
+              <!--                          formControlName="sex"-->
+              <!--                          [filter]="true"-->
+              <!--                          filterBy="name"-->
+              <!--                          placeholder="Seleccione">-->
+              <!--                <ng-template pTemplate="selectedItem">-->
+              <!--                  <div class="country-item country-item-value" *ngIf="sexUserField.value">-->
+              <!--                    <div>{{sexUserField.value?.name}}</div>-->
+              <!--                  </div>-->
+              <!--                </ng-template>-->
+              <!--                <ng-template let-item pTemplate="item">-->
+              <!--                  <div class="country-item">-->
+              <!--                    <div>{{item.name}}</div>-->
+              <!--                  </div>-->
+              <!--                </ng-template>-->
+              <!--              </p-dropdown>-->
+
+              <span class="p-input-icon-right">
+                <i class="pi pi-search" (click)="showModalSearch(sexes,sexUserField,'sexes')"></i>
+                <input pInputText id="sexUser" [value]="sexUserField.value.name" readonly>
+              </span>
               <small appErrorMessage
                      [errors]="sexUserField.errors"
                      [touched]="sexUserField.touched"
@@ -393,3 +403,14 @@
     </div>
   </form>
 </div>
+
+<p-dialog header="Buscar" [(visible)]="displayModalSearch" [modal]="true" (onHide)="paginatorSearch.current_page=1">
+  <app-search [cols]="colsSearchCatalogue"
+              [records]="recordsSearchCatalogue"
+              [paginatorIn]="paginatorSearch"
+              [loading]="loadingSearch"
+              (selectedRecordOut)="loadSearchCatalogue($event)"
+              (displayModal)="displayModalSearch=$event"
+              (paginatorOut)="paginateSearch($event)"
+  ></app-search>
+</p-dialog>

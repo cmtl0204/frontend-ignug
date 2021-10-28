@@ -29,6 +29,19 @@ export class CoreHttpService {
       );
   }
 
+  getCatalogues2(type: string | undefined, paginator: PaginatorModel): Observable<ServerResponse> {
+    const params = new HttpParams()
+      .append('type', String(type))
+      .append('page', paginator.current_page)
+      .append('per_page', paginator.per_page);
+    const url = this.API_URL + '/catalogue/all';
+    return this.httpClient.get<ServerResponse>(url, {params})
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
   getLocations(type: string | undefined): Observable<ServerResponse> {
     const params = new HttpParams().set('type', String(type));
     const url = this.API_URL + '/locations';

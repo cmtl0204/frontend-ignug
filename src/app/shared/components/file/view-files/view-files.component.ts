@@ -3,7 +3,7 @@ import {ColModel, FileModel, PaginatorModel} from "@models/core";
 import {CoreHttpService, MessageService} from "@services/core";
 import {FormBuilder, FormControl} from "@angular/forms";
 import {Subscription} from "rxjs";
-import {debounce, debounceTime} from "rxjs/operators";
+import {debounceTime} from "rxjs/operators";
 
 @Component({
   selector: 'app-view-files',

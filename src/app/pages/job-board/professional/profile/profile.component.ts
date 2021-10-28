@@ -1,12 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Subscription} from "rxjs";
 import {BreadcrumbService} from "@services/core/breadcrumb.service";
 import {CoreHttpService, CoreService, MessageService} from "@services/core";
 import {JobBoardHttpService, JobBoardService} from "@services/job-board";
 import {CategoryModel, ProfessionalModel} from "@models/job-board";
 import {IdentificationValidator} from "@shared/validators/identification-validator";
+import {CatalogueModel, ColModel, PaginatorModel} from "@models/core";
+import {ColsService} from "@services/core/cols.service";
 
 @Component({
   selector: 'app-profile',
@@ -22,12 +24,19 @@ export class ProfileComponent implements OnInit {
   title: string = 'Crear';
   buttonTitle: string = 'Crear';
   yearRange: string = `1900:${(new Date()).getFullYear()}`;
-  identificationTypes: CategoryModel[] = [];
-  sexes: CategoryModel[] = [];
-  genders: CategoryModel[] = [];
-  bloodTypes: CategoryModel[] = [];
-  ethnicOrigins: CategoryModel[] = [];
+  identificationTypes: CatalogueModel[] = [];
+  sexes: CatalogueModel[] = [];
+  genders: CatalogueModel[] = [];
+  bloodTypes: CatalogueModel[] = [];
+  ethnicOrigins: CatalogueModel[] = [];
   regExpAlpha: RegExp;
+  displayModalSearch: boolean = false;
+  colsSearchCatalogue: ColModel[] = [];
+  recordsSearchCatalogue: CatalogueModel[] = [];
+  selectedField: AbstractControl;
+  selectedFieldText: string = '';
+  paginatorSearch: PaginatorModel = {current_page: 1, per_page: 3, total: 0};
+  loadingSearch: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -38,7 +47,8 @@ export class ProfileComponent implements OnInit {
     private coreHttpService: CoreHttpService,
     private coreService: CoreService,
     private jobBoardHttpService: JobBoardHttpService,
-    private jobBoardService: JobBoardService
+    private jobBoardService: JobBoardService,
+    private colsService: ColsService
   ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
@@ -46,6 +56,7 @@ export class ProfileComponent implements OnInit {
       {label: 'Formulario', disabled: true},
     ]);
     this.form = this.newForm();
+    this.selectedField = new FormControl(null);
 
     this.familiarDisabledField.valueChanges.subscribe(value => {
       this.verifyFamiliarDisabledValidators();
@@ -127,24 +138,34 @@ export class ProfileComponent implements OnInit {
   }
 
   loadIdentificationTypes() {
+    this.loadingSearch = true;
     this.subscriptions.push(
-      this.coreHttpService.getCatalogues('IDENTIFICATION_PROFESSIONAL_TYPE')
+      this.coreHttpService.getCatalogues2('IDENTIFICATION_PROFESSIONAL_TYPE', this.paginatorSearch)
         .subscribe(
           response => {
+            this.loadingSearch = false;
             this.identificationTypes = response.data;
+            this.recordsSearchCatalogue = response.data;
+            this.paginatorSearch = response.meta;
           }, error => {
+            this.loadingSearch = false;
             this.messageService.error(error);
           }
         ));
   }
 
   loadSexes() {
+    this.loadingSearch = true;
     this.subscriptions.push(
-      this.coreHttpService.getCatalogues('SEX_TYPE')
+      this.coreHttpService.getCatalogues2('SEX_TYPE', this.paginatorSearch)
         .subscribe(
           response => {
+            this.loadingSearch = false;
             this.sexes = response.data;
+            this.recordsSearchCatalogue = response.data;
+            this.paginatorSearch = response.meta;
           }, error => {
+            this.loadingSearch = false;
             this.messageService.error(error);
           }
         ));
@@ -232,6 +253,38 @@ export class ProfileComponent implements OnInit {
       this.usernameUserField.clearValidators();
     }
     this.usernameUserField.updateValueAndValidity();
+  }
+
+  showModalSearch(catalogues: CatalogueModel[], field: AbstractControl, fieldText: string) {
+    this.selectedField = field;
+    this.selectedFieldText = fieldText;
+    this.recordsSearchCatalogue = catalogues;
+    this.colsSearchCatalogue = this.colsService.catalogue;
+    this.displayModalSearch = true;
+    this.loadCatalogues();
+  }
+
+  loadSearchCatalogue(event: any) {
+    this.selectedField.patchValue(event);
+  }
+
+  paginateSearch(event: any) {
+    console.log(event);
+    this.paginatorSearch = event;
+    this.loadCatalogues();
+  }
+
+  loadCatalogues() {
+    switch (this.selectedFieldText) {
+      case 'identificationTypes':
+        this.loadIdentificationTypes();
+        break;
+      case 'sexes':
+        this.loadSexes();
+        break;
+      default:
+        return;
+    }
   }
 
   get idField() {

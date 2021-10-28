@@ -157,22 +157,20 @@
             <app-progress-bar [message]="messageService.progressBarSaveOrUpdate"></app-progress-bar>
           </div>
         </div>
-        <div class="field">
-          <p-dialog header="Gestionar Archivos" [(visible)]="displayModalFiles" [modal]="true">
-            <app-view-files [acceptAttributes]="'.pdf'"
-                            [loadingUpload]="loadingUploadFiles"
-                            [filesIn]="files"
-                            [loadingFiles]="loadingFiles"
-                            (files)="uploadFile($event)"
-                            [paginatorIn]="paginatorFiles"
-                            (paginatorOut)="loadFiles()"
-                            (searchOut)="filterFiles.setValue($event);loadFiles()">
-            </app-view-files>
-          </p-dialog>
-        </div>
       </form>
     </div>
   </p-card>
 </div>
 
 
+<p-dialog header="Gestionar Archivos" [(visible)]="displayModalFiles" [modal]="true">
+  <app-view-files [acceptAttributes]="'.pdf'"
+                  [loadingUpload]="loadingUploadFiles"
+                  [filesIn]="files"
+                  [loadingFiles]="loadingFiles"
+                  [paginatorIn]="paginatorFiles"
+                  (files)="uploadFile($event)"
+                  (paginatorOut)="loadFiles()"
+                  (searchOut)="filterFiles.setValue($event);loadFiles()">
+  </app-view-files>
+</p-dialog>
