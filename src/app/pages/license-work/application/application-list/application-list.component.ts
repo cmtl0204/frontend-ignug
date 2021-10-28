@@ -150,7 +150,7 @@ export class ApplicationListComponent implements OnInit {
       {field: 'employee', header: 'Empleado'},
       {field: 'reason', header: 'Razones'},
       {field: 'location', header: 'Localización'},
-      {field: 'type', header: 'Catalogues'},
+      {field: 'type', header: 'tipo'},
       {field: 'form', header: 'Formulario'},
       {field: 'dateStartedAt', header: 'Fecha de inicio de la Licencia o Permiso'},
       {field: 'dateEndedAt', header: 'Fecha final de la Licencia o Permiso'},

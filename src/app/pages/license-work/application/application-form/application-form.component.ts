@@ -86,7 +86,7 @@ export class ApplicationFormComponent implements OnInit {
       dateEndedAt: [null, [Validators.required]],
       timeStartedAt: [null, [Validators.required]],
       timeEndedAt: [null, [Validators.required]],
-      observations: [null],
+      observations: this.formBuilder.array([this.formBuilder.control(null, Validators.required)]),
     });
   }
 
@@ -154,6 +154,16 @@ export class ApplicationFormComponent implements OnInit {
         ));
   }
 
+  addObservations(data: string = '') {
+    this.observationsField.push(this.formBuilder.control(data, Validators.required));
+  }
+  removeObservations(index: number) {
+    if (this.observationsField.length > 1)
+      this.observationsField.removeAt(index);
+    else
+      this.messageService.errorRequired();
+  }
+
   onSubmit(): void {
     if (this.form.valid) {
       if (this.idField.value) {
@@ -164,9 +174,6 @@ export class ApplicationFormComponent implements OnInit {
     } else {
       this.form.markAllAsTouched();
     }
-  }
-  addActivity(data: string = '') {
-    this.observationsField.push(this.formBuilder.control(data, Validators.required));
   }
 
   store(application: ApplicationModel): void {

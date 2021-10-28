@@ -19,6 +19,7 @@
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
         <div class="formgrid grid">
+          <!-- Formulario column 1 -->
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
             <label for="form" appLabel label="Formulario:"
                    [required]="isRequired(formField)"
@@ -50,31 +51,17 @@
                    [dirty]="formField.dirty">
             </small>
           </div>
-          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-            <label for="type" appLabel label="Tipo de Formulario:"
+          <!-- Tipo column 1 -->
+          <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
+            <label for="type" appLabel label="¿Es descontable a vacaciones?:"
                    [required]="isRequired(typeField)"
                    [valid]="typeField.valid"
                    [touched]="typeField.touched"
                    [dirty]="typeField.dirty">
             </label>
-            <p-dropdown id="type"
-                        dataKey="id"
-                        [options]="types"
-                        formControlName="type"
-                        [filter]="true"
-                        filterBy="name"
-                        placeholder="Seleccione">
-              <ng-template pTemplate="selectedItem">
-                <div class="country-item country-item-value" *ngIf="typeField.value">
-                  <div>{{typeField.value?.name}}</div>
-                </div>
-              </ng-template>
-              <ng-template let-item pTemplate="item">
-                <div class="country-item">
-                  <div>{{item.name}} </div>
-                </div>
-              </ng-template>
-            </p-dropdown>
+            <p>
+              <p-inputSwitch id="type" formControlName="type"></p-inputSwitch>
+            </p>
             <small appErrorMessage
                    [errors]="typeField.errors"
                    [touched]="typeField.touched"
@@ -82,7 +69,7 @@
             </small>
           </div>
         </div>
-
+          <!-- Nombre del empleado column 2 -->
         <div class="field">
           <label for="employee" appLabel label="Nombre del Empleado:"
                  [required]="isRequired(employeeField)"
@@ -114,7 +101,7 @@
                  [dirty]="employeeField.dirty">
           </small>
         </div>
-
+          <!-- Razon de la solicitud column 3 -->
         <div class="field">
           <label for="reason" appLabel label="Razón de la Solicitud:"
                  [required]="isRequired(reasonField)"
@@ -148,6 +135,7 @@
         </div>
 
         <div class="formgrid grid">
+          <!-- Fecha de Inicio column 4 -->
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
             <label for="dateStartedAt" appLabel label="Fecha de inicio:"
                    [required]="isRequired(dateStartedAtField)"
@@ -166,6 +154,7 @@
                    [dirty]="dateStartedAtField.dirty">
             </small>
           </div>
+          <!-- Fecha de Fin column 4 -->
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
             <label for="dateEndedAt" appLabel label="Fecha de fin:"
                    [required]="isRequired(dateEndedAtField)"
@@ -185,7 +174,7 @@
             </small>
           </div>
         </div>
-
+          <!-- Localización column 5 -->
         <div class="field">
           <label for="location" appLabel label="Localización:"
                  [required]="isRequired(locationField)"
@@ -219,38 +208,66 @@
         </div>
 
         <div class="formgrid grid">
+          <!-- Hora de Inicio column 6 -->
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
             <label for="timeStartedAt" appLabel label="Hora de Inicio:"
-                   [required]="isRequired(timeStartedAtField)"
-                   [valid]="timeStartedAtField.valid"
-                   [touched]="timeStartedAtField.touched"
-                   [dirty]="timeStartedAtField.dirty">
+                   [required]="isRequired(dateStartedAtField)"
+                   [valid]="dateStartedAtField.valid"
+                   [touched]="dateStartedAtField.touched"
+                   [dirty]="dateStartedAtField.dirty">
             </label>
-            <p-inputNumber id="timeStartedAt" formControlName="timeStartedAtField" mode="decimal" [showButtons]="true"
-                           [min]="0" [max]="1000" [step]="10">
-            </p-inputNumber>
-            <small appErrorMessage
-                   [errors]="timeStartedAtField.errors"
-                   [touched]="timeStartedAtField.touched"
-                   [dirty]="timeStartedAtField.dirty">
-            </small>
-
+            <p-calendar id="timeStartedAt" formControlName="timeStartedAt" [timeOnly]="true" inputId="timeonly"></p-calendar>
           </div>
+          <!-- Hora de Fin column 6 -->
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-            <label for="timeEndedAt" appLabel label="Hora de Fin:"
+            <label for="timeEndedAt" appLabel label="Hora de Inicio:"
                    [required]="isRequired(timeEndedAtField)"
                    [valid]="timeEndedAtField.valid"
                    [touched]="timeEndedAtField.touched"
                    [dirty]="timeEndedAtField.dirty">
             </label>
-            <p-inputNumber id="timeEndedAt" formControlName="timeEndedAt" mode="decimal" [showButtons]="true"
-                           [min]="0" [max]="1000" [step]="10">
-            </p-inputNumber>
-            <small appErrorMessage
-                   [errors]="timeEndedAtField.errors"
-                   [touched]="timeEndedAtField.touched"
-                   [dirty]="timeEndedAtField.dirty">
-            </small>
+            <p-calendar id="timeEndedAt" formControlName="timeEndedAt" [timeOnly]="true" inputId="timeonly"></p-calendar>
+          </div>
+        </div>
+          <!-- Observaciones de Fin column 7 -->
+        <div class="formgrid grid">
+          <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
+            <label appLabel label="Observaciones:"
+                   [required]="isRequired(observationsField)"
+                   [valid]="observationsField.valid"
+                   [touched]="observationsField.touched"
+                   [dirty]="observationsField.dirty">
+            </label>
+          </div>
+          <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
+            <button pButton pRipple type="button" label="Añadir" class="p-button-secondary p-button-rounded"
+                    icon="pi pi-plus"
+                    (click)="addObservations()"></button>
+          </div>
+        </div>
+        <div formArrayName="observations">
+          <div *ngFor="let observations of observationsField.controls; let i = index;">
+            <div class="formgrid grid">
+              <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
+                <label [for]="'observations'+i" appLabel [label]="'Observación ' + (i + 1) + ':'"
+                       [required]="isRequired(observationsField.controls[i])"
+                       [valid]="observationsField.controls[i].valid"
+                       [touched]="observationsField.controls[i].touched"
+                       [dirty]="observationsField.controls[i].dirty"></label>
+              </div>
+              <div class="field xl:col-9 lg:col-9 md:col-12 sm:col-12">
+                <input pInputText [id]="'observations'+i" [formControlName]="i" class="text-uppercase">
+                <small appErrorMessage
+                       [errors]="observationsField.controls[i].errors"
+                       [touched]="observationsField.controls[i].touched"
+                       [dirty]="observationsField.controls[i].dirty">
+                </small>
+              </div>
+              <div class="field xl:col-1 lg:col-1 md:col-12 sm:col-12">
+                <button pButton pRipple type="button" (click)="removeObservations(i)" iconPos="right" icon="pi pi-trash"
+                        class="p-button-danger p-button-rounded"></button>
+              </div>
+            </div>
           </div>
         </div>
 
