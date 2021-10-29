@@ -11,6 +11,8 @@ import { FormComponent } from './form/form.component';
 import { FormFormComponent } from './form/form-form/form-form.component';
 import {ReasonComponent} from "./reason/reason.component";
 import {ReasonFormComponent} from "./reason/reason-form/reason-form.component";
+import {StateComponent} from "./state/state.component";
+import {StateFormComponent} from "./state/state-form/state-form.component";
 
 
 const routes: Routes = [
@@ -57,6 +59,15 @@ const routes: Routes = [
   {
     path: 'reason/:id',
     component: ReasonFormComponent,
+    canDeactivate: [ExitGuard]
+  },
+  {
+    path: 'state',
+    component: StateComponent,
+  },
+  {
+    path: 'state/:id',
+    component: StateFormComponent,
     canDeactivate: [ExitGuard]
   }
 ];
