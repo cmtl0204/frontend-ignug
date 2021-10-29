@@ -18,31 +18,31 @@
       <div class="p-fluid" *ngIf="!loadingSkeleton">
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
           <div class="formgrid grid">
-            <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-              <label for="employer" appLabel label="Título:"
-                     [required]="isRequired(employerField)"
-                     [valid]="employerField.valid"
-                     [touched]="employerField.touched"
-                     [dirty]="employerField.dirty">
-              </label>
-              <p-dropdown id="employer"
-                          dataKey="id"
-                          [options]="employers"
-                          formControlName="employer"
-                          [filter]="true"
-                          filterBy="name"
-                          placeholder="Seleccione">
-                <ng-template pTemplate="selectedItem">
-                  <div class="country-item country-item-value" *ngIf="employerField.value">
-                    <div>{{employerField.value?.name}}</div>
-                  </div>
-                </ng-template>
-                <ng-template let-item pTemplate="item">
-                  <div class="country-item">
-                    <div>{{item.name}} </div>
-                  </div>
-                </ng-template>
-              </p-dropdown>
+              <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+                <label for="employer" appLabel label="Empleador:"
+                       [required]="isRequired(employerField)"
+                       [valid]="employerField.valid"
+                       [touched]="employerField.touched"
+                       [dirty]="employerField.dirty">
+                </label>
+                <p-dropdown id="employer"
+                            dataKey="id"
+                            [options]="employers"
+                            formControlName="employer"
+                            [filter]="true"
+                            filterBy="name"
+                            placeholder="Seleccione">
+                  <ng-template pTemplate="selectedItem">
+                    <div class="country-item country-item-value" *ngIf="employerField.value">
+                      <div>{{employerField.value?.name}}</div>
+                    </div>
+                  </ng-template>
+                  <ng-template let-item pTemplate="item">
+                    <div class="country-item">
+                      <div>{{item.name}} </div>
+                    </div>
+                  </ng-template>
+                </p-dropdown>
               <small appErrorMessage
                      [errors]="employerField.errors"
                      [touched]="employerField.touched"
