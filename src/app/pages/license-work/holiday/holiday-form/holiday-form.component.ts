@@ -68,7 +68,7 @@ export class HolidayFormComponent implements OnInit, OnDestroy, OnExitInterface 
       employee: [null, [Validators.required]],
       numberDays: [null],
       year: [null],
-      
+
     });
   }
 
@@ -148,7 +148,7 @@ export class HolidayFormComponent implements OnInit, OnDestroy, OnExitInterface 
         ));
   }
 
-  
+
 
   isRequired(field: AbstractControl): boolean {
     return field.hasValidator(Validators.required);
@@ -157,7 +157,7 @@ export class HolidayFormComponent implements OnInit, OnDestroy, OnExitInterface 
   returnList() {
     this.router.navigate(['/license-work/holiday', 2]);
   }
- 
+
   get idField() {
     return this.form.controls['id'];
   }

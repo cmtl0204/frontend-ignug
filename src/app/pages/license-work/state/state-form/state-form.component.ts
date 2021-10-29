@@ -1,27 +1,26 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Subscription} from 'rxjs';
-import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
-import {BreadcrumbService} from '@services/core/breadcrumb.service';
-import {MessageService} from '@services/core';
-import {LicenseWorkHttpService, LicenseWorkService} from '@services/license-work';
-import {FormModel, EmployerModel} from '@models/license-work';
+import { Component, OnInit } from '@angular/core';
+import {Subscription} from "rxjs";
+import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {StateModel} from "@models/license-work";
+import {ActivatedRoute, Router} from "@angular/router";
+import {BreadcrumbService} from "@services/core/breadcrumb.service";
+import {MessageService} from "@services/core";
+import {LicenseWorkHttpService} from "@services/license-work";
 
 @Component({
-  selector: 'app-application-form',
-  templateUrl: './form-form.component.html',
-  styleUrls: ['./form-form.component.scss']
+  selector: 'app-state-form',
+  templateUrl: './state-form.component.html',
+  styleUrls: ['./state-form.component.scss']
 })
+export class StateFormComponent implements OnInit {
 
-export class FormFormComponent implements OnInit, OnDestroy, OnExitInterface {
   private subscriptions: Subscription[] = [];
   form: FormGroup;
   progressBar: boolean = false;
   loadingSkeleton: boolean = false;
-  title: string = 'Crear Formulario';
-  buttonTitle: string = 'Crear Formulario';
-  employers: EmployerModel[] = [];
+  title: string = 'Crear Estado';
+  buttonTitle: string = 'Crear Estado';
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -30,22 +29,20 @@ export class FormFormComponent implements OnInit, OnDestroy, OnExitInterface {
     private breadcrumbService: BreadcrumbService,
     public messageService: MessageService,
     private licenseWorkHttpService: LicenseWorkHttpService,
-    private licenseWorkService: LicenseWorkService
   ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
-      {label: 'Formulario', disabled: true},
+      {label: 'Estado', disabled: true},
     ]);
     this.form = this.newForm();
   }
 
   ngOnInit(): void {
     if (this.activatedRoute.snapshot.params.id != 'new') {
-      this.title = 'Actualizar Formulario';
-      this.buttonTitle = 'Actualizar Formulario';
-      this.loadForm();
+      this.title = 'Actualizar Estado';
+      this.buttonTitle = 'Actualizar Estado';
+      this.loadState();
     }
-    this.loadEmployers();
   }
 
   ngOnDestroy(): void {
@@ -65,39 +62,22 @@ export class FormFormComponent implements OnInit, OnDestroy, OnExitInterface {
   newForm(): FormGroup {
     return this.formBuilder.group({
       id: [null],
-      employer: [null, [Validators.required]],
-      code:[null],
-      description:[null],
-      regime:[null],
-      daysConst:[null],
-      approvedLevel:[null],
-      state:[null,[Validators.required]],
+      name: [null, [Validators.required]],
+      code: [null, [Validators.required]],
     });
   }
 
-  loadForm() {
+  loadState() {
     this.loadingSkeleton = true;
     this.subscriptions.push(
       this.licenseWorkHttpService
-      .getForm(this.activatedRoute.snapshot.params.id)
+        .getState(this.activatedRoute.snapshot.params.id)
         .subscribe(
           response => {
             this.form.patchValue(response.data);
             this.loadingSkeleton = false;
           }, error => {
             this.loadingSkeleton = false;
-            this.messageService.error(error);
-          }
-        ));
-  }
-
-  loadEmployers() {
-    this.subscriptions.push(
-      this.licenseWorkHttpService.getCatalogueEmployers()
-        .subscribe(
-          response => {
-            this.form= response.data;
-          }, error => {
             this.messageService.error(error);
           }
         ));
@@ -115,10 +95,10 @@ export class FormFormComponent implements OnInit, OnDestroy, OnExitInterface {
     }
   }
 
-  store(form: FormModel): void {
+  store(state: StateModel): void {
     this.progressBar = true;
     this.subscriptions.push(
-      this.licenseWorkHttpService.storeForm(form)
+      this.licenseWorkHttpService.storeState(state)
         .subscribe(
           response => {
             this.messageService.success(response);
@@ -133,10 +113,10 @@ export class FormFormComponent implements OnInit, OnDestroy, OnExitInterface {
         ));
   }
 
-  update(form: FormModel): void {
+  update(state: StateModel): void {
     this.progressBar = true;
     this.subscriptions.push(
-      this.licenseWorkHttpService.updateForm(form.id!, form)
+      this.licenseWorkHttpService.updateState(state.id!, state)
         .subscribe(
           response => {
             this.messageService.success(response);
@@ -150,43 +130,20 @@ export class FormFormComponent implements OnInit, OnDestroy, OnExitInterface {
           }
         ));
   }
-
   isRequired(field: AbstractControl): boolean {
     return field.hasValidator(Validators.required);
   }
-
   returnList() {
-    this.router.navigate(['/license-work/form', 2]);
+    this.router.navigate(['/license-work', 2]);
   }
 
   get idField() {
     return this.form.controls['id'];
   }
-
-  get employerField() {
-    return this.form.controls['employer'];
+  get nameField() {
+    return this.form.controls['name'];
   }
   get codeField() {
     return this.form.controls['code'];
-  }
-
-  get descriptionField() {
-    return this.form.controls['description'];
-  }
-
-  get regimeField() {
-    return this.form.controls['regime'];
-  }
-
-  get daysConstField() {
-    return this.form.controls['daysConst'];
-  }
-
-  get approvedLevelField() {
-    return this.form.controls['approvedLevel'];
-  }
-
-  get stateField() {
-    return this.form.controls['state'];
   }
 }

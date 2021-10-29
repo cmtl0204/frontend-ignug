@@ -35,7 +35,10 @@ import {LocationStrategy, PathLocationStrategy} from '@angular/common';
 import {SharedModule} from '@shared/shared.module';
 import {BreadcrumbModule} from 'primeng/breadcrumb';
 import {ProgressSpinnerModule} from "primeng/progressspinner";
+<<<<<<< HEAD
 
+=======
+>>>>>>> b1dc096df7739e53b7e923c89d292b8c4eee8663
 
 @NgModule({
   declarations: [
@@ -46,7 +49,10 @@ import {ProgressSpinnerModule} from "primeng/progressspinner";
     TopbarComponent,
     FooterComponent,
     BreadcrumbComponent,
+<<<<<<< HEAD
     
+=======
+>>>>>>> b1dc096df7739e53b7e923c89d292b8c4eee8663
   ],
     imports: [
         BrowserModule,

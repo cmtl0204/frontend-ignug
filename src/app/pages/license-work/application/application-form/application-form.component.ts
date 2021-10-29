@@ -143,7 +143,7 @@ export class ApplicationFormComponent implements OnInit {
   }
 
   loadLocations() {
-    this.subscriptions.push(
+    /*this.subscriptions.push(
       this.coreHttpService.getLocations('PROVINCE')
         .subscribe(
           response => {
@@ -151,7 +151,7 @@ export class ApplicationFormComponent implements OnInit {
           }, error => {
             this.messageService.error(error);
           }
-        ));
+        ));*/
   }
 
   addObservations(data: string = '') {

@@ -1,5 +1,4 @@
 import {UserModel,PermissionModel,RoleModel} from '@models/core';
-import {ProfessionalModel} from '@models/license-work';
 
 export interface LoginResponse {
   data: Data;
@@ -17,5 +16,4 @@ interface Data {
   roles: RoleModel[];
   permissions: PermissionModel[];
   user: UserModel;
-  professional?: ProfessionalModel;
 }

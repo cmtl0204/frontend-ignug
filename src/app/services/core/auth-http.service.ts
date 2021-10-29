@@ -7,7 +7,6 @@ import {LoginModel, ServerResponse} from '@models/core';
 import {LoginResponse} from '@models/core/login.response';
 import {AuthService} from './auth.service';
 import {LicenseWorkService} from '@services/license-work/license-work.service';
-import {CourseModel} from "@models/license-work";
 import {Handler} from "../../exceptions/handler";
 
 @Injectable({
@@ -28,8 +27,6 @@ export class AuthHttpService {
         map(response => response),
         tap(
           response => {
-            console.log(response);
-            this.jobBoardService.professional = response.data.professional;
             this.authService.token = response.token;
             this.authService.user = response.data.user;
             this.authService.roles = response.data.roles;
