@@ -64,6 +64,7 @@ import { StateListComponent } from './state/state-list/state-list.component';
     StateComponent,
     StateFormComponent,
     StateListComponent,
+    LicenseWorkComponent
   ],
   imports: [
     CommonModule,
