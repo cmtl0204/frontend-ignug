@@ -36,6 +36,9 @@ import {HolidayListComponent} from "./holiday/holiday-list/holiday-list.componen
 import {FormComponent} from "./form/form.component";
 import {FormFormComponent} from "./form/form-form/form-form.component";
 import {FormListComponent} from "./form/form-list/form-list.component";
+import { StateComponent } from './state/state.component';
+import { StateFormComponent } from './state/state-form/state-form.component';
+import { StateListComponent } from './state/state-list/state-list.component';
 
 
 @NgModule({
@@ -58,6 +61,9 @@ import {FormListComponent} from "./form/form-list/form-list.component";
     FormComponent,
     FormFormComponent,
     FormListComponent,
+    StateComponent,
+    StateFormComponent,
+    StateListComponent,
   ],
   imports: [
     CommonModule,
