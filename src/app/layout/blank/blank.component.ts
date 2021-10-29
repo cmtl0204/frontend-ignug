@@ -11,5 +11,4 @@ export class BlankComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }

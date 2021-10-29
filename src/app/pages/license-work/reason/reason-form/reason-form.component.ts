@@ -29,12 +29,11 @@ export class ReasonFormComponent implements OnInit, OnDestroy, OnExitInterface {
     private breadcrumbService: BreadcrumbService,
     public messageService: MessageService,
     private licenseWorkHttpService: LicenseWorkHttpService,
-    
-  ) 
+    ) 
   {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
-      {label: 'Formulario de razones', disabled: true},//S
+      {label: 'Formulario de razones', disabled: true},
     ]);
     this.form = this.newForm();  
   }
