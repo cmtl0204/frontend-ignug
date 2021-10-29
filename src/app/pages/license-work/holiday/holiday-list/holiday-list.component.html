@@ -63,7 +63,6 @@
               <span *ngIf="!rowData[col.field]?.id" [ngSwitch]="col.field">
                 <span *ngSwitchCase="'updatedAt'">{{rowData[col.field]|date}}</span>
                 <span *ngSwitchDefault>{{rowData[col.field]}}</span>
-                <span *ngSwitchCase="'year'">{{rowData[col.field]|}}</span>
               </span>
             </td>
             <td style="text-align: center">

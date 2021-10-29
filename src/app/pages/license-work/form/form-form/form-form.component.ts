@@ -6,10 +6,10 @@ import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
 import {MessageService} from '@services/core';
 import {LicenseWorkHttpService, LicenseWorkService} from '@services/license-work';
-import {FormModel, EmployerModel,} from '@models/license-work';
+import {FormModel, EmployerModel} from '@models/license-work';
 
 @Component({
-  selector: 'app-form-form',
+  selector: 'app-application-form',
   templateUrl: './form-form.component.html',
   styleUrls: ['./form-form.component.scss']
 })
@@ -21,7 +21,7 @@ export class FormFormComponent implements OnInit, OnDestroy, OnExitInterface {
   loadingSkeleton: boolean = false;
   title: string = 'Crear Formulario';
   buttonTitle: string = 'Crear Formulario';
-  Employer: EmployerModel[] = [];
+  employers: EmployerModel[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
