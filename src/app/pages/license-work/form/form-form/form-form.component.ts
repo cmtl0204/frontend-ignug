@@ -14,7 +14,7 @@ import {FormModel, EmployerModel} from '@models/license-work';
 })
 
 export class FormFormComponent implements OnInit {
-  
+
   private subscriptions: Subscription[] = [];
   form: FormGroup;
   progressBar: boolean = false;
@@ -148,13 +148,16 @@ export class FormFormComponent implements OnInit {
   get idField() {
     return this.form.controls['id'];
   }
+  get employerField() {
+    return this.form.controls['employer'];
+  }
 
   get codeField() {
-    return this.form.controls['Código'];
+    return this.form.controls['code'];
   }
 
   get descriptionField() {
-    return this.form.controls['Descripción'];
+    return this.form.controls['description'];
   }
 
   get regimeField() {
@@ -162,7 +165,7 @@ export class FormFormComponent implements OnInit {
   }
 
   get daysConstField() {
-    return this.form.controls['Días constantes'];
+    return this.form.controls['daysConst'];
   }
 
   get approvedLevelField() {

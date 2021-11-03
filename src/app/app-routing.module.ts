@@ -10,13 +10,9 @@ const routes: Routes = [
     path: '',
     component: MainComponent,
     children: [
-<<<<<<< HEAD
       {path: '', redirectTo: '/license-work/application', pathMatch: 'full'},
       {path: 'dashboard', redirectTo: '/license-work/application', pathMatch: 'full'},
-=======
-      {path: '', redirectTo: '/license-work/form', pathMatch: 'full'},
-      {path: 'dashboard', redirectTo: '/license-work/form', pathMatch: 'full'},
->>>>>>> eb623ad5554eef5fc60d3a22925105414ac8947a
+
       {
         path: 'user-administration',
         loadChildren: () => import('./pages/core/user-administration/user-administration.module').then(m => m.UserAdministrationModule),
@@ -26,7 +22,7 @@ const routes: Routes = [
         canActivate: [TokenGuard, RoleGuard]
       },
       {
-        path: 'custom',
+        path: 'license-work',
         loadChildren: () => import('./pages/license-work/license-work.module').then(m => m.LicenseWorkModule),
         data: {
           roles: [RolesEnum.PROFESSIONAL]
