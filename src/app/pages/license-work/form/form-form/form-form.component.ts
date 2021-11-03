@@ -1,11 +1,10 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Subscription} from 'rxjs';
-import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
-import {BreadcrumbService} from '@services/core/breadcrumb.service';
-import {MessageService} from '@services/core';
-import {LicenseWorkHttpService, LicenseWorkService} from '@services/license-work';
+import { Component, OnInit } from '@angular/core';
+import {Subscription} from "rxjs";
+import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {ActivatedRoute, Router} from "@angular/router";
+import {BreadcrumbService} from "@services/core/breadcrumb.service";
+import {MessageService} from "@services/core";
+import {LicenseWorkHttpService} from "@services/license-work";
 import {FormModel, EmployerModel} from '@models/license-work';
 
 @Component({
@@ -14,7 +13,8 @@ import {FormModel, EmployerModel} from '@models/license-work';
   styleUrls: ['./form-form.component.scss']
 })
 
-export class FormFormComponent implements OnInit, OnDestroy, OnExitInterface {
+export class FormFormComponent implements OnInit {
+  
   private subscriptions: Subscription[] = [];
   form: FormGroup;
   progressBar: boolean = false;
@@ -30,7 +30,6 @@ export class FormFormComponent implements OnInit, OnDestroy, OnExitInterface {
     private breadcrumbService: BreadcrumbService,
     public messageService: MessageService,
     private licenseWorkHttpService: LicenseWorkHttpService,
-    private licenseWorkService: LicenseWorkService
   ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
@@ -45,7 +44,6 @@ export class FormFormComponent implements OnInit, OnDestroy, OnExitInterface {
       this.buttonTitle = 'Actualizar Formulario';
       this.loadForm();
     }
-    this.loadEmployers();
   }
 
   ngOnDestroy(): void {
@@ -86,18 +84,6 @@ export class FormFormComponent implements OnInit, OnDestroy, OnExitInterface {
             this.loadingSkeleton = false;
           }, error => {
             this.loadingSkeleton = false;
-            this.messageService.error(error);
-          }
-        ));
-  }
-
-  loadEmployers() {
-    this.subscriptions.push(
-      this.licenseWorkHttpService.getCatalogueEmployers()
-        .subscribe(
-          response => {
-            this.form= response.data;
-          }, error => {
             this.messageService.error(error);
           }
         ));
@@ -156,37 +142,34 @@ export class FormFormComponent implements OnInit, OnDestroy, OnExitInterface {
   }
 
   returnList() {
-    this.router.navigate(['/license-work/form', 2]);
+    this.router.navigate(['/license-work/form']);
   }
 
   get idField() {
     return this.form.controls['id'];
   }
 
-  get employerField() {
-    return this.form.controls['employer'];
-  }
   get codeField() {
-    return this.form.controls['code'];
+    return this.form.controls['Código'];
   }
 
   get descriptionField() {
-    return this.form.controls['description'];
+    return this.form.controls['Descripción'];
   }
 
   get regimeField() {
-    return this.form.controls['regime'];
+    return this.form.controls['Regimen'];
   }
 
   get daysConstField() {
-    return this.form.controls['daysConst'];
+    return this.form.controls['Días constantes'];
   }
 
   get approvedLevelField() {
-    return this.form.controls['approvedLevel'];
+    return this.form.controls['Nivel aprovado'];
   }
 
   get stateField() {
-    return this.form.controls['state'];
+    return this.form.controls['Estado'];
   }
 }

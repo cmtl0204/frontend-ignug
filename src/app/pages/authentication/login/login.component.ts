@@ -99,7 +99,7 @@ export class LoginComponent implements OnInit {
   }
 
   redirectRegistration() {
-    this.router.navigate(['/registration/form']);
+    this.router.navigate(['/registration/profesional']);
   }
 
   get usernameField() {
