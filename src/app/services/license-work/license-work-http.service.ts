@@ -11,11 +11,14 @@ import {
   EmployerModel,
   FormModel,
   HolidayModel,
+  /*DependenceModel,*/
+  
 //  DependenceModel
 } from '@models/license-work';
 import {catchError, map} from 'rxjs/operators';
 import {Handler} from '../../exceptions/handler';
 import { MessageService } from '@services/core';
+import { DependenceModel } from '@models/license-work/dependence.model';
 
 @Injectable({
   providedIn: 'root'
@@ -89,7 +92,7 @@ export class LicenseWorkHttpService {
       );
   }
   //*************        DEPENDENCE         *******************//
-  /*getDependences(paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
+  getDependences(paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
     const url = `${this.API_URL}/dependences`;
     const params = new HttpParams()
       .set('page', paginator.current_page)
@@ -148,7 +151,7 @@ export class LicenseWorkHttpService {
         map(response => response),
         catchError(Handler.render)
       );
-  }*/
+  }
 
   //*************        EMPLOYEE         *******************//
   getEmployees(paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {

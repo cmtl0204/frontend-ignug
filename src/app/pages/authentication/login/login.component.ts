@@ -95,11 +95,11 @@ export class LoginComponent implements OnInit {
   }
 
   redirect() {
-    this.router.navigate(['/license-work/application']);
+    this.router.navigate(['/license-work/form']);
+    this.router.navigate(['/license-work/reason']);
   }
-
   redirectRegistration() {
-    this.router.navigate(['/license-work/application']);
+    this.router.navigate(['/registration/profesional']);
   }
 
   get usernameField() {

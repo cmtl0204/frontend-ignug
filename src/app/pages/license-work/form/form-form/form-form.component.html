@@ -17,6 +17,7 @@
     <p-card>
       <div class="p-fluid" *ngIf="!loadingSkeleton">
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
+<!--Empleador-->
           <div class="formgrid grid">
               <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
                 <label for="employer" appLabel label="Empleador:"
@@ -49,6 +50,7 @@
                      [dirty]="employerField.dirty">
               </small>
             </div>
+<!--Código del formulario-->
             <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
               <label for="code" appLabel label="Código del formulario"
                      [required]="isRequired(codeField)"
@@ -63,6 +65,7 @@
                      [dirty]="codeField.dirty">
               </small>
             </div>
+<!--Descripción del formulario-->
           <div class="formgrid grid">
             <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
               <label for="description" appLabel label="Descripción de formularios de L y P:"
@@ -78,6 +81,7 @@
                      [dirty]="descriptionField.dirty">
               </small>
             </div>
+<!--Regimen-->
             <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
               <label for="regime" appLabel label="Losep. Cod. trabajo:"
                      [required]="isRequired(regimeField)"
@@ -92,8 +96,8 @@
                      [dirty]="regimeField.dirty">
               </small>
             </div>
-
           </div>
+<!--Dias constantes-->
           <div class="formgrid grid">
             <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
               <label for="daysConst" appLabel label="1,363636:"
@@ -109,6 +113,7 @@
                      [dirty]="daysConstField.dirty">
               </small>
             </div>
+<!--Nivel de aprobación-->
             <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
               <label for="approvedLevel" appLabel label="Nivel de aprobación que debe tener el formulario:"
                      [required]="isRequired(approvedLevelField)"
@@ -124,6 +129,7 @@
               </small>
             </div>
           </div>
+<!--Estado-->
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
             <label for="state" appLabel label="Activo-Inactivo:"
                    [required]="isRequired(stateField)"

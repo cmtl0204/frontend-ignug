@@ -1,27 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import {Subscription} from "rxjs";
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {DependenceModel} from "@models/license-work";
 import {ActivatedRoute, Router} from "@angular/router";
 import {BreadcrumbService} from "@services/core/breadcrumb.service";
 import {MessageService} from "@services/core";
 import {LicenseWorkHttpService} from "@services/license-work";
-import {FormModel, EmployerModel} from '@models/license-work';
 
 @Component({
-  selector: 'app-application-form',
-  templateUrl: './form-form.component.html',
-  styleUrls: ['./form-form.component.scss']
+  selector: 'app-dependence-form',
+  templateUrl: './dependence-form.component.html',
+  styleUrls: ['./dependence-form.component.scss']
 })
+export class DependenceFormComponent implements OnInit {
 
-export class FormFormComponent implements OnInit {
-  
   private subscriptions: Subscription[] = [];
   form: FormGroup;
   progressBar: boolean = false;
   loadingSkeleton: boolean = false;
-  title: string = 'Crear Formulario';
-  buttonTitle: string = 'Crear Formulario';
-  employers: EmployerModel[] = [];
+  title: string = 'Crear Dependencia';
+  buttonTitle: string = 'Crear Dependencia';
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -33,16 +32,16 @@ export class FormFormComponent implements OnInit {
   ) {
     this.breadcrumbService.setItems([
       {label: 'Dashboard', routerLink: ['/dashboard']},
-      {label: 'Formulario', disabled: true},
+      {label: 'Dependencia', disabled: true},
     ]);
     this.form = this.newForm();
   }
 
   ngOnInit(): void {
     if (this.activatedRoute.snapshot.params.id != 'new') {
-      this.title = 'Actualizar Formulario';
-      this.buttonTitle = 'Actualizar Formulario';
-      this.loadForm();
+      this.title = 'Actualizar Dependencia';
+      this.buttonTitle = 'Actualizar Dependencia';
+      this.loadDependence();
     }
   }
 
@@ -63,21 +62,16 @@ export class FormFormComponent implements OnInit {
   newForm(): FormGroup {
     return this.formBuilder.group({
       id: [null],
-      employer: [null, [Validators.required]],
-      code:[null],
-      description:[null],
-      regime:[null],
-      daysConst:[null],
-      approvedLevel:[null],
-      state:[null,[Validators.required]],
+      name: [null, [Validators.required]],
+      code: [null, [Validators.required]],
     });
   }
 
-  loadForm() {
+  loadDependence() {
     this.loadingSkeleton = true;
     this.subscriptions.push(
       this.licenseWorkHttpService
-      .getForm(this.activatedRoute.snapshot.params.id)
+        .getDependence(this.activatedRoute.snapshot.params.id)
         .subscribe(
           response => {
             this.form.patchValue(response.data);
@@ -101,10 +95,10 @@ export class FormFormComponent implements OnInit {
     }
   }
 
-  store(form: FormModel): void {
+  store(dependence: DependenceModel): void {
     this.progressBar = true;
     this.subscriptions.push(
-      this.licenseWorkHttpService.storeForm(form)
+      this.licenseWorkHttpService.storeDependence(dependence)
         .subscribe(
           response => {
             this.messageService.success(response);
@@ -119,10 +113,10 @@ export class FormFormComponent implements OnInit {
         ));
   }
 
-  update(form: FormModel): void {
+  update(dependence: DependenceModel): void {
     this.progressBar = true;
     this.subscriptions.push(
-      this.licenseWorkHttpService.updateForm(form.id!, form)
+      this.licenseWorkHttpService.updateDependence(dependence.id!, dependence)
         .subscribe(
           response => {
             this.messageService.success(response);
@@ -136,40 +130,21 @@ export class FormFormComponent implements OnInit {
           }
         ));
   }
-
   isRequired(field: AbstractControl): boolean {
     return field.hasValidator(Validators.required);
   }
-
   returnList() {
-    this.router.navigate(['/license-work/form']);
+    this.router.navigate(['/license-work', 2]);
   }
 
   get idField() {
     return this.form.controls['id'];
   }
-
-  get codeField() {
-    return this.form.controls['Código'];
+  get nameField() {
+    return this.form.controls['name'];
   }
-
-  get descriptionField() {
-    return this.form.controls['Descripción'];
-  }
-
-  get regimeField() {
-    return this.form.controls['Regimen'];
-  }
-
-  get daysConstField() {
-    return this.form.controls['Días constantes'];
-  }
-
-  get approvedLevelField() {
-    return this.form.controls['Nivel aprovado'];
-  }
-
-  get stateField() {
-    return this.form.controls['Estado'];
+  get levelField() {
+    return this.form.controls['level'];
   }
 }
+
