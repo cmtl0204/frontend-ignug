@@ -1,20 +1,19 @@
-import { Component, OnInit, OnDestroy  } from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Subscription} from 'rxjs';
-import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
-import {BreadcrumbService} from '@services/core/breadcrumb.service';
-import {MessageService} from '@services/core';
-import {LicenseWorkHttpService, LicenseWorkService} from '@services/license-work';
-import {ReasonModel} from '@models/license-work';
+import { Component, OnInit } from '@angular/core';
+import {Subscription} from "rxjs";
+import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {ReasonModel} from "@models/license-work";
+import {ActivatedRoute, Router} from "@angular/router";
+import {BreadcrumbService} from "@services/core/breadcrumb.service";
+import {MessageService} from "@services/core";
+import {LicenseWorkHttpService} from "@services/license-work";
 
 @Component({
   selector: 'app-reason-form',
   templateUrl: './reason-form.component.html',
   styleUrls: ['./reason-form.component.scss']
 })
+export class ReasonFormComponent implements OnInit  {
 
-export class ReasonFormComponent implements OnInit, OnDestroy, OnExitInterface {
   private subscriptions: Subscription[] = [];
   form: FormGroup;
   progressBar: boolean = false;
@@ -37,16 +36,15 @@ export class ReasonFormComponent implements OnInit, OnDestroy, OnExitInterface {
     ]);
     this.form = this.newForm();  
   }
-
   ngOnInit(): void {
-      if (this.activatedRoute.snapshot.params.id != 'new') {
-        this.title = 'Actualizar Razón';
-        this.buttonTitle = 'Actualizar Razón';
-        this.loadReason();
-      }
+    if (this.activatedRoute.snapshot.params.id != 'new') {
+      this.title = 'Actualizar Razón';
+      this.buttonTitle = 'Actualizar Razón';
+      this.loadReason();
     }
-
-    ngOnDestroy(): void {
+  }
+  
+     ngOnDestroy(): void {
       this.subscriptions.forEach(subscription => subscription.unsubscribe());
     }
   
@@ -141,7 +139,7 @@ export class ReasonFormComponent implements OnInit, OnDestroy, OnExitInterface {
        }
 
        returnList() {
-          this.router.navigate(['/license-work', 2]);
+          this.router.navigate(['/license-work/reason']);
         }
 
         get idField() {
@@ -149,26 +147,26 @@ export class ReasonFormComponent implements OnInit, OnDestroy, OnExitInterface {
         }
       
         get nameField() {
-          return this.form.controls['name'];
+          return this.form.controls['Nombre'];
         }
       
         get descriptionOneField() {
-          return this.form.controls['descriptionOne'];
+          return this.form.controls['Descripción Uno'];
         }
       
         get descriptionTwoField() {
-          return this.form.controls['descriptionTwo'];
+          return this.form.controls['Descripción Dos'];
         }
       
         get discountableHolidaysField() {
-          return this.form.controls['discountableHolidays'];
+          return this.form.controls[' Vacaciones Descontables'];
         }
 
         get daysMinField() {
-          return this.form.controls['daysMin'];
+          return this.form.controls['Días mínimos'];
         }
        
         get daysMaxField() {
-          return this.form.controls['daysMax'];
+          return this.form.controls['Días Máximos'];
         }
 }

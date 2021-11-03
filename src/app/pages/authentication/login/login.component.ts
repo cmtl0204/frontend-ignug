@@ -95,7 +95,11 @@ export class LoginComponent implements OnInit {
   }
 
   redirect() {
+<<<<<<< HEAD
     this.router.navigate(['/license-work/form']);
+=======
+    this.router.navigate(['/license-work/reason']);
+>>>>>>> 9ecbe155015687c0b2f96fdf0a7d4acda77631bb
   }
 
   redirectRegistration() {

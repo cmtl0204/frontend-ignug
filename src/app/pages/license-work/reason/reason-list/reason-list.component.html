@@ -44,7 +44,7 @@
             </th>
             <th style="text-align: center">
               <button pButton pRipple type="button" class="p-button-rounded p-button-secondary" icon="pi pi-cog"
-                      disabled></button>
+              disabled></button>
             </th>
           </tr>
         </ng-template>
@@ -62,7 +62,6 @@
               </span>
               <span *ngIf="!rowData[col.field]?.id" [ngSwitch]="col.field">
                 <span *ngSwitchCase="'updatedAt'">{{rowData[col.field]|date}}</span>
-                <span *ngSwitchCase="'discountableHolidays'">{{rowData[col.field]}}</span>
                 <span *ngSwitchDefault>{{rowData[col.field]}}</span>
               </span>
             </td>
