@@ -89,8 +89,6 @@ export class ApplicationFormComponent implements OnInit {
       type: [false, [Validators.required]],
       dateStartedAt: [null, [Validators.required]],
       dateEndedAt: [null, [Validators.required]],
-      timeStartedAt: [null, [Validators.required]],
-      timeEndedAt: [null, [Validators.required]],
       observations: this.formBuilder.array([this.formBuilder.control(null, Validators.required)]),
     });
   }
@@ -246,12 +244,6 @@ export class ApplicationFormComponent implements OnInit {
   }
   get dateEndedAtField() {
     return this.form.controls['dateEndedAt'];
-  }
-  get timeStartedAtField() {
-    return this.form.controls['timeStartedAt'];
-  }
-  get timeEndedAtField() {
-    return this.form.controls['timeEndedAt'];
   }
   get observationsField(): FormArray{
     return this.form.controls['observations']as FormArray;

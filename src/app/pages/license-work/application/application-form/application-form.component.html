@@ -137,13 +137,14 @@
         <div class="formgrid grid">
           <!-- Fecha de Inicio column 4 -->
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+
             <label for="dateStartedAt" appLabel label="Fecha de inicio:"
                    [required]="isRequired(dateStartedAtField)"
                    [valid]="dateStartedAtField.valid"
                    [touched]="dateStartedAtField.touched"
                    [dirty]="dateStartedAtField.dirty">
             </label>
-            <p-calendar id="dateStartedAt" formControlName="dateStartedAt" dateFormat="yy-mm-dd"
+            <p-calendar id="dateStartedAt" [showTime]="true" formControlName="dateStartedAt" dateFormat="yy-mm-dd"
                         [showIcon]="true"
                         [monthNavigator]="true"
                         [yearNavigator]="true"
@@ -162,7 +163,7 @@
                    [touched]="dateEndedAtField.touched"
                    [dirty]="dateEndedAtField.dirty">
             </label>
-            <p-calendar id="dateEndedAt" formControlName="dateEndedAt" dateFormat="yy-mm-dd"
+            <p-calendar id="dateEndedAt" [showTime]="true" formControlName="dateEndedAt" dateFormat="yy-mm-dd"
                         [showIcon]="true"
                         [monthNavigator]="true"
                         [yearNavigator]="true"
@@ -207,28 +208,7 @@
           </small>
         </div>
 
-        <div class="formgrid grid">
-          <!-- Hora de Inicio column 6 -->
-          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-            <label for="timeStartedAt" appLabel label="Hora de Inicio:"
-                   [required]="isRequired(timeStartedAtField)"
-                   [valid]="timeStartedAtField.valid"
-                   [touched]="timeStartedAtField.touched"
-                   [dirty]="timeStartedAtField.dirty">
-            </label>
-            <p-calendar id="timeStartedAt" formControlName="timeStartedAt" [timeOnly]="true" inputId="timeonly"></p-calendar>
-          </div>
-          <!-- Hora de Fin column 6 -->
-          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-            <label for="timeEndedAt" appLabel label="Hora de Inicio:"
-                   [required]="isRequired(timeEndedAtField)"
-                   [valid]="timeEndedAtField.valid"
-                   [touched]="timeEndedAtField.touched"
-                   [dirty]="timeEndedAtField.dirty">
-            </label>
-            <p-calendar id="timeEndedAt" formControlName="timeEndedAt" [timeOnly]="true" inputId="timeonly"></p-calendar>
-          </div>
-        </div>
+
           <!-- Observaciones de Fin column 7 -->
         <div class="formgrid grid">
           <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
