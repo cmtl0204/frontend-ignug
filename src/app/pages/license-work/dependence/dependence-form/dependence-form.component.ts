@@ -31,8 +31,14 @@ export class DependenceFormComponent implements OnInit {
     private licenseWorkHttpService: LicenseWorkHttpService,
   ) {
     this.breadcrumbService.setItems([
-      {label: 'Dashboard', routerLink: ['/dashboard']},
-      {label: 'Dependencia', disabled: true},
+      {label: 'Home', disabled: true},
+      {label: 'Solicitud', routerLink: ['/license-work/application']},
+      {label: 'Dependencia', routerLink: ['/license-work/dependence']},
+      {label: 'Empleador', routerLink: ['/license-work/employer']},
+      {label: 'Formulario', routerLink: ['/license-work/form']},
+      {label: 'Vacaciones', routerLink: ['/license-work/holiday']},
+      {label: 'Razones', routerLink: ['/license-work/reason']},
+      {label: 'Estado', routerLink: ['/license-work/state']},
     ]);
     this.form = this.newForm();
   }
@@ -63,7 +69,7 @@ export class DependenceFormComponent implements OnInit {
     return this.formBuilder.group({
       id: [null],
       name: [null, [Validators.required]],
-      code: [null, [Validators.required]],
+      level: [null, [Validators.required]],
     });
   }
 
@@ -134,7 +140,7 @@ export class DependenceFormComponent implements OnInit {
     return field.hasValidator(Validators.required);
   }
   returnList() {
-    this.router.navigate(['/license-work', 2]);
+    this.router.navigate(['/license-work/dependence']);
   }
 
   get idField() {
@@ -147,4 +153,5 @@ export class DependenceFormComponent implements OnInit {
     return this.form.controls['level'];
   }
 }
+
 

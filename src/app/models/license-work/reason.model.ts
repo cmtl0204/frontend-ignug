@@ -1,10 +1,9 @@
-
 export interface ReasonModel{
-    id?: number;
-    name?: string;
-    descriptionOne?: string;
-    descriptionTwo?: string;
-    descountableHolidays?: boolean;
-    daysMin?: number;
-    daysMax?:number;
-  }
+  id?: number;
+  name?: string;
+  descriptionOne?: string;
+  descriptionTwo?: string;
+  discountableHolidays?: boolean;
+  daysMin?: number;
+  daysMax?:number;
+}

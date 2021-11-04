@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import {Subscription} from "rxjs";
-import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ActivatedRoute, Router} from "@angular/router";
-import {BreadcrumbService} from "@services/core/breadcrumb.service";
-import {MessageService} from "@services/core";
-import {LicenseWorkHttpService} from "@services/license-work";
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
+import {BreadcrumbService} from '@services/core/breadcrumb.service';
+import {MessageService} from '@services/core';
+import {LicenseWorkHttpService, LicenseWorkService} from '@services/license-work';
 import {FormModel, EmployerModel} from '@models/license-work';
 
 @Component({
@@ -13,8 +14,7 @@ import {FormModel, EmployerModel} from '@models/license-work';
   styleUrls: ['./form-form.component.scss']
 })
 
-export class FormFormComponent implements OnInit {
-
+export class FormFormComponent implements OnInit, OnDestroy, OnExitInterface {
   private subscriptions: Subscription[] = [];
   form: FormGroup;
   progressBar: boolean = false;
@@ -30,10 +30,17 @@ export class FormFormComponent implements OnInit {
     private breadcrumbService: BreadcrumbService,
     public messageService: MessageService,
     private licenseWorkHttpService: LicenseWorkHttpService,
+    private licenseWorkService: LicenseWorkService
   ) {
     this.breadcrumbService.setItems([
-      {label: 'Dashboard', routerLink: ['/dashboard']},
-      {label: 'Formulario', disabled: true},
+      {label: 'Home', disabled: true},
+      {label: 'Solicitud', routerLink: ['/license-work/application']},
+      {label: 'Dependencia', routerLink: ['/license-work/dependence']},
+      {label: 'Empleador', routerLink: ['/license-work/employer']},
+      {label: 'Formulario', routerLink: ['/license-work/form']},
+      {label: 'Vacaciones', routerLink: ['/license-work/holiday']},
+      {label: 'Razones', routerLink: ['/license-work/reason']},
+      {label: 'Estado', routerLink: ['/license-work/state']},
     ]);
     this.form = this.newForm();
   }
@@ -44,6 +51,7 @@ export class FormFormComponent implements OnInit {
       this.buttonTitle = 'Actualizar Formulario';
       this.loadForm();
     }
+    this.loadEmployers();
   }
 
   ngOnDestroy(): void {
@@ -84,6 +92,18 @@ export class FormFormComponent implements OnInit {
             this.loadingSkeleton = false;
           }, error => {
             this.loadingSkeleton = false;
+            this.messageService.error(error);
+          }
+        ));
+  }
+
+  loadEmployers() {
+    this.subscriptions.push(
+      this.licenseWorkHttpService.getCatalogueEmployers()
+        .subscribe(
+          response => {
+            this.form= response.data;
+          }, error => {
             this.messageService.error(error);
           }
         ));
@@ -142,16 +162,16 @@ export class FormFormComponent implements OnInit {
   }
 
   returnList() {
-    this.router.navigate(['/license-work/form']);
+    this.router.navigate(['/license-work/form', 2]);
   }
 
   get idField() {
     return this.form.controls['id'];
   }
+
   get employerField() {
     return this.form.controls['employer'];
   }
-
   get codeField() {
     return this.form.controls['code'];
   }
@@ -161,7 +181,7 @@ export class FormFormComponent implements OnInit {
   }
 
   get regimeField() {
-    return this.form.controls['Regimen'];
+    return this.form.controls['regime'];
   }
 
   get daysConstField() {
@@ -169,10 +189,10 @@ export class FormFormComponent implements OnInit {
   }
 
   get approvedLevelField() {
-    return this.form.controls['Nivel aprovado'];
+    return this.form.controls['approvedLevel'];
   }
 
   get stateField() {
-    return this.form.controls['Estado'];
+    return this.form.controls['state'];
   }
 }

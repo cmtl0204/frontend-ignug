@@ -36,6 +36,7 @@ import {SharedModule} from '@shared/shared.module';
 import {BreadcrumbModule} from 'primeng/breadcrumb';
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,6 +46,7 @@ import {ProgressSpinnerModule} from "primeng/progressspinner";
     TopbarComponent,
     FooterComponent,
     BreadcrumbComponent,
+    
   ],
     imports: [
         BrowserModule,

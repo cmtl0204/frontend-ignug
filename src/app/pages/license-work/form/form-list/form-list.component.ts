@@ -1,20 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
-import { ColModel, PaginatorModel } from '@models/core';
-import { ApplicationModel, FormModel } from '@models/license-work';
-import { MessageService } from '@services/core';
-import { BreadcrumbService } from '@services/core/breadcrumb.service';
-import { LicenseWorkHttpService } from '@services/license-work';
-import { MenuItem } from 'primeng/api';
-import { Subscription } from 'rxjs';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {MenuItem} from 'primeng/api';
+import {BreadcrumbService} from '@services/core/breadcrumb.service';
+import {LicenseWorkHttpService} from '@services/license-work';
+import {MessageService} from '@services/core';
+import {FormModel,} from '@models/license-work';
+import {ColModel, PaginatorModel} from '@models/core';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-form-list',
   templateUrl: './form-list.component.html',
   styleUrls: ['./form-list.component.scss']
 })
-
 export class FormListComponent implements OnInit {
     private subscriptions: Subscription[] = [];
     cols: ColModel[] = [];
@@ -23,22 +22,26 @@ export class FormListComponent implements OnInit {
     paginator: PaginatorModel = {current_page: 1, per_page: 5, total: 0};
     filter: FormControl;
     progressBarDelete: boolean = false;
-    
     forms: FormModel[] = [];
     selectedForm: FormModel = {};
     selectedForms: FormModel[] = [];
   
-    constructor(
-      private router: Router,
-      private breadcrumbService: BreadcrumbService,
-      public messageService: MessageService,
-      private licenseWorkHttpService: LicenseWorkHttpService
-      ) {
+    constructor(private router: Router,
+                private breadcrumbService: BreadcrumbService,
+                public messageService: MessageService,
+                private licenseWorkHttpService: LicenseWorkHttpService
+                )
+    {
       this.breadcrumbService.setItems([
-        {label: 'Dashboard', routerLink: ['/dashboard']},
+        {label: 'Home', disabled: true},
+        {label: 'Dependencia', routerLink: ['/license-work/dependence']},
+        {label: 'Empleador', routerLink: ['/license-work/employer']},
+        {label: 'Solicitud', routerLink: ['/license-work/application']},
         {label: 'Formulario', disabled: true},
+        {label: 'Vacaciones', routerLink: ['/license-work/holiday']},
+        {label: 'Razones', routerLink: ['/license-work/reason']},
+        {label: 'Estado', routerLink: ['/license-work/state']},
       ]);
-  
       this.filter = new FormControl(null);
     }
   
@@ -55,8 +58,7 @@ export class FormListComponent implements OnInit {
     loadForms() {
       this.loading = true;
       this.subscriptions.push(
-        this.licenseWorkHttpService.getForms(this.paginator, this.filter.value)
-        .subscribe(
+        this.licenseWorkHttpService.getForms(this.paginator, this.filter.value).subscribe(
           response => {
             this.loading = false;
             this.forms = response.data;
@@ -74,7 +76,7 @@ export class FormListComponent implements OnInit {
       }
     }
   
-    editForm(form: ApplicationModel) {
+    editForm(form: FormModel) {
       this.router.navigate(['/license-work/form/', form.id]);
     }
   
@@ -113,7 +115,8 @@ export class FormListComponent implements OnInit {
           if (result.isConfirmed) {
             this.progressBarDelete = true;
             const ids = this.selectedForms.map(element => element.id);
-            this.subscriptions.push(this.licenseWorkHttpService.deleteForms(ids).subscribe(
+            this.subscriptions.push(this.licenseWorkHttpService.deleteForms(ids)
+            .subscribe(
               response => {
                 this.removeForms(ids!);
                 this.messageService.success(response);
@@ -152,10 +155,11 @@ export class FormListComponent implements OnInit {
         {field: 'code', header: 'Código del formulario'},
         {field: 'description', header: 'Formulario de Licencias y Permisos '},
         {field: 'regime', header: 'Losep.Codigo de trabajo'},
-        {field: 'daysConst', header: 'Días constantes'},
+        {field: 'daysConst', header: '1.363636'},
         {field: 'approvedLevel', header: 'Nivel de aprobación que debe tener el formulario 1 2 3 4 etc'},
         {field: 'state', header: 'Estado del formulario true activo false inactivo'},
       ];
+  
     }
   
     setItems() {

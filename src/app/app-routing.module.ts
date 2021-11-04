@@ -10,9 +10,8 @@ const routes: Routes = [
     path: '',
     component: MainComponent,
     children: [
-      {path: '', redirectTo: '/license-work/application', pathMatch: 'full'},
-      {path: 'dashboard', redirectTo: '/license-work/application', pathMatch: 'full'},
-
+      {path: '', redirectTo: '/license-work/dependence', pathMatch: 'full'},
+      {path: 'dashboard', redirectTo: '/license-work/dependence', pathMatch: 'full'},
       {
         path: 'user-administration',
         loadChildren: () => import('./pages/core/user-administration/user-administration.module').then(m => m.UserAdministrationModule),

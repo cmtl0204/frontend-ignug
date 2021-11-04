@@ -36,12 +36,12 @@
                         placeholder="Seleccione">
               <ng-template pTemplate="selectedItem">
                 <div class="country-item country-item-value" *ngIf="formField.value">
-                  <div>{{formField.value?.name}}</div>
+                  <div>{{formField.value?.code}}</div>
                 </div>
               </ng-template>
               <ng-template let-item pTemplate="item">
                 <div class="country-item">
-                  <div>{{item.name}} </div>
+                  <div>{{item.code}} </div>
                 </div>
               </ng-template>
             </p-dropdown>
@@ -53,7 +53,7 @@
           </div>
           <!-- Tipo column 1 -->
           <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
-            <label for="type" appLabel label="Tipo de formulario"
+            <label for="type" appLabel label="¿Es descontable a vacaciones?:"
                    [required]="isRequired(typeField)"
                    [valid]="typeField.valid"
                    [touched]="typeField.touched"
@@ -86,12 +86,12 @@
                       placeholder="Seleccione">
             <ng-template pTemplate="selectedItem">
               <div class="country-item country-item-value" *ngIf="employeeField.value">
-                <div>{{employeeField.value?.name}}</div>
+                <div>{{employeeField.value?.id}}</div>
               </div>
             </ng-template>
             <ng-template let-item pTemplate="item">
               <div class="country-item">
-                <div>{{item.name}} </div>
+                <div>{{item.id}} </div>
               </div>
             </ng-template>
           </p-dropdown>

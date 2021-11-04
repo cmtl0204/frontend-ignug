@@ -39,6 +39,9 @@ import {FormListComponent} from "./form/form-list/form-list.component";
 import { StateComponent } from './state/state.component';
 import { StateFormComponent } from './state/state-form/state-form.component';
 import { StateListComponent } from './state/state-list/state-list.component';
+import { DependenceComponent } from './dependence/dependence.component';
+import { DependenceFormComponent } from './dependence/dependence-form/dependence-form.component';
+import { DependenceListComponent } from './dependence/dependence-list/dependence-list.component';
 
 
 @NgModule({
@@ -64,7 +67,10 @@ import { StateListComponent } from './state/state-list/state-list.component';
     StateComponent,
     StateFormComponent,
     StateListComponent,
-    LicenseWorkComponent
+    LicenseWorkComponent,
+    DependenceComponent,
+    DependenceFormComponent,
+    DependenceListComponent
   ],
   imports: [
     CommonModule,

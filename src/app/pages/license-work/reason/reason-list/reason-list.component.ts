@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
-import { ColModel, PaginatorModel } from '@models/core';
-import { ApplicationModel, ReasonModel } from '@models/license-work';
-import { MessageService } from '@services/core';
-import { BreadcrumbService } from '@services/core/breadcrumb.service';
-import { LicenseWorkHttpService } from '@services/license-work';
-import { MenuItem } from 'primeng/api';
-import { Subscription } from 'rxjs';
+import {FormControl} from '@angular/forms';
+import {Router} from '@angular/router';
+import {ColModel, PaginatorModel} from '@models/core';
+import {ApplicationModel, ReasonModel} from '@models/license-work';
+import {MessageService} from '@services/core';
+import {BreadcrumbService} from '@services/core/breadcrumb.service';
+import {LicenseWorkHttpService} from '@services/license-work';
+import {MenuItem} from 'primeng/api';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-reason-list',
@@ -20,24 +20,31 @@ export class ReasonListComponent implements OnInit {
   cols: ColModel[] = [];
   items: MenuItem[] = [];
   loading: boolean = false;
-  paginator: PaginatorModel = {current_page: 1, per_page: 5, total: 0};
   filter: FormControl;
+  paginator: PaginatorModel = {current_page: 1, per_page: 5, total: 0};
   progressBarDelete: boolean = false;
 
   reasons: ReasonModel[] = [];
   selectedReason: ReasonModel = {};
   selectedReasons: ReasonModel[] = [];
- 
-constructor (
-  private router: Router,
-  private breadcrumbService: BreadcrumbService,
-  public messageService: MessageService,
-  private licenseWorkHttpService: LicenseWorkHttpService
-  ) { 
+
+  constructor(
+    private router: Router,
+    private breadcrumbService: BreadcrumbService,
+    public messageService: MessageService,
+    private licenseWorkHttpService: LicenseWorkHttpService
+    ) 
+    { 
       this.breadcrumbService.setItems([
-      {label: 'Dashboard', routerLink: ['/dashboard']},
-      {label: 'Razones', disabled: true},
-    ]);
+        {label: 'Home', disabled: true},
+        {label: 'Solicitud',routerLink: ['/license-work/application']},
+        {label: 'Dependencia', routerLink: ['/license-work/dependence']},
+        {label: 'Empleador', routerLink: ['/license-work/employer']},
+        {label: 'Formulario', routerLink: ['/license-work/form']},
+        {label: 'Vacaciones', routerLink: ['/license-work/holiday']},
+        {label: 'Razones', disabled: true},
+        {label: 'Estado', routerLink: ['/license-work/state']},
+      ]);
 
     this.filter = new FormControl(null);
   }
@@ -75,7 +82,7 @@ constructor (
   }
 
   editReason(reason: ApplicationModel) {
-    this.router.navigate(['/license-work/reason/', reason.id]);
+    this.router.navigate(['/license-work/reason/', reason.id]);// preguntar reason
   }
 
   createReason() {
@@ -174,4 +181,5 @@ constructor (
   }
 
 }
+
 

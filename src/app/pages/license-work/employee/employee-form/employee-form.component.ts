@@ -145,10 +145,4 @@ returnList() {
 get idField() {
   return this.form.controls['id'];
 }
-
-get userField() {
-  return this.form.controls['user'];
 }
-
-}
-

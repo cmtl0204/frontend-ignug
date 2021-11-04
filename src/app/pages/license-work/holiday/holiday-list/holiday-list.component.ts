@@ -33,8 +33,14 @@ export class HolidayListComponent implements OnInit {
                 ) 
     {
       this.breadcrumbService.setItems([
-        {label: 'Dashboard', routerLink: ['/dashboard']},
+        {label: 'Home', disabled: true},
+        {label: 'Solicitud', routerLink: ['/license-work/application']},
+        {label: 'Dependencia', routerLink: ['/license-work/dependence']},
+        {label: 'Empleador', routerLink: ['/license-work/employer']},
+        {label: 'Formulario', routerLink: ['/license-work/form']},
         {label: 'Vacaciones', disabled: true},
+        {label: 'Razones', routerLink: ['/license-work/reason']},
+        {label: 'Estado', routerLink: ['/license-work/state']},
       ]);
   
       this.filter = new FormControl(null);

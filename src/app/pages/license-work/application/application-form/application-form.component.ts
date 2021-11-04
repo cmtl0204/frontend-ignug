@@ -5,7 +5,7 @@ import {LocationModel} from '@models/core';
 import {EmployeeModel, FormModel, ReasonModel} from '@models/license-work';
 import {ActivatedRoute, Router} from "@angular/router";
 import {BreadcrumbService} from "@services/core/breadcrumb.service";
-import {MessageService} from "@services/core";
+import {CoreHttpService, MessageService} from "@services/core";
 import {LicenseWorkHttpService} from "@services/license-work";
 import {ApplicationModel} from "@models/license-work";
 
@@ -31,9 +31,8 @@ export class ApplicationFormComponent implements OnInit {
 
   yearRange: string = `1900:${(new Date()).getFullYear()}`;
 
-  private coreHttpService: any;
-
   constructor(
+    private coreHttpService: CoreHttpService,
     private formBuilder: FormBuilder,
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -42,8 +41,14 @@ export class ApplicationFormComponent implements OnInit {
     private licenseWorkHttpService: LicenseWorkHttpService,
   ) {
     this.breadcrumbService.setItems([
-      {label: 'Dashboard', routerLink: ['/dashboard']},
+      {label: 'Home', disabled: true},
       {label: 'Solicitud', disabled: true},
+      {label: 'Dependencia', routerLink: ['/license-work/dependence']},
+      {label: 'Empleador', routerLink: ['/license-work/employer']},
+      {label: 'Formulario', routerLink: ['/license-work/form']},
+      {label: 'Vacaciones', routerLink: ['/license-work/holiday']},
+      {label: 'Razones', routerLink: ['/license-work/reason']},
+      {label: 'Estado', routerLink: ['/license-work/state']},
     ]);
     this.form = this.newForm();
   }
