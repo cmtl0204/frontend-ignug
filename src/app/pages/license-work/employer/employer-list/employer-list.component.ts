@@ -31,7 +31,7 @@ export class EmployerListComponent implements OnInit {
               private breadcrumbService: BreadcrumbService,
               public messageService: MessageService,
               private licenseWorkHttpService: LicenseWorkHttpService
-              ) 
+              )
   {
     this.breadcrumbService.setItems([
       {label: 'Home', disabled: true},
@@ -161,7 +161,7 @@ export class EmployerListComponent implements OnInit {
       {field: 'approvalName', header: 'Nombre de la persona quien aprueba'},
       {field: 'registerName', header: 'Senescyt_Talento_Humano'},
     ];
-    
+
 
   }
 

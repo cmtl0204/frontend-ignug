@@ -161,7 +161,7 @@ export class HolidayFormComponent implements OnInit, OnDestroy, OnExitInterface 
   }
 
   returnList() {
-    this.router.navigate(['/license-work/holiday', 2]);
+    this.router.navigate(['/license-work/holiday']);
   }
 
   get idField() {

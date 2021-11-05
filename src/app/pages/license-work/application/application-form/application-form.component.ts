@@ -218,7 +218,7 @@ export class ApplicationFormComponent implements OnInit {
     return field.hasValidator(Validators.required);
   }
   returnList() {
-    this.router.navigate(['/license-work', 2]);
+    this.router.navigate(['/license-work/application']);
   }
 
   get idField() {

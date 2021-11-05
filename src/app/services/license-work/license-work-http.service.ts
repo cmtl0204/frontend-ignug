@@ -12,7 +12,7 @@ import {
   FormModel,
   HolidayModel,
   /*DependenceModel,*/
-  
+
 //  DependenceModel
 } from '@models/license-work';
 import {catchError, map} from 'rxjs/operators';
@@ -519,7 +519,7 @@ export class LicenseWorkHttpService {
   }
 
   storeState(state: StateModel): Observable<ServerResponse> {
-    const url = `${this.API_URL}/reasons`;
+    const url = `${this.API_URL}/states`;
     return this.httpClient.post<ServerResponse>(url, state)
       .pipe(
         map(response => response),
@@ -528,7 +528,7 @@ export class LicenseWorkHttpService {
   }
 
   updateState(id: number, state: StateModel): Observable<ServerResponse> {
-    const url = `${this.API_URL}/reasons/${id}`;
+    const url = `${this.API_URL}/states/${id}`;
     return this.httpClient.put<ServerResponse>(url, state)
       .pipe(
         map(response => response),

@@ -30,14 +30,14 @@ export class EmployeeFormComponent implements OnInit,OnDestroy,OnExitInterface {
     public messageService: MessageService,
     private licenseWorkHttpService: LicenseWorkHttpService,
   )
-    
+
     {
      this.breadcrumbService.setItems([
         {label: 'Dashboard', routerLink: ['/dashboard']},
         {label: 'Formulario de empleados', disabled: true},
       ]);
       this.form = this.newForm();
-      
+
      }
 
      ngOnInit(): void {
@@ -51,7 +51,7 @@ export class EmployeeFormComponent implements OnInit,OnDestroy,OnExitInterface {
     ngOnDestroy(): void {
       this.subscriptions.forEach(subscription => subscription.unsubscribe());
     }
-  
+
     async onExit() {
       if (this.form.touched || this.form.dirty) {
         return await this.messageService.questionOnExit({})
@@ -138,7 +138,7 @@ isRequired(field: AbstractControl): boolean {
 }
 
 returnList() {
-  this.router.navigate(['/license-work', 2]);
+  this.router.navigate(['/license-work/employee']);
 }
 
 

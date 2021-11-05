@@ -162,7 +162,7 @@ export class FormFormComponent implements OnInit, OnDestroy, OnExitInterface {
   }
 
   returnList() {
-    this.router.navigate(['/license-work/form', 2]);
+    this.router.navigate(['/license-work/form']);
   }
 
   get idField() {

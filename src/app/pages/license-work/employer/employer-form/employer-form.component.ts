@@ -39,7 +39,7 @@ export class EmployerFormComponent implements OnInit {
       {label: 'Estado', routerLink: ['/license-work/state']},
     ]);
     this.form = this.newForm();
-    
+
   }
 
   ngOnInit(): void {
@@ -146,7 +146,7 @@ export class EmployerFormComponent implements OnInit {
   }
 
   returnList() {
-    this.router.navigate(['/license-work/employer', 2]);
+    this.router.navigate(['/license-work/employer']);
   }
 
   get idField() {
@@ -178,8 +178,7 @@ export class EmployerFormComponent implements OnInit {
   }
 }
 
-        
-        
-        
-       
-        
+
+
+
+
