@@ -63,6 +63,15 @@ export class ErrorMessageDirective {
         if (this._errors?.NoPasswordMatch) {
           this.nativeElement.innerText = this.messageService.fieldNoPasswordMatch;
         }
+        if (this._errors?.UserNotAvailable) {
+          this.nativeElement.innerText = this.messageService.fieldUserNotAvailable;
+        }
+        if (this._errors?.EmailNotAvailable) {
+          this.nativeElement.innerText = this.messageService.fieldEmailNotAvailable;
+        }
+        if (this._errors?.PhoneNotAvailable) {
+          this.nativeElement.innerText = this.messageService.fieldPhoneNotAvailable;
+        }
         this.renderer.addClass(this.nativeElement, 'p-error');
         this.renderer.removeClass(this.nativeElement, 'hidden');
       } else {

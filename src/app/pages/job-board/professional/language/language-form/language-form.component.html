@@ -18,7 +18,7 @@
     <div class="p-fluid" *ngIf="!loadingSkeleton">
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="formgrid grid">
-          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+          <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
             <label for="idiom" appLabel label="Idioma:"
                    [required]="isRequired(idiomField)"
                    [valid]="idiomField.valid"
@@ -50,7 +50,7 @@
             </small>
           </div>
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-            <button pButton pRipple type="button" label="Adjuntar" (click)="showModalFiles()"></button>
+<!--            <button pButton pRipple type="button" label="Adjuntar" (click)="showModalFiles()"></button>-->
           </div>
         </div>
         <div class="formgrid grid">
@@ -161,7 +161,6 @@
     </div>
   </p-card>
 </div>
-
 
 <p-dialog header="Gestionar Archivos" [(visible)]="displayModalFiles" [modal]="true">
   <app-view-files [acceptAttributes]="'.pdf'"

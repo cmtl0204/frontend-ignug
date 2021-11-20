@@ -11,3 +11,5 @@ export {RoleModel} from './role.model';
 export {StateModel} from './state.model';
 export {FileModel} from './file.model';
 export {ImageModel} from './image.model';
+export {InstitutionModel} from './institution.model';
+export {CareerModel} from './career.model';

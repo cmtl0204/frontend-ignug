@@ -29,6 +29,33 @@ export class CoreHttpService {
       );
   }
 
+  getInstitutions(): Observable<ServerResponse> {
+    const url = `${this.API_URL}/institution/catalogue`;
+    return this.httpClient.get<ServerResponse>(url)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  getCareers(): Observable<ServerResponse> {
+    const url = `${this.API_URL}/career/catalogue`;
+    return this.httpClient.get<ServerResponse>(url)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
+  getCareersByInstitution(institutionId: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/institution/${institutionId}/careers`;
+    return this.httpClient.get<ServerResponse>(url)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
   getCatalogues2(type: string | undefined, paginator: PaginatorModel): Observable<ServerResponse> {
     const params = new HttpParams()
       .append('type', String(type))

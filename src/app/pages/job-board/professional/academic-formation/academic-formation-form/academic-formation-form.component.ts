@@ -4,9 +4,10 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {OnExitInterface} from '@shared/interfaces/on-exit.interface';
 import {BreadcrumbService} from '@services/core/breadcrumb.service';
-import {MessageService} from '@services/core';
+import {CoreHttpService, MessageService} from '@services/core';
 import {JobBoardHttpService, JobBoardService} from '@services/job-board';
 import {AcademicFormationModel, CategoryModel,} from '@models/job-board';
+import {CareerModel, InstitutionModel} from "@models/core";
 
 @Component({
   selector: 'app-academic-formation-form',
@@ -22,6 +23,8 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
   title: string = 'Crear Formación Académica';
   buttonTitle: string = 'Crear Formación Académica';
   professionalDegrees: CategoryModel[] = [];
+  institutions: InstitutionModel[] = [];
+  careers: CareerModel[] = [];
   yearRange: string = `1900:${(new Date()).getFullYear()}`;
 
   constructor(
@@ -30,6 +33,7 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
     private activatedRoute: ActivatedRoute,
     private breadcrumbService: BreadcrumbService,
     public messageService: MessageService,
+    private coreHttpService: CoreHttpService,
     private jobBoardHttpService: JobBoardHttpService,
     private jobBoardService: JobBoardService
   ) {
@@ -43,6 +47,9 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
     this.certificatedField.valueChanges.subscribe(value => {
       this.verifyCertificatedValidators();
     });
+    this.institutionField.valueChanges.subscribe(value=>{
+      this.loadCareers(value.id);
+    })
   }
 
   ngOnInit(): void {
@@ -52,6 +59,7 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
       this.loadAcademicFormation();
     }
     this.loadProfessionalDegrees();
+    this.loadInstitutions();
   }
 
   ngOnDestroy(): void {
@@ -71,6 +79,8 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
   newForm(): FormGroup {
     return this.formBuilder.group({
       id: [null],
+      career: [null, [Validators.required]],
+      institution: [null, [Validators.required]],
       professionalDegree: [null, [Validators.required]],
       certificated: [false, [Validators.required]],
       senescytCode: [null],
@@ -89,6 +99,30 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
             this.loadingSkeleton = false;
           }, error => {
             this.loadingSkeleton = false;
+            this.messageService.error(error);
+          }
+        ));
+  }
+
+  loadInstitutions() {
+    this.subscriptions.push(
+      this.coreHttpService.getInstitutions()
+        .subscribe(
+          response => {
+            this.institutions = response.data;
+          }, error => {
+            this.messageService.error(error);
+          }
+        ));
+  }
+
+  loadCareers(institutionId:number) {
+    this.subscriptions.push(
+      this.coreHttpService.getCareersByInstitution(institutionId)
+        .subscribe(
+          response => {
+            this.careers = response.data;
+          }, error => {
             this.messageService.error(error);
           }
         ));
@@ -178,6 +212,14 @@ export class AcademicFormationFormComponent implements OnInit, OnDestroy, OnExit
 
   get idField() {
     return this.form.controls['id'];
+  }
+
+  get careerField() {
+    return this.form.controls['career'];
+  }
+
+  get institutionField() {
+    return this.form.controls['institution'];
   }
 
   get professionalDegreeField() {

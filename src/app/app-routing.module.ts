@@ -34,6 +34,7 @@ const routes: Routes = [
         data: {
           roles: [RolesEnum.PROFESSIONAL]
         },
+        canActivate: [TokenGuard, RoleGuard]
       }
     ]
   },

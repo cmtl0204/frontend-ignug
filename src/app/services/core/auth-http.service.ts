@@ -9,6 +9,7 @@ import {AuthService} from './auth.service';
 import {JobBoardService} from '@services/job-board/job-board.service';
 import {CourseModel} from "@models/job-board";
 import {Handler} from "../../exceptions/handler";
+import {PasswordResetModel} from "@models/authentication";
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +39,51 @@ export class AuthHttpService {
         ),
         catchError(error => {
           this.authService.removeLogin();
+          return throwError(error);
+        })
+      );
+  }
+
+  resetPassword(credentials: PasswordResetModel): Observable<LoginResponse> {
+    const url = `${this.API_URL}/auth/reset-password`;
+    return this.httpClient.post<LoginResponse>(url, credentials)
+      .pipe(
+        map(response => response),
+        catchError(error => {
+          this.authService.removeLogin();
+          return throwError(error);
+        })
+      );
+  }
+
+  verifyUser(username: string): Observable<ServerResponse> {
+    const url = `${this.API_URL}/auth/verify-user/${username}`;
+    return this.httpClient.get<ServerResponse>(url)
+      .pipe(
+        map(response => response),
+        catchError(error => {
+          return throwError(error);
+        })
+      );
+  }
+
+  verifyEmail(email: string): Observable<ServerResponse> {
+    const url = `${this.API_URL}/auth/verify-email/${email}`;
+    return this.httpClient.get<ServerResponse>(url)
+      .pipe(
+        map(response => response),
+        catchError(error => {
+          return throwError(error);
+        })
+      );
+  }
+
+  verifyPhone(phone: string): Observable<ServerResponse> {
+    const url = `${this.API_URL}/auth/verify-phone/${phone}`;
+    return this.httpClient.get<ServerResponse>(url)
+      .pipe(
+        map(response => response),
+        catchError(error => {
           return throwError(error);
         })
       );

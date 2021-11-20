@@ -4,7 +4,7 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/form
 import {CategoryModel, ProfessionalModel} from "@models/job-board";
 import {ActivatedRoute, Router} from "@angular/router";
 import {BreadcrumbService} from "@services/core/breadcrumb.service";
-import {CoreHttpService, CoreService, MessageService} from "@services/core";
+import {AuthHttpService, CoreHttpService, CoreService, MessageService} from "@services/core";
 import {JobBoardHttpService, JobBoardService} from "@services/job-board";
 import {IdentificationValidator} from "@shared/validators/identification-validator";
 import {CustomValidators} from "@shared/validators/custom-validators";
@@ -35,6 +35,7 @@ export class ProfessionalRegistrationComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private breadcrumbService: BreadcrumbService,
     public messageService: MessageService,
+    private authHttpService: AuthHttpService,
     private coreHttpService: CoreHttpService,
     private coreService: CoreService,
     private jobBoardHttpService: JobBoardHttpService
@@ -83,7 +84,7 @@ export class ProfessionalRegistrationComponent implements OnInit {
       user: this.formBuilder.group({
         id: [null],
         identificationType: [null, [Validators.required]],
-        username: [null, [Validators.required, Validators.minLength(9), Validators.maxLength(20)]],
+        username: [null, [Validators.required, Validators.minLength(9), Validators.maxLength(20)], CustomValidators.verifyUser(this.authHttpService)],
         password: [null, [Validators.required, Validators.minLength(6), Validators.maxLength(16)]],
         passwordConfirmation: [null, [Validators.required]],
         sex: [null, [Validators.required]],
@@ -93,8 +94,8 @@ export class ProfessionalRegistrationComponent implements OnInit {
         name: [null, [Validators.required]],
         lastname: [null, [Validators.required]],
         birthdate: [null, [Validators.required]],
-        email: [null, [Validators.required, Validators.email]],
-        phone: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]]
+        email: [null, [Validators.required, Validators.email], CustomValidators.verifyEmail(this.authHttpService)],
+        phone: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10)], CustomValidators.verifyPhone(this.authHttpService)]
       }, {validators: CustomValidators.passwordMatchValidator}),
       traveled: [false, [Validators.required]],
       disabled: [false, [Validators.required]],
@@ -182,7 +183,7 @@ export class ProfessionalRegistrationComponent implements OnInit {
           response => {
             this.messageService.success(response);
             this.progressBar = false;
-            this.router.navigate(['/authentication/login']);
+            // this.router.navigate(['/authentication/login']);
           },
           error => {
             this.messageService.error(error);
@@ -207,9 +208,9 @@ export class ProfessionalRegistrationComponent implements OnInit {
 
   verifyIdentificationTypeUserValidators() {
     if (this.identificationTypeUserField.value.code === 'CC') {
-      this.usernameUserField.setValidators([IdentificationValidator.valid]);
+      this.usernameUserField.setValidators([Validators.required, IdentificationValidator.valid]);
     } else {
-      this.usernameUserField.clearValidators();
+      this.usernameUserField.setValidators(Validators.required);
     }
     this.usernameUserField.updateValueAndValidity();
   }

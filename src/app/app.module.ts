@@ -31,7 +31,7 @@ import {
   BreadcrumbComponent
 } from '@layout/index';
 import {PanelMenuModule} from 'primeng/panelmenu';
-import {LocationStrategy, PathLocationStrategy} from '@angular/common';
+import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 import {SharedModule} from '@shared/shared.module';
 import {BreadcrumbModule} from 'primeng/breadcrumb';
 import {ProgressSpinnerModule} from "primeng/progressspinner";
@@ -72,7 +72,7 @@ import {ProgressSpinnerModule} from "primeng/progressspinner";
   providers: [
     {
       provide: LocationStrategy,
-      useClass: PathLocationStrategy
+      useClass: HashLocationStrategy
     },
     HttpInterceptorProviders
   ],

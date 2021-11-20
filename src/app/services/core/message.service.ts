@@ -135,15 +135,27 @@ export class MessageService {
   }
 
   get fieldPattern() {
-    return `No cumple con el formato`;
+    return `No cumple con el formato.`;
   }
 
   get fieldIdentification() {
-    return `No cumple con el formato de una cédula Ecuatoriana`;
+    return `No cumple con el formato de una cédula Ecuatoriana.`;
   }
 
   get fieldNoPasswordMatch(): string {
     return 'Las contraseñas no coinciden.';
+  }
+
+  get fieldUserNotAvailable(): string {
+    return 'Este usuario ya se encuentra registrado.';
+  }
+
+  get fieldEmailNotAvailable(): string {
+    return 'Este correo electrónico no está disponible.';
+  }
+
+  get fieldPhoneNotAvailable(): string {
+    return 'Este teléfono no está disponible.';
   }
 
   paginatorTotalRegisters(paginator: PaginatorModel): string {
@@ -161,9 +173,11 @@ export class MessageService {
   get buttonFormClose(): string {
     return `Cerrar`;
   }
-
-  get progressBarSaveOrUpdate(): string {
+  get progressBarProcess(): string {
     return `Procesando...`;
+  }
+  get progressBarSaveOrUpdate(): string {
+    return `Guardando...`;
   }
 
   get progressBarDownload(): string {

@@ -10,9 +10,10 @@ import {SharedModule} from "@shared/shared.module";
 import {DividerModule} from "primeng/divider";
 import {RippleModule} from "primeng/ripple";
 import {PasswordModule} from "primeng/password";
+import { PasswordResetComponent } from './password-reset/password-reset.component';
 
 @NgModule({
-  declarations: [LoginComponent],
+  declarations: [LoginComponent, PasswordResetComponent],
   imports: [
     CommonModule,
     AuthenticationRoutingModule,

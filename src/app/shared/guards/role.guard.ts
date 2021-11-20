@@ -37,7 +37,7 @@ export class RoleGuard implements CanActivate, CanActivateChild {
 
   private checkRole(route: ActivatedRouteSnapshot): boolean {
     for (const role of route.data.roles) {
-      if (this.roles.find(r => r.name?.toLowerCase() === role?.toLowerCase())) {
+      if (this.roles.find(r => r.name?.toUpperCase() === role?.toUpperCase())) {
         return true;
       }
     }

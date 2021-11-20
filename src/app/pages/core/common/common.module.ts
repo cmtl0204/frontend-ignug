@@ -4,6 +4,9 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import {CommonRoutingModule} from './common-routing.module';
 import {AccessDeniedComponent} from './access-denied/access-denied.component';
 import {UnderMaintenanceComponent} from './under-maintenance/under-maintenance.component';
+import {ButtonModule} from "primeng/button";
+import {RippleModule} from "primeng/ripple";
+import {MessageModule} from "primeng/message";
 
 @NgModule({
   declarations: [
@@ -13,7 +16,10 @@ import {UnderMaintenanceComponent} from './under-maintenance/under-maintenance.c
   ],
   imports: [
     NgCommonModule,
-    CommonRoutingModule
+    CommonRoutingModule,
+    ButtonModule,
+    RippleModule,
+    MessageModule
   ]
 })
 export class CommonModule { }
